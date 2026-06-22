@@ -327,12 +327,12 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   {cloudStatus === 'saving' ? '⏳ Backup bezig...' :
                    cloudStatus === 'saved' ? '✓ Backup opgeslagen' :
                    cloudStatus === 'error' ? '✗ Backup mislukt' :
-                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '💾 Nog geen backup'}
+                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '☁ Auto-backup actief'}
                 </div>
                 <div className="text-gray-400 leading-tight mt-0.5">
                   {cloudTijdstempel
                     ? new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : 'Opgeslagen in deze browser'}
+                    : 'Automatisch backup om 12:00 en 18:00'}
                 </div>
               </div>
             </div>
@@ -559,7 +559,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                       'bg-gray-400'
                     }`} />
                     <div>
-                      <div className="text-white font-bold text-sm">Lokale opslag</div>
+                      <div className="text-white font-bold text-sm">Cloud opslag</div>
                       <div className="text-blue-200 text-xs">
                         {cloudTijdstempel
                           ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
@@ -577,7 +577,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <span className="text-xl">☁️</span>
                     <h3 className="font-bold text-nhl-blauw">Nu opslaan</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat op in de browser. Gebruik JSON-export voor een permanente backup buiten de browser.</p>
+                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat op in de browser (localStorage). Gebruik JSON-export voor een permanente backup.</p>
                   <button
                     onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
                     disabled={cloudStatus === 'saving'}
@@ -588,7 +588,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     ) : cloudStatus === 'saved' ? (
                       <>✓ Opgeslagen</>
                     ) : (
-                      <>💾 Sla op lokaal</>
+                      <>☁ Sla op in cloud</>
                     )}
                   </button>
                 </div>
@@ -597,7 +597,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">🔄</span>
-                    <h3 className="font-bold text-nhl-blauw">Herstel uit lokale opslag</h3>
+                    <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
                   </div>
                   <p className="text-gray-500 text-sm mb-4">Laad de laatste opgeslagen backup terug in deze sessie.</p>
                   <button
