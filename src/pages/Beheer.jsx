@@ -231,7 +231,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   const [fout, setFout] = useState('')
   const [cloudStatus, setCloudStatus] = useState('idle') // idle | saving | saved | error
   const [cloudTijdstempel, setCloudTijdstempel] = useState(null)
-  const [autoBackupActief, setAutoBackupActief] = useState(false)
   const [changelogOpen, setChangelogOpen] = useState(false)
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
@@ -250,14 +249,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     }
   }, [])
 
-  // Auto-backup schema: elke 15 minuten als ingelogd
-  useEffect(() => {
-    if (!toegang || !autoBackupActief) return
-    const interval = setInterval(() => {
-      voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })
-    }, 15 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [toegang, autoBackupActief, alleInitiatieven, berichten, videos, pilots, docs, inspiraties, voerBackupUit])
 
   const login = () => {
     if (code === BEHEER_CODE) { setToegang(true); setFout('') }
@@ -348,7 +339,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="text-gray-400 leading-tight mt-0.5">
                   {cloudTijdstempel
                     ? new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : 'Automatisch om 12:00 en 18:00'}
+                    : 'Automatisch backup om 12:00 en 18:00'}
                 </div>
               </div>
             </div>
@@ -572,7 +563,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                       cloudStatus === 'saving' ? 'bg-yellow-300 animate-pulse' :
                       cloudStatus === 'saved' ? 'bg-green-400' :
                       cloudStatus === 'error' ? 'bg-red-400' :
-                      autoBackupActief ? 'bg-blue-300 pulse-soft' : 'bg-gray-400'
+                      'bg-gray-400'
                     }`} />
                     <div>
                       <div className="text-white font-bold text-sm">Cloud opslag</div>
@@ -582,18 +573,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                           : 'Nog geen backup gemaakt in deze sessie'}
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <button
-                      onClick={() => setAutoBackupActief(v => !v)}
-                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-semibold transition-colors ${
-                        autoBackupActief
-                          ? 'bg-green-400/20 border border-green-400/40 text-green-200 hover:bg-green-400/30'
-                          : 'bg-white/10 border border-white/20 text-blue-200 hover:bg-white/20'
-                      }`}
-                    >
-                      ⏱️ Auto {autoBackupActief ? 'AAN · elke 15 min' : 'UIT'}
-                    </button>
                   </div>
                 </div>
               </div>
