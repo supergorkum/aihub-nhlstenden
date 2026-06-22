@@ -1,8 +1,8 @@
 import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { NHL_DIENSTEN, NHL_ACADEMIES, NHL_EXTERN } from '../initialData'
 import { sporen, lagen } from '../data'
-import PageHeader from '../components/PageHeader'
 
 const PLATFORMS = ['ChatGPT / OpenAI', 'GPT-NL (SURF)', 'Microsoft Copilot', 'Google Gemini', 'Claude (Anthropic)', 'Mistral', 'LLaMA (Meta)', 'Eigen ontwikkeling', 'SURF AI-HUB', 'Anders']
 const ACADEMIES = [...NHL_ACADEMIES, ...NHL_DIENSTEN, 'Anders']
@@ -38,6 +38,7 @@ const INIT_PILOTS = [
 ]
 
 export default function Pilots({ pilots, setPilots }) {
+  const navigate = useNavigate()
   const [addOpen, setAddOpen] = useState(false)
   const [updateOpen, setUpdateOpen] = useState(null)
   const [detailOpen, setDetailOpen] = useState(null)
@@ -45,7 +46,7 @@ export default function Pilots({ pilots, setPilots }) {
   const [form, setForm] = useState({
     naam: '', academie: '', platform: '', status: 'In voorbereiding',
     doel: '', bereiken: '', aanpak: '', spoor: '', laag: '', surf: '',
-    trefwoorden: [], contactNaam: '', contactEmail: '', startDatum: '',
+    trefwoorden: [], contactNaam: '', contactEmail: '', startDatum: '', ambities: [], impactInschatting: null,
   })
   const [trefwoordInput, setTrefwoordInput] = useState('')
   const [updateTekst, setUpdateTekst] = useState('')
@@ -126,6 +127,17 @@ export default function Pilots({ pilots, setPilots }) {
                     {laag && <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Laag {laag.nr}</span>}
                     {(pilot.trefwoorden || []).slice(0, 2).map(t => <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>)}
                   </div>
+
+                  {/* Ambitie badges */}
+                  {(pilot.ambities || []).length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {(pilot.ambities || []).map(a => (
+                        <span key={a} className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full font-medium">
+                          {a === 'studiesucces' ? '🎓 Studiesucces' : a === 'uitval' ? '📉 Minder uitval' : '🔄 Voortijdig vertrek'}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Updates teller */}
                   {pilot.updates?.length > 0 && (
@@ -208,9 +220,15 @@ export default function Pilots({ pilots, setPilots }) {
                 )}
                 {pilot.contactNaam && (
                   <div>
-                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Contact voor vragen</div>
-                    <div className="text-sm text-gray-700">{pilot.contactNaam}</div>
-                    {pilot.contactEmail && <div className="text-sm text-nhl-roze">{pilot.contactEmail}</div>}
+                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Contact voor vragen</div>
+                    <div className="text-sm text-gray-700 mb-3">{pilot.contactNaam}</div>
+                    <button
+                      onClick={() => navigate(`/meld?initiatief=${encodeURIComponent(pilot.naam)}`)}
+                      className="inline-flex items-center gap-2 bg-nhl-blauw/5 hover:bg-nhl-blauw/10 border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
+                    >
+                      ✉️ Neem contact op via de AI-HUB
+                    </button>
+                    <div className="text-xs text-gray-400 mt-1.5">De AI-HUB brengt je in contact met het team achter deze pilot.</div>
                   </div>
                 )}
                 {pilot.trefwoorden?.length > 0 && (
@@ -439,26 +457,62 @@ export default function Pilots({ pilots, setPilots }) {
                   </div>
                 )}
 
-                {/* Stap 3: Contact */}
+                {/* Stap 3: Contact & ambitie */}
                 {stap === 3 && (
                   <div className="space-y-4 animate-fade-in">
-                    <h3 className="font-bold text-nhl-blauw text-lg mb-4">Contact & zichtbaarheid</h3>
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
-                      <p className="text-sm text-nhl-blauw">
-                        Door je naam en e-mailadres toe te voegen kunnen collega's contact opnemen als ze meer willen weten of willen samenwerken.
+                    <h3 className="font-bold text-nhl-blauw text-lg mb-4">Contact & bestuurlijke ambitie</h3>
+
+                    {/* Ambitie koppeling */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                      <div className="font-semibold text-nhl-blauw text-sm mb-1">Koppel aan de bestuurlijke ambitie</div>
+                      <p className="text-xs text-blue-700 mb-3">
+                        Draagt jouw pilot bij aan studiesucces, minder uitval of minder voortijdig vertrek? Koppel dat hier zodat het zichtbaar wordt op het impact dashboard.
                       </p>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {[
+                          { id: 'studiesucces', label: '🎓 Studiesucces' },
+                          { id: 'uitval', label: '📉 Minder uitval' },
+                          { id: 'vertrek', label: '🔄 Voortijdig vertrek' },
+                        ].map(a => {
+                          const actief = (form.ambities || []).includes(a.id)
+                          return (
+                            <button key={a.id} type="button"
+                              onClick={() => {
+                                const huidig = form.ambities || []
+                                upd('ambities', actief ? huidig.filter(x => x !== a.id) : [...huidig, a.id])
+                              }}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border-2 transition-colors ${actief ? 'border-nhl-blauw bg-nhl-blauw text-white' : 'border-gray-200 text-gray-600 hover:border-nhl-blauw'}`}>
+                              {a.label}
+                            </button>
+                          )
+                        })}
+                      </div>
+                      {(form.ambities || []).length > 0 && (
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1.5">Verwachte impact</label>
+                          <div className="flex gap-2">
+                            {['laag', 'gemiddeld', 'hoog'].map(niveau => (
+                              <button key={niveau} type="button"
+                                onClick={() => upd('impactInschatting', niveau)}
+                                className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border-2 transition-colors capitalize ${form.impactInschatting === niveau ? 'border-nhl-roze bg-nhl-roze text-white' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+                                {niveau}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">Jouw naam of teamaam</label>
                       <input type="text" value={form.contactNaam} onChange={e => upd('contactNaam', e.target.value)}
                         placeholder="Bijv. Jan de Vries of Projectteam Academie Educatie"
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">E-mailadres (optioneel)</label>
-                      <input type="email" value={form.contactEmail} onChange={e => upd('contactEmail', e.target.value)}
-                        placeholder="j.devries@nhlstenden.com"
-                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                      <p className="text-xs text-amber-700">
+                        💡 Geen e-mailadres nodig. Geïnteresseerde collega's kunnen contact opnemen via de AI-HUB als tussenpersoon. Zo blijven persoonsgegevens buiten de app.
+                      </p>
                     </div>
 
                     {/* Samenvatting */}

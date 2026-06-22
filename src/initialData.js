@@ -44,6 +44,8 @@ export const INIT_PILOTS = [
     spoor: 1, laag: 5,
     surf: 'Nee / niet van toepassing',
     trefwoorden: ['Feedback', 'Schrijven', 'Didactiek', 'Studenten'],
+    ambities: ['studiesucces', 'uitval'],
+    impactInschatting: 'gemiddeld',
     contactNaam: 'Projectteam Academie Educatie',
     contactEmail: '',
     startDatum: '2026-09',

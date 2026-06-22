@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
+import ImpactDashboard from '../components/ImpactDashboard'
 
 const functies = [
   { icon: '👁️', titel: 'Zichtbaarheid', tekst: 'Wat is er al? Wie doet wat? De AI-HUB maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.', to: '/initiatieven' },
@@ -10,6 +11,7 @@ const functies = [
 const actieven = initiatieven.filter(i => i.status === 'actief').slice(0, 4)
 
 export default function Start({ videos = [], pilots = [], evenementen = [] }) {
+  const alleInitiatieven = initiatieven
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
@@ -160,6 +162,9 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
         </div>
       </section>
+
+      {/* Impact dashboard — bestuurlijke ambitie */}
+      <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} />
 
       {/* CTA strip */}
       <section className="py-12 nhl-gradient">

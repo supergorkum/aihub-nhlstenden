@@ -1,92 +1,122 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { NavLink } from 'react-router-dom'
+import { useState, useRef, useCallback } from 'react'
 
 const navGroepen = [
   {
-    label: 'Verkennen',
-    items: [
-      { label: "Thema's", to: '/themas', icon: '🎯' },
-      { label: 'Fundament', to: '/fundament', icon: '🏛️' },
-      { label: 'Netwerk', to: '/netwerk', icon: '🕸️' },
-    ]
-  },
-  {
     label: 'Aan de slag',
     items: [
+      { label: 'Evenementen', to: '/evenementen', icon: '📅' },
       { label: 'Initiatieven', to: '/initiatieven', icon: '🚀' },
       { label: 'Pilots', to: '/pilots', icon: '🧪' },
-      { label: 'Evenementen', to: '/evenementen', icon: '📅' },
     ]
   },
   {
     label: 'Kennis',
     items: [
-      { label: "Video's", to: '/video', icon: '🎬' },
-      { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
+      { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
+      { label: "Video's", to: '/video', icon: '🎬' },
+    ]
+  },
+  {
+    label: 'Ontdekken',
+    items: [
+      { label: 'Fundament', to: '/fundament', icon: '🏛️' },
+      { label: 'Netwerk', to: '/netwerk', icon: '🕸️' },
+      { label: "Thema's", to: '/themas', icon: '🎯' },
     ]
   },
 ]
 
-function DropdownGroep({ groep }) {
-  const [open, setOpen] = useState(false)
-  const closeTimer = useRef(null)
+// Globale actieve groep — zodat maar één dropdown tegelijk open is
+// en de vorige meteen sluit zonder vertraging
+function NavDropdowns() {
+  const [actief, setActief] = useState(null)
+  const sluitTimer = useRef(null)
 
-  const handleMouseEnter = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    setOpen(true)
-  }
-  const handleMouseLeave = () => {
-    closeTimer.current = setTimeout(() => setOpen(false), 150)
-  }
+  const openGroep = useCallback((label) => {
+    if (sluitTimer.current) clearTimeout(sluitTimer.current)
+    setActief(label)
+  }, [])
+
+  const sluitVertraagd = useCallback(() => {
+    sluitTimer.current = setTimeout(() => setActief(null), 300)
+  }, [])
+
+  const annuleerSluiten = useCallback(() => {
+    if (sluitTimer.current) clearTimeout(sluitTimer.current)
+  }, [])
 
   return (
-    <div
-      className="relative h-16 flex items-center"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <button
-        className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-          open ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
-        }`}
-      >
-        {groep.label}
-        <svg
-          className={`w-3 h-3 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
-          fill="none" viewBox="0 0 24 24" stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {open && (
-        <div
-          className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-48 z-50"
-          style={{ marginTop: '-1px' }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {groep.items.map(item => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                  isActive
-                    ? 'text-nhl-blauw font-semibold bg-blue-50'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-nhl-blauw'
-                }`
-              }
+    <div className="flex items-stretch flex-1 justify-center">
+      {navGroepen.map(groep => {
+        const isOpen = actief === groep.label
+        return (
+          <div
+            key={groep.label}
+            className="relative flex items-center self-stretch"
+            onMouseEnter={() => openGroep(groep.label)}
+            onMouseLeave={sluitVertraagd}
+          >
+            <button
+              className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                isOpen
+                  ? 'bg-white text-nhl-blauw shadow-sm'
+                  : 'text-white/80 hover:text-white hover:bg-white/15'
+              }`}
             >
-              <span className="w-5 text-center">{item.icon}</span>
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </div>
-      )}
+              {groep.label}
+              <svg
+                className={`w-3 h-3 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {isOpen && (
+              <div
+                className="absolute left-0 top-full bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50"
+                onMouseEnter={annuleerSluiten}
+                onMouseLeave={sluitVertraagd}
+              >
+                {groep.items.map(item => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setActief(null)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 text-sm transition-colors relative ${
+                        isActive
+                          ? 'text-nhl-blauw font-semibold bg-blue-50 border-l-2 border-nhl-blauw'
+                          : 'text-gray-700 hover:bg-blue-50 hover:text-nhl-blauw border-l-2 border-transparent hover:border-nhl-blauw'
+                      }`
+                    }
+                  >
+                    <span className="w-5 text-center text-base">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+        )
+      })}
+
+      {/* Over — directe link */}
+      <NavLink
+        to="/over"
+        className={({ isActive }) =>
+          `flex items-center px-3 text-xs font-semibold transition-all ${
+            isActive
+              ? 'text-white bg-white/20 rounded-lg'
+              : 'text-white/80 hover:text-white hover:bg-white/15 rounded-lg'
+          }`
+        }
+      >
+        Over
+      </NavLink>
     </div>
   )
 }
@@ -98,49 +128,62 @@ export default function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-nhl-blauw shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-stretch justify-between" style={{ minHeight: '64px' }}>
 
-          {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-9 w-9 object-contain bg-white rounded-lg p-0.5" />
-            <div className="hidden sm:block">
-              <div className="text-white font-bold text-sm leading-tight">AI-HUB</div>
-              <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
-            </div>
-          </NavLink>
+          {/* Links: logo + tekst + streep + Start */}
+          <div className="flex items-center gap-0 flex-shrink-0">
 
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center h-16">
-            {navGroepen.map(groep => (
-              <DropdownGroep key={groep.label} groep={groep} />
-            ))}
+            {/* NHL Stenden logo — wit logo op blauwe achtergrond, geen blend tricks */}
+            <NavLink to="/" className="flex items-center gap-2.5 mr-3 py-2 flex-shrink-0">
+              <img
+                src="/nhl-logo-wit.png"
+                alt="NHL Stenden"
+                className="h-9 w-auto flex-shrink-0"
+              />
+              <div className="hidden sm:block leading-tight">
+                <div className="text-white font-bold text-sm">AI-HUB</div>
+                <div className="text-blue-200 text-xs">NHL Stenden</div>
+              </div>
+            </NavLink>
 
-            {/* Over — directe link, geen dropdown */}
+            {/* Scheidingslijn */}
+            <div className="w-px h-7 bg-white/30 mr-3 flex-shrink-0" />
+
+            {/* Start knop */}
             <NavLink
-              to="/over"
+              to="/"
+              end
               className={({ isActive }) =>
-                `flex items-center px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                  isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
+                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all flex-shrink-0 ${
+                  isActive
+                    ? 'bg-white text-nhl-blauw shadow-sm'
+                    : 'text-white hover:bg-white/15'
                 }`
               }
             >
-              Over
+              🏠 Start
             </NavLink>
+          </div>
 
-            <div className="w-px h-5 bg-white/20 mx-2" />
+          {/* Midden: dropdowns — gedeelde state zodat overlap onmogelijk is */}
+          <div className="hidden lg:flex items-stretch flex-1">
+            <NavDropdowns />
+          </div>
 
+          {/* Rechts: + Vraag of idee */}
+          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
             <NavLink
               to="/meld"
-              className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap"
+              className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap shadow-sm"
             >
               + Vraag of idee
             </NavLink>
           </div>
 
-          {/* Hamburger */}
+          {/* Hamburger mobiel */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10"
+            className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10 self-center"
             aria-label="Menu"
           >
             <div className={`w-5 h-0.5 bg-white mb-1.5 transition-all origin-center ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`} />
@@ -151,56 +194,42 @@ export default function Nav() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-white/20 py-4">
+          <div className="lg:hidden border-t border-white/20 py-3">
+            <NavLink to="/" end onClick={() => setMobileOpen(false)}
+              className={({ isActive }) => `flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold mb-2 transition-colors ${isActive ? 'bg-white/20 text-white' : 'text-white hover:bg-white/10'}`}>
+              🏠 Start
+            </NavLink>
             {navGroepen.map(groep => (
               <div key={groep.label} className="mb-1">
                 <button
                   onClick={() => setMobileGroep(mobileGroep === groep.label ? null : groep.label)}
-                  className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-blue-300 uppercase tracking-widest hover:text-white transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-blue-200 uppercase tracking-widest hover:text-white transition-colors"
                 >
                   {groep.label}
-                  <svg
-                    className={`w-3.5 h-3.5 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                  >
+                  <svg className={`w-3 h-3 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {mobileGroep === groep.label && (
-                  <div className="ml-3 mb-2 space-y-0.5">
+                  <div className="ml-3 mb-1 space-y-0.5">
                     {groep.items.map(item => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
+                      <NavLink key={item.to} to={item.to}
                         onClick={() => { setMobileOpen(false); setMobileGroep(null) }}
-                        className={({ isActive }) =>
-                          `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-                            isActive ? 'bg-white/20 text-white font-medium' : 'text-blue-100 hover:text-white hover:bg-white/10'
-                          }`
-                        }
-                      >
-                        <span>{item.icon}</span>
-                        <span>{item.label}</span>
+                        className={({ isActive }) => `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${isActive ? 'bg-white/20 text-white font-medium' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>
+                        <span>{item.icon}</span><span>{item.label}</span>
                       </NavLink>
                     ))}
                   </div>
                 )}
               </div>
             ))}
-            <NavLink
-              to="/over"
-              onClick={() => setMobileOpen(false)}
-              className={({ isActive }) =>
-                `block px-3 py-2.5 text-sm transition-colors ${isActive ? 'text-white font-medium' : 'text-blue-100 hover:text-white'}`
-              }
-            >
+            <NavLink to="/over" onClick={() => setMobileOpen(false)}
+              className={({ isActive }) => `block px-3 py-2 text-sm transition-colors ${isActive ? 'text-white font-medium' : 'text-blue-100 hover:text-white'}`}>
               Over de HUB
             </NavLink>
-            <NavLink
-              to="/meld"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold"
-            >
+            <NavLink to="/meld" onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold">
               + Vraag of idee
             </NavLink>
           </div>

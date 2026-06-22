@@ -113,6 +113,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   const [cloudStatus, setCloudStatus] = useState('idle') // idle | saving | saved | error
   const [cloudTijdstempel, setCloudTijdstempel] = useState(null)
   const [autoBackupActief, setAutoBackupActief] = useState(false)
+  const [changelogOpen, setChangelogOpen] = useState(false)
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
 
@@ -192,6 +193,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   ]
 
   return (
+    <>
     <div className="min-h-screen pt-16 bg-gray-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
@@ -231,6 +233,13 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             >
               <span>{autoBackupActief ? '⏱️' : '⏱️'}</span>
               Auto-backup {autoBackupActief ? 'aan' : 'uit'}
+            </button>
+
+            <button
+              onClick={() => setChangelogOpen(true)}
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors font-medium"
+            >
+              📋 Changelog
             </button>
 
             <button onClick={() => setToegang(false)} className="btn-ghost text-xs border border-gray-200">Uitloggen</button>
@@ -524,5 +533,83 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
         )}
       </div>
     </div>
+
+    {/* Changelog modal */}
+    {changelogOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
+            <div>
+              <h2 className="font-bold text-nhl-blauw text-lg">📋 Changelog</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Versiehistorie van de AI-HUB</p>
+            </div>
+            <button onClick={() => setChangelogOpen(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">✕</button>
+          </div>
+          <div className="p-6 space-y-6">
+            {[
+              {
+                versie: 'v1.2', datum: 'Juni 2026',
+                label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
+                items: [
+                  'Impact dashboard op startpagina — drie meters voor studiesucces, uitval en voortijdig vertrek',
+                  'Contact via AI-HUB knop op pilots — geen e-mailadressen in de app',
+                  'Ambities koppelen bij aanmelden van een pilot of initiatief',
+                  'NHL Stenden logo verwerkt in navigatiebalk en footer',
+                  'Volledige gradient headers op alle pagina\'s',
+                  'Dropdown navigatiemenu met vier groepen alfabetisch geordend',
+                  'Cloud backup met auto-schema, lampje en tijdstempel in beheer',
+                  'Changelog toegevoegd aan beheeromgeving',
+                ],
+              },
+              {
+                versie: 'v1.1', datum: 'Juni 2026', label: null,
+                items: [
+                  'Video pagina met YouTube-integratie, stemmen en beheer',
+                  'Evenementenagenda met filtering op thema',
+                  'Bronnen (linkjes) pagina',
+                  'Pilots pagina met voortgang-updates',
+                  'Inspiratie pagina met stemfunctie en masonry grid',
+                  'Fundament pagina met vijflagenmodel',
+                  'Over pagina',
+                  'Bestandsupload in documentatie',
+                  'Beheeromgeving met tabs voor alle content',
+                ],
+              },
+              {
+                versie: 'v1.0', datum: 'Mei 2026', label: null,
+                items: [
+                  'Eerste versie AI-HUB gelanceerd',
+                  'Startpagina met hero, thema\'s en actuele initiatieven',
+                  'Netwerk visualisatie — interactief knopendiagram',
+                  'Thema\'s pagina — vier sporen',
+                  'Initiatieven overzicht',
+                  'Vragen & ideeën formulier',
+                  'Documentatie pagina',
+                  'Netlify deployment en GitHub koppeling',
+                ],
+              },
+            ].map(v => (
+              <div key={v.versie}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-bold text-nhl-blauw text-base">{v.versie}</span>
+                  {v.label && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${v.labelKleur}`}>{v.label}</span>}
+                  <div className="flex-1 h-px bg-gray-100" />
+                  <span className="text-xs text-gray-400 flex-shrink-0">{v.datum}</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {v.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <span className="text-nhl-roze mt-0.5 flex-shrink-0">·</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+  </>
   )
 }
