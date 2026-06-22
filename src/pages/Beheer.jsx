@@ -376,6 +376,14 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             })()}
 
             <button
+              onClick={() => setActieveTab('data')}
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-roze hover:text-nhl-roze transition-colors font-medium"
+              title="Ga naar Data tab voor nieuws ophalen"
+            >
+              🤖 Nieuws ophalen
+            </button>
+
+            <button
               onClick={() => setChangelogOpen(true)}
               className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors font-medium"
             >

@@ -130,11 +130,15 @@ const PRIORITEIT_KLEUR = {
 }
 
 const ROADMAP_STATUS = {
-  lopend:          { label: 'Lopend',         kleur: 'bg-green-100 text-green-700', dot: 'bg-green-500' },
-  'in-ontwikkeling': { label: 'In voorbereiding', kleur: 'bg-blue-100 text-nhl-blauw', dot: 'bg-blue-500' },
-  'te-starten':    { label: 'Nog te starten', kleur: 'bg-orange-100 text-orange-700', dot: 'bg-orange-400' },
-  'te-controleren': { label: 'Te controleren', kleur: 'bg-red-100 text-red-700', dot: 'bg-red-500' },
+  lopend:            { label: 'Lopend',           kleur: 'bg-green-100 text-green-700', dot: 'bg-green-500' },
+  'in-ontwikkeling': { label: 'In voorbereiding', kleur: 'bg-blue-100 text-nhl-blauw',  dot: 'bg-blue-500' },
+  'te-starten':      { label: 'Nog te starten',   kleur: 'bg-orange-100 text-orange-700', dot: 'bg-orange-400' },
+  'te-controleren':  { label: 'Te controleren',   kleur: 'bg-red-100 text-red-700',    dot: 'bg-red-500' },
+  afgerond:          { label: 'Afgerond ✓',       kleur: 'bg-gray-100 text-gray-500',  dot: 'bg-gray-400' },
 }
+
+// Volgorde voor status-wissel bij klikken
+const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend', 'afgerond']
 
 export default function Initiatieven() {
   const navigate = useNavigate()
@@ -169,8 +173,18 @@ export default function Initiatieven() {
     setToegevoegd(true)
   }
 
+  const wisselStatus = (id) => {
+    setRoadmap(prev => prev.map(item => {
+      if (item.id !== id) return item
+      const huidig = STATUS_CYCLUS.indexOf(item.status)
+      const volgend = STATUS_CYCLUS[(huidig + 1) % STATUS_CYCLUS.length]
+      return { ...item, status: volgend }
+    }))
+  }
+
   const aantalTeStarten = roadmap.filter(r => r.status === 'te-starten' || r.status === 'te-controleren').length
   const aantalLopend = roadmap.filter(r => r.status === 'lopend' || r.status === 'in-ontwikkeling').length
+  const aantalAfgerond = roadmap.filter(r => r.status === 'afgerond').length
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
@@ -282,7 +296,7 @@ export default function Initiatieven() {
               {[
                 { label: 'Lopend of in voorbereiding', n: aantalLopend, kleur: 'text-green-600', bg: 'bg-green-50 border-green-200' },
                 { label: 'Nog te starten', n: aantalTeStarten, kleur: 'text-orange-600', bg: 'bg-orange-50 border-orange-200' },
-                { label: 'Totaal op de roadmap', n: roadmap.length, kleur: 'text-nhl-blauw', bg: 'bg-blue-50 border-blue-200' },
+                { label: 'Afgerond', n: aantalAfgerond, kleur: 'text-gray-500', bg: 'bg-gray-50 border-gray-200' },
               ].map(s => (
                 <div key={s.label} className={`rounded-2xl border p-5 ${s.bg}`}>
                   <div className={`text-3xl font-extrabold ${s.kleur}`}>{s.n}</div>
@@ -316,9 +330,32 @@ export default function Initiatieven() {
               {roadmap.map(item => {
                 const s = ROADMAP_STATUS[item.status] || ROADMAP_STATUS['te-starten']
                 const aiAct = AI_ACT_ITEMS.find(a => a.id === item.aiActKoppeling)
+                const isAfgerond = item.status === 'afgerond'
                 return (
-                  <div key={item.id} className="bg-white rounded-2xl border border-gray-200 p-5">
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div key={item.id} className={`rounded-2xl border p-5 transition-all ${
+                    isAfgerond ? 'bg-gray-50 border-gray-200 opacity-70' : 'bg-white border-gray-200'
+                  }`}>
+                    <div className="flex items-start gap-4 flex-wrap">
+
+                      {/* Afvink knop */}
+                      <button
+                        onClick={() => wisselStatus(item.id)}
+                        title="Klik om status te wisselen"
+                        className={`flex-shrink-0 mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                          isAfgerond
+                            ? 'bg-gray-400 border-gray-400 hover:bg-gray-500'
+                            : item.status === 'lopend'
+                            ? 'border-green-500 bg-green-50 hover:bg-green-500 hover:border-green-500 group'
+                            : item.status === 'in-ontwikkeling'
+                            ? 'border-blue-500 bg-blue-50 hover:bg-blue-500'
+                            : 'border-gray-300 bg-white hover:border-orange-400 hover:bg-orange-50'
+                        }`}
+                      >
+                        {isAfgerond && <span className="text-white text-xs font-bold">✓</span>}
+                        {item.status === 'lopend' && <span className="text-green-600 text-xs">▶</span>}
+                        {item.status === 'in-ontwikkeling' && <span className="text-blue-500 text-xs">…</span>}
+                      </button>
+
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium ${s.kleur}`}>
@@ -330,14 +367,22 @@ export default function Initiatieven() {
                           </span>
                           {item.datum && <span className="text-xs text-gray-400">📅 {item.datum}</span>}
                         </div>
-                        <div className="font-bold text-nhl-blauw mb-1">{item.titel}</div>
-                        <p className="text-gray-500 text-sm leading-relaxed">{item.omschrijving}</p>
-                        {item.verantwoordelijke && (
+                        <div className={`font-bold mb-1 ${isAfgerond ? 'text-gray-400 line-through' : 'text-nhl-blauw'}`}>
+                          {item.titel}
+                        </div>
+                        {!isAfgerond && (
+                          <p className="text-gray-500 text-sm leading-relaxed">{item.omschrijving}</p>
+                        )}
+                        {item.verantwoordelijke && !isAfgerond && (
                           <div className="text-xs text-gray-400 mt-2">Verantwoordelijk: {item.verantwoordelijke}</div>
                         )}
+                        {isAfgerond && (
+                          <p className="text-xs text-gray-400 italic">Afgerond — klik op het vinkje om status terug te zetten</p>
+                        )}
                       </div>
-                      {/* AI Act koppeling */}
-                      {aiAct && (
+
+                      {/* AI Act koppeling — alleen als niet afgerond */}
+                      {aiAct && !isAfgerond && (
                         <div className="flex-shrink-0 bg-blue-50 border border-blue-200 rounded-xl p-3 max-w-48">
                           <div className="text-xs font-bold text-nhl-blauw mb-1">⚖️ AI Act</div>
                           <div className="text-xs font-semibold text-gray-700">{aiAct.artikel}</div>
