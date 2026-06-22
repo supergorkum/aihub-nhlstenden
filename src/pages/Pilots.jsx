@@ -51,10 +51,21 @@ export default function Pilots({ pilots, setPilots }) {
   const [trefwoordInput, setTrefwoordInput] = useState('')
   const [updateTekst, setUpdateTekst] = useState('')
   const [updateAuteur, setUpdateAuteur] = useState('')
+  const [updateBestand, setUpdateBestand] = useState(null)
+  const [updateBestandData, setUpdateBestandData] = useState(null)
   const [fout, setFout] = useState('')
   const [toegevoegd, setToegevoegd] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const handleUpdateBestand = (file) => {
+    if (!file) return
+    if (file.size > 20 * 1024 * 1024) { alert('Bestand mag maximaal 20 MB zijn.'); return }
+    setUpdateBestand(file)
+    const reader = new FileReader()
+    reader.onload = (e) => setUpdateBestandData(e.target.result)
+    reader.readAsDataURL(file)
+  }
 
   const kanVolgende = () => {
     if (stap === 0) return form.naam && form.academie
@@ -88,10 +99,14 @@ export default function Pilots({ pilots, setPilots }) {
       datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
       tekst: updateTekst,
       auteur: updateAuteur || 'Anoniem',
+      bestandNaam: updateBestand?.name || null,
+      bestandData: updateBestandData || null,
     }
     setPilots(prev => prev.map(p => p.id === pilotId ? { ...p, updates: [...(p.updates || []), update] } : p))
     setUpdateTekst('')
     setUpdateAuteur('')
+    setUpdateBestand(null)
+    setUpdateBestandData(null)
     setUpdateOpen(null)
   }
 
@@ -249,6 +264,19 @@ export default function Pilots({ pilots, setPilots }) {
                             <span className="text-xs font-medium text-gray-500">{u.datum} · {u.auteur}</span>
                           </div>
                           <p className="text-gray-700 text-sm leading-relaxed">{u.tekst}</p>
+                          {u.bestandData && (
+                            <button
+                              onClick={() => {
+                                const a = document.createElement('a')
+                                a.href = u.bestandData
+                                a.download = u.bestandNaam || 'bijlage'
+                                a.click()
+                              }}
+                              className="mt-2 inline-flex items-center gap-1.5 text-xs text-nhl-blauw hover:text-nhl-roze font-medium transition-colors"
+                            >
+                              📎 {u.bestandNaam} downloaden
+                            </button>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -274,9 +302,37 @@ export default function Pilots({ pilots, setPilots }) {
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Hoe verloopt de pilot? <span className="text-red-400">*</span></label>
-                <textarea value={updateTekst} onChange={e => setUpdateTekst(e.target.value)} rows={5}
+                <textarea value={updateTekst} onChange={e => setUpdateTekst(e.target.value)} rows={4}
                   placeholder="Beschrijf de voortgang, resultaten, uitdagingen of inzichten..."
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bijlage <span className="text-gray-400 font-normal">(optioneel — bijv. rapport, meting, foto)</span></label>
+                <div
+                  onClick={() => document.getElementById('update-upload').click()}
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={e => { e.preventDefault(); handleUpdateBestand(e.dataTransfer.files[0]) }}
+                  className="border-2 border-dashed border-gray-100 rounded-xl p-4 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors"
+                >
+                  {updateBestand ? (
+                    <div className="flex items-center gap-3 justify-center">
+                      <span className="text-xl">{updateBestand.type.includes('pdf') ? '📄' : updateBestand.type.includes('image') ? '🖼️' : '📝'}</span>
+                      <div className="text-left">
+                        <div className="text-sm font-medium text-nhl-blauw">{updateBestand.name}</div>
+                        <div className="text-xs text-gray-400">{(updateBestand.size / 1024).toFixed(0)} KB</div>
+                      </div>
+                      <button onClick={e => { e.stopPropagation(); setUpdateBestand(null); setUpdateBestandData(null) }}
+                        className="text-gray-400 hover:text-red-500 ml-1">✕</button>
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-400">
+                      <span className="text-lg">📎</span> Klik of sleep bewijslast hierheen
+                    </div>
+                  )}
+                </div>
+                <input id="update-upload" type="file" className="hidden"
+                  accept=".pdf,.doc,.docx,.pptx,.png,.jpg,.jpeg"
+                  onChange={e => handleUpdateBestand(e.target.files[0])} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Jouw naam (optioneel)</label>

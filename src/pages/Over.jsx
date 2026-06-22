@@ -247,7 +247,7 @@ export default function Over() {
         </div>
 
         {/* CTA */}
-        <div className="text-center bg-gray-50 rounded-2xl p-10">
+        <div className="text-center bg-gray-50 rounded-2xl p-10 mb-12">
           <div className="text-4xl mb-4">🚀</div>
           <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Doe mee aan de AI-HUB</h2>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">
@@ -256,6 +256,154 @@ export default function Over() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link to="/meld" className="btn-roze">+ Meld een initiatief</Link>
             <Link to="/netwerk" className="btn-primary">Bekijk het netwerk</Link>
+          </div>
+        </div>
+
+        {/* Handleiding: Slim nieuws ophalen */}
+        <div className="mb-12">
+          <div className="section-label mb-2">Hoe werkt het</div>
+          <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Functies uitgelegd</h2>
+
+          {/* Nieuws refresh */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
+            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
+              <span className="text-2xl">🤖</span>
+              <div>
+                <div className="text-white font-bold">Slim nieuws ophalen</div>
+                <div className="text-blue-200 text-xs">AI-aangedreven nieuws voor NHL Stenden</div>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                De AI-HUB kan automatisch relevante AI-nieuws ophalen en samenvatten. Een beheerder klikt op
+                de knop "🔄 Nieuws ophalen" in de Beheeromgeving (Data tab). De AI analyseert dan artikelen
+                van internationale bronnen zoals de Europese Commissie, OECD AI en educatieve media.
+              </p>
+              <div className="grid sm:grid-cols-3 gap-4 mb-4">
+                {[
+                  { stap: '1', tekst: 'Beheerder klikt op "🔄 Nieuws ophalen" in Beheer → Data' },
+                  { stap: '2', tekst: 'Claude AI leest RSS feeds en beoordeelt elk artikel op relevantie voor NHL Stenden' },
+                  { stap: '3', tekst: 'Relevante items verschijnen met 🤖 badge in de Inspiratie sectie' },
+                ].map(s => (
+                  <div key={s.stap} className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                    <div className="w-7 h-7 rounded-full bg-nhl-blauw text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{s.stap}</div>
+                    <p className="text-sm text-gray-600">{s.tekst}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
+                <span className="text-xl flex-shrink-0">💡</span>
+                <p className="text-sm text-blue-700">
+                  Je ziet in de navigatiebalk wanneer de laatste refresh was: <strong>🤖 Nieuws · [datum]</strong>.
+                  In de Beheeromgeving staat de exacte datum en tijd.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Roadmap handleiding */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
+            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
+              <span className="text-2xl">🗺️</span>
+              <div>
+                <div className="text-white font-bold">Roadmap — handleiding</div>
+                <div className="text-blue-200 text-xs">Hoe lees en gebruik je de roadmap?</div>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                De roadmap (via <strong>Beleid → Roadmap</strong>) toont wat NHL Stenden moet organiseren op het
+                gebied van AI-compliance en -beleid. Items zijn gekoppeld aan concrete AI Act artikelen.
+              </p>
+
+              <div className="space-y-4 mb-6">
+                <h3 className="font-bold text-nhl-blauw">Hoe lees je een roadmap-item?</h3>
+                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-6 h-6 rounded-full border-2 border-orange-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-nhl-blauw text-sm">Voorbeeld: AI-geletterdheid basistraining</div>
+                      <div className="text-xs text-gray-400">🔴 Hoog · 📅 Q3 2026 · Verantwoordelijk: HR & OO&I</div>
+                    </div>
+                  </div>
+                  <div className="ml-9 space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-orange-400 flex-shrink-0" /><span><strong>Rondje links</strong> — de huidige status. Klik erop om de status te wisselen.</span></div>
+                    <div className="flex items-center gap-2"><span className="text-red-600 font-bold">🔴</span><span><strong>Prioriteit</strong> — hoog (rood), midden (geel) of laag (groen).</span></div>
+                    <div className="flex items-center gap-2"><span>⚖️</span><span><strong>AI Act koppeling</strong> — het wetsartikel dat dit item vereist, met directe link.</span></div>
+                  </div>
+                </div>
+
+                <h3 className="font-bold text-nhl-blauw">Statussen en wat ze betekenen</h3>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {[
+                    { kleur: 'bg-orange-400', label: 'Nog te starten', uitleg: 'Er is nog niets mee gedaan. Moet worden opgepakt.' },
+                    { kleur: 'bg-blue-500', label: 'In voorbereiding', uitleg: 'Er wordt aan gewerkt maar het is nog niet actief.' },
+                    { kleur: 'bg-green-500', label: 'Lopend', uitleg: 'Actief in uitvoering.' },
+                    { kleur: 'bg-gray-400', label: 'Afgerond ✓', uitleg: 'Klaar. Item staat doorgestreept.' },
+                  ].map(s => (
+                    <div key={s.label} className="flex items-start gap-3 bg-gray-50 rounded-xl p-3">
+                      <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 ${s.kleur}`} />
+                      <div>
+                        <div className="font-semibold text-sm text-nhl-blauw">{s.label}</div>
+                        <div className="text-xs text-gray-500">{s.uitleg}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <h3 className="font-bold text-nhl-blauw">Taak aanmaken en afronden</h3>
+                <div className="space-y-3">
+                  {[
+                    { n: '1', tekst: 'Klik op "+ Item toevoegen" in de Roadmap tab om een nieuwe taak toe te voegen.' },
+                    { n: '2', tekst: 'Geef de taak een titel, omschrijving, prioriteit, planning en verantwoordelijke.' },
+                    { n: '3', tekst: 'Klik op het rondje links van een item om de status te wisselen (te starten → in voorbereiding → lopend → afgerond).' },
+                    { n: '4', tekst: 'Upload bewijslast via Documentatie. Koppel het document aan het juiste thema zodat het traceerbaar is.' },
+                  ].map(s => (
+                    <div key={s.n} className="flex items-start gap-3">
+                      <div className="w-7 h-7 rounded-full bg-nhl-blauw text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{s.n}</div>
+                      <p className="text-sm text-gray-600 pt-1">{s.tekst}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3 flex-wrap">
+                <Link to="/initiatieven?tab=roadmap" className="btn-primary text-sm">Naar de Roadmap →</Link>
+                <Link to="/initiatieven?tab=aiact" className="btn-ghost border border-gray-200 text-sm">Naar AI Act compliance →</Link>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Act handleiding */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
+              <span className="text-2xl">⚖️</span>
+              <div>
+                <div className="text-white font-bold">AI Act compliance — handleiding</div>
+                <div className="text-blue-200 text-xs">Wat moet NHL Stenden doen en wanneer?</div>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                De AI Act compliance pagina (via <strong>Beleid → AI Act & Compliance</strong>) toont alle
+                wettelijke verplichtingen die op NHL Stenden van toepassing zijn. Per artikel zie je wat er
+                vereist is, wanneer het van kracht wordt, en of er al een roadmap-item voor is aangemaakt.
+              </p>
+              <div className="space-y-3 mb-6">
+                {[
+                  { vraag: 'Hoe weet ik wat ik moet doen?', antwoord: 'Klik op een artikel om het uit te klappen. Je ziet dan de volledige verplichting, de deadline, en een link naar de officiële wettekst.' },
+                  { vraag: 'Er is nog geen roadmap-item — wat nu?', antwoord: 'Klik op "+ Voeg roadmap-item toe voor dit artikel". Dan ga je direct naar het formulier met de AI Act koppeling al ingevuld.' },
+                  { vraag: 'Hoe weet ik of we compliant zijn?', antwoord: 'Als alle hoog-prioriteit items "Lopend" of "Afgerond" zijn, en je de bewijslast hebt geüpload bij Documentatie, ben je goed op weg.' },
+                  { vraag: 'Waar upload ik bewijslast?', antwoord: 'Ga naar Documentatie en kies als categorie "Governance & Compliance". Geef het document een duidelijke naam inclusief het AI Act artikel, bijv. "Bewijs Art. 4 AI-geletterdheid training Q3 2026".' },
+                ].map(q => (
+                  <div key={q.vraag} className="bg-gray-50 rounded-xl p-4">
+                    <div className="font-semibold text-nhl-blauw text-sm mb-1">→ {q.vraag}</div>
+                    <p className="text-gray-600 text-sm">{q.antwoord}</p>
+                  </div>
+                ))}
+              </div>
+              <Link to="/initiatieven?tab=aiact" className="btn-primary text-sm">Naar AI Act compliance →</Link>
+            </div>
           </div>
         </div>
       </div>

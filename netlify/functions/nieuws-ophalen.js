@@ -1,46 +1,71 @@
-// Netlify function: haalt RSS feeds op, filtert met Anthropic API op relevantie
+// Netlify function: haalt RSS/Atom feeds op, filtert met Anthropic API op relevantie
 // voor NHL Stenden AI-beleid, en geeft nieuwe items terug
 
 const RSS_FEEDS = [
   {
-    naam: 'SURF nieuws',
-    url: 'https://www.surf.nl/rss/nieuws',
-    label: 'SURF',
-    icon: '🌐',
-  },
-  {
-    naam: 'Rathenau Instituut',
-    url: 'https://www.rathenau.nl/nl/rss.xml',
-    label: 'Rathenau',
-    icon: '🔬',
-  },
-  {
-    naam: 'EU AI Act nieuws',
+    naam: 'EU Digital Strategy',
     url: 'https://digital-strategy.ec.europa.eu/en/rss.xml',
     label: 'Europese Commissie',
     icon: '🇪🇺',
   },
   {
-    naam: 'Rijksoverheid AI',
-    url: 'https://www.rijksoverheid.nl/onderwerpen/kunstmatige-intelligentie-ai/rss',
-    label: 'Rijksoverheid',
-    icon: '🇳🇱',
+    naam: 'EU AI Office',
+    url: 'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai/rss.xml',
+    label: 'EU AI Office',
+    icon: '⚖️',
+  },
+  {
+    naam: 'OECD AI Policy',
+    url: 'https://oecd.ai/en/feed',
+    label: 'OECD AI',
+    icon: '🌍',
+  },
+  {
+    naam: 'MIT Technology Review AI',
+    url: 'https://www.technologyreview.com/feed/',
+    label: 'MIT Tech Review',
+    icon: '🔬',
+  },
+  {
+    naam: 'EDUCAUSE',
+    url: 'https://er.educause.edu/feed',
+    label: 'EDUCAUSE',
+    icon: '🎓',
   },
 ]
 
-// Parse simpele RSS XML naar items
 function parseRSS(xml) {
   const items = []
-  const itemMatches = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
-  for (const match of itemMatches) {
-    const content = match[1]
-    const titel = content.match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>|<title[^>]*>(.*?)<\/title>/)?.[1] || content.match(/<title[^>]*>(.*?)<\/title>/)?.[1] || ''
-    const beschrijving = content.match(/<description[^>]*><!\[CDATA\[(.*?)\]\]><\/description>|<description[^>]*>(.*?)<\/description>/)?.[1] || ''
-    const link = content.match(/<link>(.*?)<\/link>/)?.[1] || content.match(/<link[^/]*href="([^"]+)"/)?.[1] || ''
-    const datum = content.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
-    if (titel) items.push({ titel: titel.trim(), beschrijving: beschrijving.replace(/<[^>]+>/g, '').trim().slice(0, 300), link: link.trim(), datum })
+  // Probeer zowel RSS <item> als Atom <entry>
+  const patterns = [
+    /<item>([\s\S]*?)<\/item>/g,
+    /<entry>([\s\S]*?)<\/entry>/g,
+  ]
+  for (const pattern of patterns) {
+    const matches = [...xml.matchAll(pattern)]
+    for (const match of matches) {
+      const content = match[1]
+      const titel =
+        content.match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/s)?.[1] ||
+        content.match(/<title[^>]*>(.*?)<\/title>/s)?.[1] || ''
+      const beschrijving =
+        content.match(/<description[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1] ||
+        content.match(/<description[^>]*>([\s\S]*?)<\/description>/)?.[1] ||
+        content.match(/<summary[^>]*>([\s\S]*?)<\/summary>/)?.[1] || ''
+      const link =
+        content.match(/<link>(.*?)<\/link>/)?.[1] ||
+        content.match(/<link[^>]*href="([^"]+)"/)?.[1] || ''
+      if (titel.trim()) {
+        items.push({
+          titel: titel.trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+          beschrijving: beschrijving.replace(/<[^>]+>/g, '').trim().slice(0, 400),
+          link: link.trim(),
+        })
+      }
+    }
+    if (items.length > 0) break
   }
-  return items.slice(0, 8) // Max 8 per feed
+  return items.slice(0, 6)
 }
 
 export default async (req) => {
@@ -50,26 +75,37 @@ export default async (req) => {
 
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'Geen Anthropic API key geconfigureerd. Voeg ANTHROPIC_API_KEY toe als Netlify environment variable.' }), {
-      status: 500, headers: { 'Content-Type': 'application/json' }
-    })
+    return new Response(JSON.stringify({
+      error: 'Geen Anthropic API key. Voeg ANTHROPIC_API_KEY toe als Netlify environment variable.'
+    }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 
   const resultaten = []
   const fouten = []
 
-  // Haal feeds op
   for (const feed of RSS_FEEDS) {
     try {
       const res = await fetch(feed.url, {
-        headers: { 'User-Agent': 'NHL-Stenden-AIHUB/1.0' },
-        signal: AbortSignal.timeout(8000),
+        headers: {
+          'User-Agent': 'NHL-Stenden-AIHUB/1.0 (educational; contact: aihub@nhlstenden.com)',
+          'Accept': 'application/rss+xml, application/xml, text/xml, application/atom+xml',
+        },
+        signal: AbortSignal.timeout(10000),
       })
-      if (!res.ok) { fouten.push(`${feed.naam}: HTTP ${res.status}`); continue }
+
+      if (!res.ok) {
+        fouten.push(`${feed.naam}: HTTP ${res.status}`)
+        continue
+      }
+
       const xml = await res.text()
       const items = parseRSS(xml)
 
-      // Beoordeel elk item met Anthropic API
+      if (items.length === 0) {
+        fouten.push(`${feed.naam}: geen items gevonden`)
+        continue
+      }
+
       for (const item of items) {
         try {
           const beoordeelRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -81,17 +117,16 @@ export default async (req) => {
             },
             body: JSON.stringify({
               model: 'claude-haiku-4-5-20251001',
-              max_tokens: 300,
+              max_tokens: 250,
               messages: [{
                 role: 'user',
-                content: `Beoordeel of dit nieuwsitem relevant is voor een AI-HUB van NHL Stenden Hogeschool. 
-De hub richt zich op: AI in het onderwijs, AI-geletterdheid, AI Act compliance, digitale soevereiniteit, AI-governance in hoger onderwijs.
+                content: `Beoordeel of dit nieuwsitem relevant is voor de AI-HUB van NHL Stenden Hogeschool. De hub richt zich op: AI in het onderwijs, AI-geletterdheid, EU AI Act compliance, digitale soevereiniteit, AI-governance in hoger onderwijs, studiesucces via AI.
 
 Titel: ${item.titel}
-Beschrijving: ${item.beschrijving}
+Beschrijving: ${item.beschrijving.slice(0, 200)}
 
-Antwoord ALLEEN in dit JSON formaat (geen uitleg, geen markdown):
-{"relevant": true/false, "samenvatting": "Nederlandse samenvatting van 1-2 zinnen als het relevant is, anders leeg", "doelgroep": "docenten/studenten/management/medewerkers/algemeen"}`
+Antwoord ALLEEN met dit JSON (geen uitleg, geen markdown):
+{"relevant":true/false,"samenvatting":"1-2 zinnen in het Nederlands als relevant, anders leeg","doelgroep":"docenten/studenten/management/medewerkers/algemeen"}`
               }]
             })
           })
@@ -101,9 +136,8 @@ Antwoord ALLEEN in dit JSON formaat (geen uitleg, geen markdown):
           const tekst = data.content?.[0]?.text || ''
 
           let beoordeling
-          try {
-            beoordeling = JSON.parse(tekst.replace(/```json|```/g, '').trim())
-          } catch { continue }
+          try { beoordeling = JSON.parse(tekst.replace(/```[\w]*|```/g, '').trim()) }
+          catch { continue }
 
           if (beoordeling.relevant && beoordeling.samenvatting) {
             resultaten.push({
@@ -113,9 +147,7 @@ Antwoord ALLEEN in dit JSON formaat (geen uitleg, geen markdown):
               typelabel: 'Interessante ontwikkeling',
               rol: 'Auto-update',
               naam: feed.label,
-              spoor: null,
-              sporeDef: null,
-              laag: null,
+              spoor: null, sporeDef: null, laag: null,
               titel: item.titel,
               tekst: beoordeling.samenvatting,
               url: item.link,
@@ -126,13 +158,11 @@ Antwoord ALLEEN in dit JSON formaat (geen uitleg, geen markdown):
               doelgroep: beoordeling.doelgroep || 'algemeen',
             })
           }
-
-          // Klein pauze tussen API calls
-          await new Promise(r => setTimeout(r, 200))
+          await new Promise(r => setTimeout(r, 150))
         } catch { /* sla dit item over */ }
       }
     } catch (err) {
-      fouten.push(`${feed.naam}: ${err.message}`)
+      fouten.push(`${feed.naam}: ${err.message?.slice(0, 60)}`)
     }
   }
 
@@ -143,10 +173,7 @@ Antwoord ALLEEN in dit JSON formaat (geen uitleg, geen markdown):
     fouten: fouten.length > 0 ? fouten : undefined,
     tijdstip: new Date().toISOString(),
   }), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
   })
 }
 

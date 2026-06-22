@@ -1,6 +1,6 @@
 import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
 const statusConfig = {
@@ -142,7 +142,9 @@ const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend', 'afgerond']
 
 export default function Initiatieven() {
   const navigate = useNavigate()
-  const [actieveTab, setActieveTab] = useState('initiatieven')
+  const location = useLocation()
+  const urlTab = new URLSearchParams(location.search).get('tab')
+  const [actieveTab, setActieveTab] = useState(urlTab || 'initiatieven')
   const [filterSpoor, setFilterSpoor] = useState(null)
   const [filterType, setFilterType] = useState(null)
   const [zoek, setZoek] = useState('')

@@ -26,30 +26,40 @@ export default function Documentatie({ docs, setDocs }) {
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadStap, setUploadStap] = useState(0)
   const [bestand, setBestand] = useState(null)
-  const [bestandData, setBestandData] = useState(null) // base64 voor download
+  const [bestand2, setBestand2] = useState(null)
+  const [bestandData, setBestandData] = useState(null)
+  const [bestandData2, setBestandData2] = useState(null)
   const [uploadForm, setUploadForm] = useState({ titel: '', categorie: '', spoor: '', omschrijving: '' })
   const [fout, setFout] = useState('')
 
   const gefilterd = filterCat ? docs.filter(d => d.categorie === filterCat) : docs
 
-  const handleBestand = (file) => {
+  const leesBestand = (file, setData) => {
+    const reader = new FileReader()
+    reader.onload = (e) => setData(e.target.result)
+    reader.readAsDataURL(file)
+  }
+
+  const handleBestand = (file, nummer = 1) => {
     if (!file) return
     if (file.size > 50 * 1024 * 1024) { setFout('Bestand mag maximaal 50 MB zijn.'); return }
     setFout('')
-    setBestand(file)
-    const ext = file.name.split('.').pop().toLowerCase()
-    setUploadForm(f => ({ ...f, titel: file.name.replace(`.${ext}`, '') }))
-    // Lees bestand als dataURL voor download
-    const reader = new FileReader()
-    reader.onload = (e) => setBestandData(e.target.result)
-    reader.readAsDataURL(file)
+    if (nummer === 1) {
+      setBestand(file)
+      leesBestand(file, setBestandData)
+      const ext = file.name.split('.').pop().toLowerCase()
+      setUploadForm(f => ({ ...f, titel: file.name.replace(`.${ext}`, '') }))
+    } else {
+      setBestand2(file)
+      leesBestand(file, setBestandData2)
+    }
   }
 
   const verstuurUpload = () => {
     if (!bestand || !uploadForm.titel || !uploadForm.categorie) return
     const ext = bestand.name.split('.').pop().toLowerCase()
     const icon = ext === 'pdf' ? '📄' : ['png','jpg','jpeg'].includes(ext) ? '🖼️' : ext === 'pptx' ? '📊' : '📝'
-    setDocs(prev => [{
+    const nieuweItems = [{
       id: Date.now(),
       ...uploadForm,
       type: ext,
@@ -58,11 +68,30 @@ export default function Documentatie({ docs, setDocs }) {
       datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
       icon,
       nieuw: true,
-    }, ...prev])
+    }]
+    // Tweede bestand als apart document
+    if (bestand2 && bestandData2) {
+      const ext2 = bestand2.name.split('.').pop().toLowerCase()
+      const icon2 = ext2 === 'pdf' ? '📄' : ['png','jpg','jpeg'].includes(ext2) ? '🖼️' : ext2 === 'pptx' ? '📊' : '📝'
+      nieuweItems.push({
+        id: Date.now() + 1,
+        ...uploadForm,
+        titel: `${uploadForm.titel} (bijlage)`,
+        type: ext2,
+        bestandNaam: bestand2.name,
+        bestandData: bestandData2,
+        datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
+        icon: icon2,
+        nieuw: true,
+      })
+    }
+    setDocs(prev => [...nieuweItems, ...prev])
     setUploadOpen(false)
     setUploadStap(0)
     setBestand(null)
+    setBestand2(null)
     setBestandData(null)
+    setBestandData2(null)
     setUploadForm({ titel: '', categorie: '', spoor: '', omschrijving: '' })
   }
 
@@ -177,29 +206,63 @@ export default function Documentatie({ docs, setDocs }) {
             </div>
             <div className="p-6 space-y-4">
               {uploadStap === 0 && (
-                <div>
-                  <div onClick={() => document.getElementById('doc-upload').click()}
-                    onDragOver={e => e.preventDefault()}
-                    onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0]) }}
-                    className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors">
-                    {bestand ? (
-                      <div>
-                        <div className="text-4xl mb-2">{bestand.type.includes('pdf') ? '📄' : bestand.type.includes('image') ? '🖼️' : '📝'}</div>
-                        <div className="font-medium text-nhl-blauw">{bestand.name}</div>
-                        <div className="text-xs text-gray-400 mt-1">{(bestand.size / 1024).toFixed(0)} KB</div>
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="text-4xl mb-3">📤</div>
-                        <div className="font-medium text-gray-700 mb-1">Klik of sleep een bestand hierheen</div>
-                        <div className="text-sm text-gray-400">PDF, Word, PowerPoint, PNG of JPEG · max 50 MB</div>
-                      </div>
-                    )}
+                <div className="space-y-4">
+                  {/* Eerste bestand */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Bestand 1 <span className="text-red-400">*</span></label>
+                    <div onClick={() => document.getElementById('doc-upload').click()}
+                      onDragOver={e => e.preventDefault()}
+                      onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0], 1) }}
+                      className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors">
+                      {bestand ? (
+                        <div className="flex items-center gap-3 justify-center">
+                          <span className="text-2xl">{bestand.type.includes('pdf') ? '📄' : bestand.type.includes('image') ? '🖼️' : '📝'}</span>
+                          <div className="text-left">
+                            <div className="font-medium text-nhl-blauw text-sm">{bestand.name}</div>
+                            <div className="text-xs text-gray-400">{(bestand.size / 1024).toFixed(0)} KB</div>
+                          </div>
+                          <button onClick={e => { e.stopPropagation(); setBestand(null); setBestandData(null) }} className="text-gray-400 hover:text-red-500 ml-2">✕</button>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="text-3xl mb-2">📤</div>
+                          <div className="font-medium text-gray-700 mb-1 text-sm">Klik of sleep een bestand hierheen</div>
+                          <div className="text-xs text-gray-400">PDF, Word, PowerPoint, PNG of JPEG · max 50 MB</div>
+                        </div>
+                      )}
+                    </div>
+                    <input id="doc-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.pptx,.png,.jpg,.jpeg" onChange={e => handleBestand(e.target.files[0], 1)} />
                   </div>
-                  <input id="doc-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.pptx,.png,.jpg,.jpeg" onChange={e => handleBestand(e.target.files[0])} />
-                  {fout && <div className="text-red-500 text-xs mt-2">{fout}</div>}
+
+                  {/* Tweede bestand — optioneel */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Bestand 2 <span className="text-gray-400 font-normal">(optioneel — bijv. bijlage)</span></label>
+                    <div onClick={() => document.getElementById('doc-upload-2').click()}
+                      onDragOver={e => e.preventDefault()}
+                      onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0], 2) }}
+                      className="border-2 border-dashed border-gray-100 rounded-xl p-5 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors">
+                      {bestand2 ? (
+                        <div className="flex items-center gap-3 justify-center">
+                          <span className="text-2xl">{bestand2.type.includes('pdf') ? '📄' : bestand2.type.includes('image') ? '🖼️' : '📝'}</span>
+                          <div className="text-left">
+                            <div className="font-medium text-nhl-blauw text-sm">{bestand2.name}</div>
+                            <div className="text-xs text-gray-400">{(bestand2.size / 1024).toFixed(0)} KB</div>
+                          </div>
+                          <button onClick={e => { e.stopPropagation(); setBestand2(null); setBestandData2(null) }} className="text-gray-400 hover:text-red-500 ml-2">✕</button>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="text-2xl mb-1">📎</div>
+                          <div className="text-sm text-gray-400">Tweede bestand toevoegen (optioneel)</div>
+                        </div>
+                      )}
+                    </div>
+                    <input id="doc-upload-2" type="file" className="hidden" accept=".pdf,.doc,.docx,.pptx,.png,.jpg,.jpeg" onChange={e => handleBestand(e.target.files[0], 2)} />
+                  </div>
+
+                  {fout && <div className="text-red-500 text-xs">{fout}</div>}
                   {bestand && (
-                    <button onClick={() => setUploadStap(1)} className="btn-primary w-full mt-4">Volgende: Rubriceren →</button>
+                    <button onClick={() => setUploadStap(1)} className="btn-primary w-full">Volgende: Rubriceren →</button>
                   )}
                 </div>
               )}

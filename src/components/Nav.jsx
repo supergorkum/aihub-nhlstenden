@@ -23,9 +23,16 @@ const navGroepen = [
     ]
   },
   {
+    label: 'Beleid',
+    items: [
+      { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },
+      { label: 'Roadmap', to: '/initiatieven?tab=roadmap', icon: '🗺️' },
+      { label: 'Fundament', to: '/fundament', icon: '🏛️' },
+    ]
+  },
+  {
     label: 'Ontdekken',
     items: [
-      { label: 'Fundament', to: '/fundament', icon: '🏛️' },
       { label: 'Netwerk', to: '/netwerk', icon: '🕸️' },
       { label: "Thema's", to: '/themas', icon: '🎯' },
     ]
