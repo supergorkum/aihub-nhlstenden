@@ -31,12 +31,14 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
   const goedgekeurd = (videos || []).filter(v => v.status === 'goedgekeurd')
   const wachtrij = (videos || []).filter(v => v.status === 'wachtrij')
 
+  // Actieve video: gebruik actiefId als die bestaat en geldig is,
+  // anders de video met de hoogste score
+  const gesorteerd = [...goedgekeurd].sort((a, b) => (b.omhoog - b.omlaag) - (a.omhoog - a.omlaag))
   const actief = actiefId
-    ? goedgekeurd.find(v => v.id === actiefId) || goedgekeurd[0]
-    : goedgekeurd[0]
+    ? goedgekeurd.find(v => v.id === actiefId) || gesorteerd[0]
+    : gesorteerd[0]
 
   const top4 = goedgekeurd.filter(v => v.id !== actief?.id).slice(0, 4)
-  const gesorteerd = [...goedgekeurd].sort((a, b) => (b.omhoog - b.omlaag) - (a.omhoog - a.omlaag))
   const top5 = gesorteerd.slice(0, 5)
 
   const stem = useCallback((id, richting) => {

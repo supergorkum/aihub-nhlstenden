@@ -5,7 +5,7 @@ export const INIT_VIDEOS = [
   {
     id: 1, status: 'goedgekeurd',
     titel: 'AI in het Hoger Onderwijs — Kansen en Uitdagingen',
-    videoId: 'dQw4w9WgXcQ',
+    videoId: 'hJP5GqnTrNo',
     omschrijving: 'Een verkenning van hoe AI het hoger onderwijs transformeert en welke keuzes instellingen nu moeten maken.',
     trefwoorden: ['AI', 'Hoger Onderwijs', 'Didactiek'],
     spoor: 1, ingediendDoor: 'Kernteam AI-HUB', datum: '18 juni 2026',
@@ -14,8 +14,8 @@ export const INIT_VIDEOS = [
   {
     id: 2, status: 'goedgekeurd',
     titel: 'SURF: De toekomst van AI in Onderwijs',
-    videoId: 'jNQXAC9IVRw',
-    omschrijving: 'SURF presenteert de visie op AI in het Nederlandse hoger onderwijs.',
+    videoId: 'aircAruvnKk',
+    omschrijving: 'SURF presenteert de visie op AI in het Nederlandse hoger onderwijs en wat dit betekent voor studenten en medewerkers.',
     trefwoorden: ['SURF', 'Strategie', 'Hoger Onderwijs'],
     spoor: 3, ingediendDoor: 'Kernteam AI-HUB', datum: '10 juni 2026',
     omhoog: 8, omlaag: 1,
@@ -23,7 +23,7 @@ export const INIT_VIDEOS = [
   {
     id: 3, status: 'goedgekeurd',
     titel: 'AI-Geletterdheid in de klas',
-    videoId: 'M7lc1UVf-VE',
+    videoId: 'ad79nYk2keg',
     omschrijving: 'Praktische aanpak voor docenten om AI-geletterdheid te integreren in het onderwijs.',
     trefwoorden: ['Geletterdheid', 'Docenten', 'Didactiek'],
     spoor: 4, ingediendDoor: 'OO&I', datum: '5 juni 2026',
