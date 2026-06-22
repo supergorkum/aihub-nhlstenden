@@ -18,6 +18,7 @@ import Inspiratie from './pages/Inspiratie'
 import Over from './pages/Over'
 import Beheer from './pages/Beheer'
 import Geletterdheid from './pages/Geletterdheid'
+import Beleid from './pages/Beleid'
 import {
   INIT_VIDEOS, INIT_PILOTS, INIT_DOCS,
   INIT_EVENEMENTEN, INIT_LINKJES, INIT_INSPIRATIES
@@ -30,7 +31,6 @@ function ScrollToTop() {
 }
 
 function AppInner() {
-  // ── Centrale state — overleeft navigatie ──────────────────────────
   const [berichten, setBerichten] = useState([])
   const [videos, setVideos] = useState(INIT_VIDEOS)
   const [actiefVideoId, setActiefVideoId] = useState(null)
@@ -80,6 +80,7 @@ function AppInner() {
           } />
           <Route path="/over" element={<Over />} />
           <Route path="/geletterdheid" element={<Geletterdheid />} />
+          <Route path="/beleid" element={<Beleid docs={docs} />} />
           <Route path="/beheer" element={
             <Beheer
               berichten={berichten} setBerichten={setBerichten}

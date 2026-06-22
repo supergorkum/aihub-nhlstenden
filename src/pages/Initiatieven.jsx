@@ -1,5 +1,5 @@
 import GradientHeader from '../components/GradientHeader'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
@@ -9,7 +9,6 @@ const statusConfig = {
   'in-ontwikkeling': { label: 'In ontwikkeling', kleur: 'bg-orange-100 text-orange-700' },
 }
 
-// AI Act verplichtingen — de kern die NHL Stenden moet organiseren
 const AI_ACT_ITEMS = [
   {
     id: 'aa1',
@@ -20,7 +19,7 @@ const AI_ACT_ITEMS = [
     deadline: 'Augustus 2025 (van kracht)',
     link: 'https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX%3A32024R1689',
     status: 'lopend',
-    gekoppeldAan: [5, 2], // initiatief IDs
+    gekoppeldAan: [5, 2],
   },
   {
     id: 'aa2',
@@ -137,14 +136,25 @@ const ROADMAP_STATUS = {
   afgerond:          { label: 'Afgerond ✓',       kleur: 'bg-gray-100 text-gray-500',  dot: 'bg-gray-400' },
 }
 
-// Volgorde voor status-wissel bij klikken
 const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend', 'afgerond']
 
 export default function Initiatieven() {
   const navigate = useNavigate()
   const location = useLocation()
-  const urlTab = new URLSearchParams(location.search).get('tab')
-  const [actieveTab, setActieveTab] = useState(urlTab || 'initiatieven')
+
+  // FIX: useEffect die reageert op URL-wijzigingen zodat dropdown-navigatie werkt
+  const [actieveTab, setActieveTab] = useState(() => {
+    const urlTab = new URLSearchParams(location.search).get('tab')
+    return urlTab || 'initiatieven'
+  })
+
+  useEffect(() => {
+    const urlTab = new URLSearchParams(location.search).get('tab')
+    if (urlTab) {
+      setActieveTab(urlTab)
+    }
+  }, [location.search])
+
   const [filterSpoor, setFilterSpoor] = useState(null)
   const [filterType, setFilterType] = useState(null)
   const [zoek, setZoek] = useState('')
@@ -184,6 +194,11 @@ export default function Initiatieven() {
     }))
   }
 
+  const switchTab = (tabId) => {
+    setActieveTab(tabId)
+    navigate(`/initiatieven?tab=${tabId}`, { replace: true })
+  }
+
   const aantalTeStarten = roadmap.filter(r => r.status === 'te-starten' || r.status === 'te-controleren').length
   const aantalLopend = roadmap.filter(r => r.status === 'lopend' || r.status === 'in-ontwikkeling').length
   const aantalAfgerond = roadmap.filter(r => r.status === 'afgerond').length
@@ -205,7 +220,7 @@ export default function Initiatieven() {
               { id: 'roadmap', label: '🗺️ Roadmap', n: roadmap.length },
               { id: 'aiact', label: '⚖️ AI Act compliance', n: AI_ACT_ITEMS.filter(a => a.status === 'te-starten').length + ' open' },
             ].map(tab => (
-              <button key={tab.id} onClick={() => setActieveTab(tab.id)}
+              <button key={tab.id} onClick={() => switchTab(tab.id)}
                 className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap -mb-px ${
                   actieveTab === tab.id
                     ? 'border-nhl-blauw text-nhl-blauw'
@@ -224,7 +239,6 @@ export default function Initiatieven() {
         {/* TAB: INITIATIEVEN */}
         {actieveTab === 'initiatieven' && (
           <div>
-            {/* Zoek + filters */}
             <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
               <input type="text" value={zoek} onChange={e => setZoek(e.target.value)}
                 placeholder="Zoek op naam of omschrijving..."
@@ -269,7 +283,6 @@ export default function Initiatieven() {
                     </div>
                     <div className="font-bold text-nhl-blauw mb-2 leading-snug">{init.naam}</div>
                     <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-3">{init.omschrijving}</p>
-                    {/* Ambitie badges */}
                     {(init.ambities || []).length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-2">
                         {init.ambities.map(a => (
@@ -293,7 +306,6 @@ export default function Initiatieven() {
         {/* TAB: ROADMAP */}
         {actieveTab === 'roadmap' && (
           <div>
-            {/* Header met tellers */}
             <div className="grid sm:grid-cols-3 gap-4 mb-8">
               {[
                 { label: 'Lopend of in voorbereiding', n: aantalLopend, kleur: 'text-green-600', bg: 'bg-green-50 border-green-200' },
@@ -307,7 +319,6 @@ export default function Initiatieven() {
               ))}
             </div>
 
-            {/* Uitleg roadmap */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
               <div className="flex items-start gap-4">
                 <div className="text-3xl">🗺️</div>
@@ -338,8 +349,6 @@ export default function Initiatieven() {
                     isAfgerond ? 'bg-gray-50 border-gray-200 opacity-70' : 'bg-white border-gray-200'
                   }`}>
                     <div className="flex items-start gap-4 flex-wrap">
-
-                      {/* Afvink knop */}
                       <button
                         onClick={() => wisselStatus(item.id)}
                         title="Klik om status te wisselen"
@@ -383,7 +392,6 @@ export default function Initiatieven() {
                         )}
                       </div>
 
-                      {/* AI Act koppeling — alleen als niet afgerond */}
                       {aiAct && !isAfgerond && (
                         <div className="flex-shrink-0 bg-blue-50 border border-blue-200 rounded-xl p-3 max-w-48">
                           <div className="text-xs font-bold text-nhl-blauw mb-1">⚖️ AI Act</div>
@@ -404,7 +412,6 @@ export default function Initiatieven() {
         {/* TAB: AI ACT COMPLIANCE */}
         {actieveTab === 'aiact' && (
           <div>
-            {/* Uitleg AI Act */}
             <div className="nhl-gradient-deep rounded-2xl p-8 mb-8 text-white">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div>
@@ -451,7 +458,6 @@ export default function Initiatieven() {
               </div>
             </div>
 
-            {/* Risicoclassificatie uitleg */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8">
               <h3 className="font-bold text-nhl-blauw text-lg mb-4">Risicoclassificatie: vier niveaus</h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -470,7 +476,6 @@ export default function Initiatieven() {
               </div>
             </div>
 
-            {/* Verplichtingen checklist */}
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold text-nhl-blauw text-lg">Verplichtingen voor NHL Stenden</h3>
               <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -523,7 +528,7 @@ export default function Initiatieven() {
                             <div className="flex gap-2 flex-wrap">
                               <span className="text-xs text-gray-400">Gekoppeld aan roadmap:</span>
                               {gekoppeldeRoadmap.map(r => (
-                                <button key={r.id} onClick={() => setActieveTab('roadmap')}
+                                <button key={r.id} onClick={() => switchTab('roadmap')}
                                   className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full hover:bg-nhl-blauw/20 transition-colors">
                                   {r.titel}
                                 </button>
@@ -531,7 +536,7 @@ export default function Initiatieven() {
                             </div>
                           )}
                           {gekoppeldeRoadmap.length === 0 && (
-                            <button onClick={() => { setActieveTab('roadmap'); setAddOpen(true) }}
+                            <button onClick={() => { switchTab('roadmap'); setAddOpen(true) }}
                               className="text-xs bg-orange-50 border border-orange-200 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-100 transition-colors">
                               + Voeg roadmap-item toe voor dit artikel
                             </button>
