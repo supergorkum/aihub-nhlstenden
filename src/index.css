@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    @apply bg-white text-gray-800;
+  }
+}
+
+@layer components {
+  .nhl-gradient {
+    background: linear-gradient(135deg, #003366 0%, #1A5276 60%, #00838F 100%);
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
+  }
+  .section-title {
+    @apply text-2xl font-bold text-nhl-blauw mb-2;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+}
+
+/* Smooth scroll offset for fixed nav */
+:target {
+  scroll-margin-top: 80px;
+}
+
+/* Network visualization nodes */
+.network-node {
+  transition: all 0.3s ease;
+}
+.network-node:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 12px rgba(0,51,102,0.3));
+}
+
+/* Pulse animation for "in ontwikkeling" badge */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
