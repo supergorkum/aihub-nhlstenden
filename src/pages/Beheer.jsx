@@ -87,11 +87,33 @@ function InitiatiefRij({ init, onSave, onDelete }) {
   )
 }
 
+const STORAGE_URL = '/.netlify/functions/storage'
+const BACKUP_KEY = 'aihub-backup'
+
+async function slaOpInCloud(data) {
+  const payload = { ...data, backupDatum: new Date().toISOString() }
+  const res = await fetch(STORAGE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key: BACKUP_KEY, value: JSON.stringify(payload) }),
+  })
+  if (!res.ok) throw new Error('Opslaan mislukt')
+  return payload.backupDatum
+}
+
+async function laadUitCloud() {
+  const res = await fetch(`${STORAGE_URL}?key=${BACKUP_KEY}`)
+  if (!res.ok) throw new Error('Laden mislukt')
+  const { value } = await res.json()
+  return value ? JSON.parse(value) : null
+}
+
 export default function Beheer({ berichten, setBerichten, videos, setVideos, pilots, setPilots, docs, setDocs, inspiraties, setInspiraties }) {
   const [code, setCode] = useState('')
   const [toegang, setToegang] = useState(false)
   const [fout, setFout] = useState('')
   const [cloudStatus, setCloudStatus] = useState('idle')
+  const [cloudTijdstempel, setCloudTijdstempel] = useState(null)
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
 
@@ -330,12 +352,69 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
         {/* Data beheer */}
         {actieveTab === 'data' && (
           <div className="grid sm:grid-cols-2 gap-6">
+            {/* Cloud backup */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+              <div className="text-2xl mb-3">☁️</div>
+              <h3 className="font-bold text-nhl-blauw mb-2">Cloud backup</h3>
+              <p className="text-gray-500 text-sm mb-4">Sla alle data op in de cloud (Netlify Blobs). Beschikbaar na elke herstart.</p>
+              {cloudTijdstempel && (
+                <div className="text-xs text-green-600 bg-green-50 rounded-lg px-3 py-2 mb-3">
+                  ✓ Laatste backup: {new Date(cloudTijdstempel).toLocaleString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </div>
+              )}
+              <button
+                onClick={async () => {
+                  setCloudStatus('saving')
+                  try {
+                    const ts = await slaOpInCloud({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })
+                    setCloudTijdstempel(ts)
+                    setCloudStatus('saved')
+                    setTimeout(() => setCloudStatus('idle'), 3000)
+                  } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 3000) }
+                }}
+                disabled={cloudStatus === 'saving'}
+                className="btn-primary w-full disabled:opacity-50">
+                {cloudStatus === 'saving' ? 'Opslaan...' : cloudStatus === 'saved' ? '✓ Opgeslagen' : 'Sla op in cloud'}
+              </button>
+            </div>
+
+            {/* Cloud herstel */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+              <div className="text-2xl mb-3">🔄</div>
+              <h3 className="font-bold text-nhl-blauw mb-2">Cloud herstel</h3>
+              <p className="text-gray-500 text-sm mb-4">Herstel de laatste cloud backup. Overschrijft de huidige data.</p>
+              <button
+                onClick={async () => {
+                  setCloudStatus('saving')
+                  try {
+                    const data = await laadUitCloud()
+                    if (!data) { alert('Geen cloud backup gevonden.'); setCloudStatus('idle'); return }
+                    if (data.alleInitiatieven) setAlleInitiatieven(data.alleInitiatieven)
+                    if (data.berichten) setBerichten(data.berichten)
+                    if (data.videos) setVideos(data.videos)
+                    if (data.pilots) setPilots(data.pilots)
+                    if (data.docs) setDocs(data.docs)
+                    if (data.inspiraties) setInspiraties(data.inspiraties)
+                    if (data.backupDatum) setCloudTijdstempel(data.backupDatum)
+                    setCloudStatus('saved')
+                    setTimeout(() => setCloudStatus('idle'), 3000)
+                  } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 3000) }
+                }}
+                disabled={cloudStatus === 'saving'}
+                className="btn-ghost border border-gray-200 w-full disabled:opacity-50">
+                {cloudStatus === 'saving' ? 'Laden...' : 'Herstel uit cloud'}
+              </button>
+            </div>
+
+            {/* JSON export */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="text-2xl mb-3">📤</div>
               <h3 className="font-bold text-nhl-blauw mb-2">Exporteren</h3>
               <p className="text-gray-500 text-sm mb-4">Download alle data als JSON bestand.</p>
               <button onClick={handleExport} className="btn-primary w-full">Exporteer als JSON</button>
             </div>
+
+            {/* JSON import */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="text-2xl mb-3">📥</div>
               <h3 className="font-bold text-nhl-blauw mb-2">Importeren</h3>
@@ -344,15 +423,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
                 Selecteer JSON bestand
                 <input type="file" accept=".json" className="hidden" onChange={e => handleImport(e.target.files[0])} />
               </label>
-            </div>
-            <div className="sm:col-span-2 bg-amber-50 border border-amber-200 rounded-2xl p-5">
-              <div className="flex gap-3">
-                <span className="text-xl">⚠️</span>
-                <div>
-                  <div className="font-semibold text-amber-800 mb-1">Sessie-opslag actief</div>
-                  <p className="text-amber-700 text-sm">Data wordt bewaard zolang de browsertab open is. Gebruik export voor permanente opslag.</p>
-                </div>
-              </div>
             </div>
           </div>
         )}

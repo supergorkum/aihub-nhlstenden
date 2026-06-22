@@ -60,7 +60,7 @@ export default function Meld({ onNieuwBericht }) {
   const kanVolgende = () => {
     if (stap === 0) return form.rol !== ''
     if (stap === 1) return form.categorie !== ''
-    if (stap === 2) return form.tekst.length > 10
+    if (stap === 2) return form.tekst.trim().length >= 5
     return true
   }
 
@@ -232,7 +232,9 @@ export default function Meld({ onNieuwBericht }) {
                   <textarea value={form.tekst} onChange={e => upd('tekst', e.target.value)} rows={5}
                     placeholder="Geef zo veel context als je wilt. Hoe meer we weten, hoe beter we je kunnen helpen."
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
-                  <div className="text-xs text-gray-400 mt-1">{form.tekst.length} tekens</div>
+                  <div className={`text-xs mt-1 ${form.tekst.trim().length < 5 ? 'text-red-400' : 'text-gray-400'}`}>
+                    {form.tekst.length} tekens{form.tekst.trim().length < 5 ? ' — minimaal 5 tekens' : ''}
+                  </div>
                 </div>
 
                 {/* Trefwoorden */}

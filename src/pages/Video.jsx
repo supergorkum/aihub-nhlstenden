@@ -80,7 +80,11 @@ export default function Video({ videos, setVideos }) {
     else setBeheerFout('Onjuiste beheercode.')
   }
 
-  const keurGoed = (id) => setVideos(prev => prev.map(v => v.id === id ? { ...v, status: 'goedgekeurd' } : v))
+  const keurGoed = (id) => {
+    setVideos(prev => prev.map(v => v.id === id ? { ...v, status: 'goedgekeurd' } : v))
+    setActiefId(id)
+    setBeheerOpen(false)
+  }
   const keurAf = (id) => setVideos(prev => prev.filter(v => v.id !== id))
   const verwijder = (id) => {
     setVideos(prev => prev.filter(v => v.id !== id))
