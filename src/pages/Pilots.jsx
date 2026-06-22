@@ -1,5 +1,5 @@
 import GradientHeader from '../components/GradientHeader'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NHL_DIENSTEN, NHL_ACADEMIES, NHL_EXTERN } from '../initialData'
 import { sporen, lagen } from '../data'
@@ -57,6 +57,12 @@ export default function Pilots({ pilots, setPilots }) {
   const [toegevoegd, setToegevoegd] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  useEffect(() => {
+    const open = !!detailOpen || !!updateOpen || addOpen
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [detailOpen, updateOpen, addOpen])
 
   const handleUpdateBestand = (file) => {
     if (!file) return
