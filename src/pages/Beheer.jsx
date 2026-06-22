@@ -3,11 +3,12 @@ import { initiatieven as initData, sporen, lagen, BEHEER_CODE } from '../data'
 import { exportJSON, importJSON } from '../storage'
 
 const NIEUWS_URL = '/.netlify/functions/nieuws-ophalen'
+const REFRESH_KEY = 'aihub-laatste-refresh'
 
 function NieuwsOphalen({ onNieuwItems }) {
-  const [status, setStatus] = useState('idle') // idle | bezig | klaar | fout
+  const [status, setStatus] = useState('idle')
   const [resultaat, setResultaat] = useState(null)
-  const [tijdstip, setTijdstip] = useState(null)
+  const [tijdstip, setTijdstip] = useState(() => localStorage.getItem(REFRESH_KEY))
 
   const haalOp = async () => {
     setStatus('bezig')
@@ -16,8 +17,10 @@ function NieuwsOphalen({ onNieuwItems }) {
       const res = await fetch(NIEUWS_URL, { method: 'POST' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Fout bij ophalen')
+      const ts = new Date().toISOString()
       setResultaat(data)
-      setTijdstip(new Date().toISOString())
+      setTijdstip(ts)
+      localStorage.setItem(REFRESH_KEY, ts)
       if (data.items?.length > 0) onNieuwItems(data.items)
       setStatus('klaar')
     } catch (err) {

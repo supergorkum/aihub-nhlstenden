@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
+
+const REFRESH_KEY = 'aihub-laatste-refresh'
 
 const navGroepen = [
   {
@@ -125,6 +127,20 @@ function NavDropdowns() {
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileGroep, setMobileGroep] = useState(null)
+  const [laatsteRefresh, setLaatsteRefresh] = useState(null)
+
+  useEffect(() => {
+    // Lees bij mount en luister naar storage events (ook vanuit Beheer)
+    const lees = () => {
+      const ts = localStorage.getItem(REFRESH_KEY)
+      setLaatsteRefresh(ts)
+    }
+    lees()
+    window.addEventListener('storage', lees)
+    // Poll elke 30s voor updates binnen hetzelfde tabblad
+    const interval = setInterval(lees, 30000)
+    return () => { window.removeEventListener('storage', lees); clearInterval(interval) }
+  }, [])
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-nhl-blauw shadow-lg">
@@ -168,8 +184,19 @@ export default function Nav() {
             <NavDropdowns />
           </div>
 
-          {/* Rechts: + Vraag of idee */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+          {/* Rechts: refresh indicator + Vraag of idee */}
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+
+            {/* Subtiele laatste refresh indicator */}
+            {laatsteRefresh && (
+              <div className="flex items-center gap-1.5 text-blue-300/70 hover:text-blue-200 transition-colors"
+                title={`Laatste AI-nieuwsrefresh: ${new Date(laatsteRefresh).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`}>
+                <span className="text-xs">🤖</span>
+                <span className="text-xs font-medium">
+                  {new Date(laatsteRefresh).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
+                </span>
+              </div>
+            )}
             <NavLink
               to="/meld"
               className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap shadow-sm"
