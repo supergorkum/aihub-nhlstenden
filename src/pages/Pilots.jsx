@@ -194,7 +194,7 @@ export default function Pilots({ pilots, setPilots }) {
         const thema = sporen.find(s => s.id === pilot.spoor)
         const laag = lagen.find(l => l.nr === pilot.laag)
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm overflow-hidden">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slide-up">
               <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
                 <div>

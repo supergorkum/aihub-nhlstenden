@@ -333,6 +333,16 @@ export default function Initiatieven() {
               </div>
             </div>
 
+            {/* Handleiding roadmap */}
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6 flex gap-4">
+              <div className="text-2xl flex-shrink-0">💡</div>
+              <div className="text-sm text-gray-700 space-y-1.5">
+                <div className="font-semibold text-nhl-blauw mb-2">Hoe werkt de roadmap?</div>
+                <p>Elk item heeft een <strong>statusknop</strong> (het ronde icoontje links). Klik erop om de status door te zetten: Nog te starten → In voorbereiding → Lopend → Afgerond ✓. Klik nogmaals om terug te zetten.</p>
+                <p>Elk item toont rechts het gekoppelde <strong>AI Act artikel</strong>. Via de oranje knop in de AI Act tab kun je ook vanuit een verplichting direct een nieuw roadmap-item aanmaken met die koppeling.</p>
+              </div>
+            </div>
+
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-bold text-nhl-blauw text-lg">Alle roadmap-items</h2>
               <button onClick={() => { setAddOpen(true); setToegevoegd(false); setForm({ titel:'', omschrijving:'', prioriteit:'hoog', verantwoordelijke:'', datum:'', naam:'' }) }}
@@ -473,6 +483,16 @@ export default function Initiatieven() {
                     <div className="text-xs font-medium" style={{ color: r.kleur }}>{r.actie}</div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Handleiding AI Act */}
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6 flex gap-4">
+              <div className="text-2xl flex-shrink-0">💡</div>
+              <div className="text-sm text-gray-700 space-y-1.5">
+                <div className="font-semibold text-nhl-blauw mb-2">Hoe gebruik je deze lijst?</div>
+                <p>Klik op een verplichting om de toelichting en het AI Act artikel te lezen. Staat er al een roadmap-item voor? Dan zie je dat als koppeling onderaan. Is dat niet zo? Gebruik de oranje knop <strong>"+ Voeg roadmap-item toe"</strong> om direct een actie aan te maken in de Roadmap tab.</p>
+                <p>Wil je naar de Roadmap? Gebruik de tab hierboven of klik op een gekoppeld roadmap-item.</p>
               </div>
             </div>
 
