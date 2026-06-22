@@ -3,42 +3,6 @@
 
 const RSS_FEEDS = [
   {
-    naam: 'SURF Nieuws',
-    // SURF blokkeert directe RSS — gebruik hun sitemap/nieuws via alternatieve weg
-    url: 'https://www.surf.nl/nieuws/rss',
-    label: 'SURF',
-    icon: '🌐',
-    fallback: true,
-  },
-  {
-    naam: 'Rathenau Instituut',
-    url: 'https://www.rathenau.nl/nl/rss.xml',
-    label: 'Rathenau',
-    icon: '🔬',
-    fallback: true,
-  },
-  {
-    naam: 'Rijksoverheid AI',
-    url: 'https://feeds.rijksoverheid.nl/onderwerpen/kunstmatige-intelligentie-ai/nieuws.rss',
-    label: 'Rijksoverheid',
-    icon: '🏛️',
-    fallback: false,
-  },
-  {
-    naam: 'Europese Commissie Digital',
-    url: 'https://ec.europa.eu/newsroom/dae/rss.cfm',
-    label: 'Europese Commissie',
-    icon: '🇪🇺',
-    fallback: false,
-  },
-  {
-    naam: 'arXiv AI (cs.AI)',
-    url: 'https://rss.arxiv.org/rss/cs.AI',
-    label: 'arXiv',
-    icon: '📐',
-    fallback: false,
-  },
-  {
     naam: 'The Gradient',
     url: 'https://thegradient.pub/rss/',
     label: 'The Gradient',
@@ -46,10 +10,45 @@ const RSS_FEEDS = [
     fallback: false,
   },
   {
-    naam: 'AI News (80,000 Hours)',
+    naam: '80,000 Hours AI',
     url: 'https://80000hours.org/feed/',
     label: '80,000 Hours',
     icon: '💡',
+    fallback: false,
+  },
+  {
+    naam: 'MIT Technology Review',
+    url: 'https://www.technologyreview.com/feed/',
+    label: 'MIT Tech Review',
+    icon: '🔬',
+    fallback: false,
+  },
+  {
+    naam: 'VentureBeat AI',
+    url: 'https://venturebeat.com/category/ai/feed/',
+    label: 'VentureBeat',
+    icon: '🚀',
+    fallback: false,
+  },
+  {
+    naam: 'AI Alignment Forum',
+    url: 'https://www.alignmentforum.org/feed.xml',
+    label: 'Alignment Forum',
+    icon: '⚖️',
+    fallback: false,
+  },
+  {
+    naam: 'Import AI (Jack Clark)',
+    url: 'https://importai.substack.com/feed',
+    label: 'Import AI',
+    icon: '🤖',
+    fallback: false,
+  },
+  {
+    naam: 'Future of Life Institute',
+    url: 'https://futureoflife.org/feed/',
+    label: 'Future of Life',
+    icon: '🌍',
     fallback: false,
   },
 ]
@@ -106,24 +105,6 @@ async function fetchFeed(feed) {
 
   if (res.ok) return res.text()
 
-  // Fallback via rss2json proxy voor feeds die bots blokkeren
-  if (feed.fallback || res.status === 403) {
-    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&count=5`
-    const proxyRes = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) })
-    if (proxyRes.ok) {
-      const data = await proxyRes.json()
-      if (data.status === 'ok' && data.items?.length > 0) {
-        // Converteer rss2json formaat naar onze structuur
-        return { proxyItems: data.items.map(i => ({
-          titel: i.title || '',
-          beschrijving: (i.description || i.content || '').replace(/<[^>]+>/g, '').trim().slice(0, 400),
-          link: i.link || '',
-        })).slice(0, 5) }
-      }
-    }
-    throw new Error(`HTTP ${res.status} (proxy ook mislukt)`)
-  }
-
   throw new Error(`HTTP ${res.status}`)
 }
 
@@ -146,12 +127,7 @@ export default async (req) => {
     try {
       const result = await fetchFeed(feed)
 
-      let items
-      if (typeof result === 'object' && result.proxyItems) {
-        items = result.proxyItems
-      } else {
-        items = parseRSS(result)
-      }
+      const items = parseRSS(result)
 
       if (items.length === 0) {
         fouten.push(`${feed.naam}: geen items gevonden`)

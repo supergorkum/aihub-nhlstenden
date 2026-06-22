@@ -64,7 +64,7 @@ function NieuwsOphalen({ onNieuwItems }) {
       {/* Uitleg */}
       <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
         <p className="text-sm text-gray-600">
-          Haalt nieuws op van <strong>SURF</strong>, <strong>Rathenau Instituut</strong>, <strong>Europese Commissie</strong> en <strong>Rijksoverheid</strong>.
+          Haalt nieuws op van <strong>The Gradient</strong>, <strong>MIT Tech Review</strong>, <strong>VentureBeat</strong>, <strong>Import AI</strong> en anderen.
           De Anthropic AI beoordeelt elk artikel op relevantie voor NHL Stenden en schrijft een Nederlandse samenvatting.
           Relevante items worden direct toegevoegd aan <strong>Inspiratie</strong>.
         </p>
