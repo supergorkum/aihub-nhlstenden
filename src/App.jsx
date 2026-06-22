@@ -1,32 +1,52 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Nav from './components/Nav'
-import Hero from './components/Hero'
-import Lagen from './components/Lagen'
-import Sporen from './components/Sporen'
-import Netwerk from './components/Netwerk'
-import Initiatieven from './components/Initiatieven'
-import MeldJeIn from './components/MeldJeIn'
-import Inspiratie from './components/Inspiratie'
 import Footer from './components/Footer'
+import Start from './pages/Start'
+import Sporen from './pages/Sporen'
+import Netwerk from './pages/Netwerk'
+import Initiatieven from './pages/Initiatieven'
+import Documentatie from './pages/Documentatie'
+import Meld from './pages/Meld'
+import Inspiratie from './pages/Inspiratie'
+import Beheer from './pages/Beheer'
+import Over from './pages/Over'
 
-export default function App() {
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
+
+function AppInner() {
   const [berichten, setBerichten] = useState([])
+  const [extraInitiatieven, setExtraInitiatieven] = useState([])
 
-  const voegBerichtToe = (bericht) => {
-    setBerichten(prev => [bericht, ...prev])
-  }
+  const voegBerichtToe = (b) => setBerichten(prev => [b, ...prev])
 
   return (
-    <div className="min-h-screen font-sans">
+    <div className="min-h-screen flex flex-col">
       <Nav />
-      <Hero />
-      <Lagen />
-      <Sporen />
-      <Netwerk />
-      <Initiatieven />
-      <MeldJeIn onNieuwBericht={voegBerichtToe} />
-      <Inspiratie berichten={berichten} />
+      <ScrollToTop />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Start />} />
+          <Route path="/over" element={<Over />} />
+          <Route path="/sporen" element={<Sporen />} />
+          <Route path="/netwerk" element={<Netwerk />} />
+          <Route path="/initiatieven" element={<Initiatieven />} />
+          <Route path="/documentatie" element={<Documentatie />} />
+          <Route path="/meld" element={<Meld onNieuwBericht={voegBerichtToe} />} />
+          <Route path="/inspiratie" element={<Inspiratie berichten={berichten} />} />
+          <Route path="/beheer" element={<Beheer berichten={berichten} setBerichten={setBerichten} extraInitiatieven={extraInitiatieven} setExtraInitiatieven={setExtraInitiatieven} />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   )
+}
+
+export default function App() {
+  return <BrowserRouter><AppInner /></BrowserRouter>
 }
