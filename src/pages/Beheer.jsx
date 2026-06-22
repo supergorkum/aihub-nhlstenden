@@ -205,25 +205,17 @@ function InitiatiefRij({ init, onSave, onDelete }) {
   )
 }
 
-const STORAGE_URL = '/.netlify/functions/storage'
-const BACKUP_KEY = 'aihub-backup'
+const BACKUP_KEY = 'aihub-backup-v1'
 
 async function slaOpInCloud(data) {
   const payload = { ...data, backupDatum: new Date().toISOString() }
-  const res = await fetch(STORAGE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key: BACKUP_KEY, value: JSON.stringify(payload) }),
-  })
-  if (!res.ok) throw new Error('Opslaan mislukt')
+  localStorage.setItem(BACKUP_KEY, JSON.stringify(payload))
   return payload.backupDatum
 }
 
 async function laadUitCloud() {
-  const res = await fetch(`${STORAGE_URL}?key=${BACKUP_KEY}`)
-  if (!res.ok) throw new Error('Laden mislukt')
-  const { value } = await res.json()
-  return value ? JSON.parse(value) : null
+  const raw = localStorage.getItem(BACKUP_KEY)
+  return raw ? JSON.parse(raw) : null
 }
 
 export default function Beheer({ berichten, setBerichten, videos, setVideos, actiefVideoId, setActiefVideoId, pilots, setPilots, docs, setDocs, inspiraties, setInspiraties }) {
@@ -335,12 +327,12 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   {cloudStatus === 'saving' ? '⏳ Backup bezig...' :
                    cloudStatus === 'saved' ? '✓ Backup opgeslagen' :
                    cloudStatus === 'error' ? '✗ Backup mislukt' :
-                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '☁ Auto-backup actief'}
+                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '💾 Nog geen backup'}
                 </div>
                 <div className="text-gray-400 leading-tight mt-0.5">
                   {cloudTijdstempel
                     ? new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : 'Automatisch backup om 12:00 en 18:00'}
+                    : 'Opgeslagen in deze browser'}
                 </div>
               </div>
             </div>
@@ -567,7 +559,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                       'bg-gray-400'
                     }`} />
                     <div>
-                      <div className="text-white font-bold text-sm">Cloud opslag</div>
+                      <div className="text-white font-bold text-sm">Lokale opslag</div>
                       <div className="text-blue-200 text-xs">
                         {cloudTijdstempel
                           ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
@@ -585,7 +577,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <span className="text-xl">☁️</span>
                     <h3 className="font-bold text-nhl-blauw">Nu opslaan</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat van alle data op in Netlify Blobs. Blijft beschikbaar na herstart.</p>
+                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat op in de browser. Gebruik JSON-export voor een permanente backup buiten de browser.</p>
                   <button
                     onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
                     disabled={cloudStatus === 'saving'}
@@ -596,7 +588,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     ) : cloudStatus === 'saved' ? (
                       <>✓ Opgeslagen</>
                     ) : (
-                      <>☁ Sla op in cloud</>
+                      <>💾 Sla op lokaal</>
                     )}
                   </button>
                 </div>
@@ -605,9 +597,9 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">🔄</span>
-                    <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
+                    <h3 className="font-bold text-nhl-blauw">Herstel uit lokale opslag</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Laad de laatste cloud backup terug. Overschrijft de huidige sessie-data volledig.</p>
+                  <p className="text-gray-500 text-sm mb-4">Laad de laatste opgeslagen backup terug in deze sessie.</p>
                   <button
                     onClick={async () => {
                       if (!window.confirm('Huidige data wordt overschreven met de cloud backup. Doorgaan?')) return
