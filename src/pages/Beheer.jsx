@@ -107,10 +107,11 @@ function NieuwsOphalen({ onNieuwItems }) {
           {status === 'fout' && (
             <div className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">
               <div className="font-semibold mb-1">❌ Ophalen mislukt</div>
-              <div className="text-xs">{resultaat.fout}</div>
+              <div className="text-xs mb-2">{resultaat.fout}</div>
               {resultaat.fout?.includes('API key') && (
-                <div className="text-xs mt-2 text-gray-600">
-                  Ga naar Netlify → Site settings → Environment variables → voeg <code className="bg-white px-1 rounded border">ANTHROPIC_API_KEY</code> toe.
+                <div className="text-xs text-gray-600 bg-white rounded border p-2">
+                  Ga naar <strong>Netlify → Site settings → Environment variables</strong> en voeg toe:<br/>
+                  <code className="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> = jouw Anthropic API sleutel
                 </div>
               )}
             </div>
@@ -623,7 +624,11 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                         if (data.backupDatum) setCloudTijdstempel(data.backupDatum)
                         setCloudStatus('saved')
                         setTimeout(() => setCloudStatus('idle'), 3000)
-                      } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 5000) }
+                      } catch (err) {
+      setCloudStatus('error')
+      console.error('Cloud backup fout:', err)
+      setTimeout(() => setCloudStatus('idle'), 5000)
+    }
                     }}
                     disabled={cloudStatus === 'saving'}
                     className="w-full py-2.5 rounded-xl font-semibold text-sm border-2 border-nhl-blauw text-nhl-blauw hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"

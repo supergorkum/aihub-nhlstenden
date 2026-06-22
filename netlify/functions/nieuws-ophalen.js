@@ -1,42 +1,63 @@
-// Netlify function: haalt RSS/Atom feeds op, filtert met Anthropic API op relevantie
-// voor NHL Stenden AI-beleid, en geeft nieuwe items terug
+// Netlify function: haalt RSS feeds op, filtert met Anthropic API op relevantie
+// Feeds gekozen op basis van serverside bereikbaarheid (geen Bot-blokkering)
 
 const RSS_FEEDS = [
   {
-    naam: 'EU Digital Strategy',
-    url: 'https://digital-strategy.ec.europa.eu/en/rss.xml',
+    naam: 'SURF Nieuws',
+    // SURF blokkeert directe RSS — gebruik hun sitemap/nieuws via alternatieve weg
+    url: 'https://www.surf.nl/nieuws/rss',
+    label: 'SURF',
+    icon: '🌐',
+    fallback: true,
+  },
+  {
+    naam: 'Rathenau Instituut',
+    url: 'https://www.rathenau.nl/nl/rss.xml',
+    label: 'Rathenau',
+    icon: '🔬',
+    fallback: true,
+  },
+  {
+    naam: 'Rijksoverheid AI',
+    url: 'https://feeds.rijksoverheid.nl/onderwerpen/kunstmatige-intelligentie-ai/nieuws.rss',
+    label: 'Rijksoverheid',
+    icon: '🏛️',
+    fallback: false,
+  },
+  {
+    naam: 'Europese Commissie Digital',
+    url: 'https://ec.europa.eu/newsroom/dae/rss.cfm',
     label: 'Europese Commissie',
     icon: '🇪🇺',
+    fallback: false,
   },
   {
-    naam: 'EU AI Office',
-    url: 'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai/rss.xml',
-    label: 'EU AI Office',
-    icon: '⚖️',
+    naam: 'arXiv AI (cs.AI)',
+    url: 'https://rss.arxiv.org/rss/cs.AI',
+    label: 'arXiv',
+    icon: '📐',
+    fallback: false,
   },
   {
-    naam: 'OECD AI Policy',
-    url: 'https://oecd.ai/en/feed',
-    label: 'OECD AI',
-    icon: '🌍',
+    naam: 'The Gradient',
+    url: 'https://thegradient.pub/rss/',
+    label: 'The Gradient',
+    icon: '📊',
+    fallback: false,
   },
   {
-    naam: 'MIT Technology Review AI',
-    url: 'https://www.technologyreview.com/feed/',
-    label: 'MIT Tech Review',
-    icon: '🔬',
-  },
-  {
-    naam: 'EDUCAUSE',
-    url: 'https://er.educause.edu/feed',
-    label: 'EDUCAUSE',
-    icon: '🎓',
+    naam: 'AI News (80,000 Hours)',
+    url: 'https://80000hours.org/feed/',
+    label: '80,000 Hours',
+    icon: '💡',
+    fallback: false,
   },
 ]
 
+const BROWSER_UA = 'Mozilla/5.0 (compatible; NHLStendenAIHUB/1.3; +https://aihub-nhlstenden.netlify.app)'
+
 function parseRSS(xml) {
   const items = []
-  // Probeer zowel RSS <item> als Atom <entry>
   const patterns = [
     /<item>([\s\S]*?)<\/item>/g,
     /<entry>([\s\S]*?)<\/entry>/g,
@@ -55,9 +76,11 @@ function parseRSS(xml) {
       const link =
         content.match(/<link>(.*?)<\/link>/)?.[1] ||
         content.match(/<link[^>]*href="([^"]+)"/)?.[1] || ''
-      if (titel.trim()) {
+      const cleanTitel = titel.trim()
+        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#\d+;/g, '')
+      if (cleanTitel) {
         items.push({
-          titel: titel.trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+          titel: cleanTitel,
           beschrijving: beschrijving.replace(/<[^>]+>/g, '').trim().slice(0, 400),
           link: link.trim(),
         })
@@ -65,7 +88,43 @@ function parseRSS(xml) {
     }
     if (items.length > 0) break
   }
-  return items.slice(0, 6)
+  return items.slice(0, 5)
+}
+
+async function fetchFeed(feed) {
+  const headers = {
+    'User-Agent': BROWSER_UA,
+    'Accept': 'application/rss+xml, application/xml, text/xml, application/atom+xml, */*',
+    'Accept-Language': 'nl,en;q=0.9',
+  }
+
+  // Directe poging
+  const res = await fetch(feed.url, {
+    headers,
+    signal: AbortSignal.timeout(12000),
+  })
+
+  if (res.ok) return res.text()
+
+  // Fallback via rss2json proxy voor feeds die bots blokkeren
+  if (feed.fallback || res.status === 403) {
+    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&count=5`
+    const proxyRes = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) })
+    if (proxyRes.ok) {
+      const data = await proxyRes.json()
+      if (data.status === 'ok' && data.items?.length > 0) {
+        // Converteer rss2json formaat naar onze structuur
+        return { proxyItems: data.items.map(i => ({
+          titel: i.title || '',
+          beschrijving: (i.description || i.content || '').replace(/<[^>]+>/g, '').trim().slice(0, 400),
+          link: i.link || '',
+        })).slice(0, 5) }
+      }
+    }
+    throw new Error(`HTTP ${res.status} (proxy ook mislukt)`)
+  }
+
+  throw new Error(`HTTP ${res.status}`)
 }
 
 export default async (req) => {
@@ -85,21 +144,14 @@ export default async (req) => {
 
   for (const feed of RSS_FEEDS) {
     try {
-      const res = await fetch(feed.url, {
-        headers: {
-          'User-Agent': 'NHL-Stenden-AIHUB/1.0 (educational; contact: aihub@nhlstenden.com)',
-          'Accept': 'application/rss+xml, application/xml, text/xml, application/atom+xml',
-        },
-        signal: AbortSignal.timeout(10000),
-      })
+      const result = await fetchFeed(feed)
 
-      if (!res.ok) {
-        fouten.push(`${feed.naam}: HTTP ${res.status}`)
-        continue
+      let items
+      if (typeof result === 'object' && result.proxyItems) {
+        items = result.proxyItems
+      } else {
+        items = parseRSS(result)
       }
-
-      const xml = await res.text()
-      const items = parseRSS(xml)
 
       if (items.length === 0) {
         fouten.push(`${feed.naam}: geen items gevonden`)
@@ -107,6 +159,7 @@ export default async (req) => {
       }
 
       for (const item of items) {
+        if (!item.titel) continue
         try {
           const beoordeelRes = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -120,13 +173,7 @@ export default async (req) => {
               max_tokens: 250,
               messages: [{
                 role: 'user',
-                content: `Beoordeel of dit nieuwsitem relevant is voor de AI-HUB van NHL Stenden Hogeschool. De hub richt zich op: AI in het onderwijs, AI-geletterdheid, EU AI Act compliance, digitale soevereiniteit, AI-governance in hoger onderwijs, studiesucces via AI.
-
-Titel: ${item.titel}
-Beschrijving: ${item.beschrijving.slice(0, 200)}
-
-Antwoord ALLEEN met dit JSON (geen uitleg, geen markdown):
-{"relevant":true/false,"samenvatting":"1-2 zinnen in het Nederlands als relevant, anders leeg","doelgroep":"docenten/studenten/management/medewerkers/algemeen"}`
+                content: `Beoordeel of dit nieuwsitem relevant is voor de AI-HUB van NHL Stenden Hogeschool. De hub richt zich op: AI in het onderwijs, AI-geletterdheid, EU AI Act compliance, digitale soevereiniteit, AI-governance in hoger onderwijs, studiesucces via AI.\n\nTitel: ${item.titel}\nBeschrijving: ${item.beschrijving.slice(0, 200)}\n\nAntwoord ALLEEN met dit JSON (geen uitleg, geen markdown):\n{"relevant":true/false,"samenvatting":"1-2 zinnen in het Nederlands als relevant, anders leeg","doelgroep":"docenten/studenten/management/medewerkers/algemeen"}`
               }]
             })
           })
