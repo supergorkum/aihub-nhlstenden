@@ -189,11 +189,11 @@ export default function Nav() {
 
             {/* Subtiele laatste refresh indicator */}
             {laatsteRefresh && (
-              <div className="flex items-center gap-1.5 text-blue-300/70 hover:text-blue-200 transition-colors"
-                title={`Laatste AI-nieuwsrefresh: ${new Date(laatsteRefresh).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`}>
+              <div className="flex items-center gap-1.5 text-blue-200/80 hover:text-white transition-colors cursor-default"
+                title={`Laatste AI-nieuwsrefresh: ${new Date(laatsteRefresh).toLocaleString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`}>
                 <span className="text-xs">🤖</span>
-                <span className="text-xs font-medium">
-                  {new Date(laatsteRefresh).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
+                <span className="text-xs">
+                  Nieuws · {new Date(laatsteRefresh).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
                 </span>
               </div>
             )}

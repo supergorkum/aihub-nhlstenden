@@ -322,37 +322,58 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
           <div className="flex items-center gap-3 flex-wrap">
 
-            {/* Cloud status lampje */}
-            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs">
-              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
+            {/* Cloud backup status — groen licht + tijdstip */}
+            <div className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs border transition-colors ${
+              cloudStatus === 'saving' ? 'bg-yellow-50 border-yellow-300' :
+              cloudStatus === 'saved' ? 'bg-green-50 border-green-400' :
+              cloudStatus === 'error' ? 'bg-red-50 border-red-300' :
+              cloudTijdstempel ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
+            }`}>
+              <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
                 cloudStatus === 'saving' ? 'bg-yellow-400 animate-pulse' :
                 cloudStatus === 'saved' ? 'bg-green-500' :
                 cloudStatus === 'error' ? 'bg-red-500' :
-                autoBackupActief ? 'bg-blue-400 pulse-soft' : 'bg-gray-300'
+                cloudTijdstempel ? 'bg-green-500' : 'bg-gray-300'
               }`} />
-              <span className="text-gray-600">
-                {cloudStatus === 'saving' ? 'Backup bezig...' :
-                 cloudStatus === 'saved' ? 'Opgeslagen ✓' :
-                 cloudStatus === 'error' ? 'Fout bij backup' :
-                 cloudTijdstempel
-                   ? `Backup ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
-                   : 'Geen backup'}
-              </span>
+              <div>
+                <div className={`font-semibold leading-tight ${
+                  cloudStatus === 'error' ? 'text-red-600' :
+                  cloudTijdstempel || cloudStatus === 'saved' ? 'text-green-700' : 'text-gray-500'
+                }`}>
+                  {cloudStatus === 'saving' ? '⏳ Backup bezig...' :
+                   cloudStatus === 'saved' ? '✓ Backup opgeslagen' :
+                   cloudStatus === 'error' ? '✗ Backup mislukt' :
+                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '☁ Auto-backup actief'}
+                </div>
+                <div className="text-gray-400 leading-tight mt-0.5">
+                  {cloudTijdstempel
+                    ? new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+                    : 'Automatisch om 12:00 en 18:00'}
+                </div>
+              </div>
             </div>
 
-            {/* Auto-backup toggle */}
-            <button
-              onClick={() => setAutoBackupActief(v => !v)}
-              className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border font-medium transition-colors ${
-                autoBackupActief
-                  ? 'bg-green-50 border-green-300 text-green-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
-              }`}
-              title="Automatische backup elke 15 minuten"
-            >
-              <span>{autoBackupActief ? '⏱️' : '⏱️'}</span>
-              Auto-backup {autoBackupActief ? 'aan' : 'uit'}
-            </button>
+            {/* Nieuws refresh indicator */}
+            {(() => {
+              const ts = localStorage.getItem('aihub-laatste-refresh')
+              if (!ts) return (
+                <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-400">
+                  <span>🤖</span>
+                  <span>Nog niet ge-refresht</span>
+                </div>
+              )
+              return (
+                <div className="flex items-center gap-2.5 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2 text-xs">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold text-nhl-blauw leading-tight">✓ Nieuws ge-refresht</div>
+                    <div className="text-gray-400 leading-tight mt-0.5">
+                      {new Date(ts).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
 
             <button
               onClick={() => setChangelogOpen(true)}
