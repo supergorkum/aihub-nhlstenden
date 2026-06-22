@@ -46,7 +46,7 @@ export default function Initiatieven() {
           />
           <div className="flex flex-wrap gap-2">
             <button onClick={() => setFilterSpoor(null)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${!filterSpoor ? 'bg-nhl-blauw text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'}`}>
-              Alle sporen
+              Alle thema's
             </button>
             {sporen.map(s => (
               <button key={s.id} onClick={() => setFilterSpoor(filterSpoor === s.id ? null : s.id)}
@@ -56,10 +56,14 @@ export default function Initiatieven() {
               </button>
             ))}
             <div className="w-px bg-gray-200" />
-            {['intern', 'extern'].map(t => (
-              <button key={t} onClick={() => setFilterType(filterType === t ? null : t)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors capitalize ${filterType === t ? 'bg-nhl-blauw text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'}`}>
-                {t}
+            {[
+              { id: 'intern', label: 'Intern' },
+              { id: 'extern', label: 'Extern' },
+              { id: 'surf', label: 'SURF / Nationaal' },
+            ].map(t => (
+              <button key={t.id} onClick={() => setFilterType(filterType === t.id ? null : t.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${filterType === t.id ? 'bg-nhl-blauw text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'}`}>
+                {t.label}
               </button>
             ))}
           </div>
@@ -77,8 +81,12 @@ export default function Initiatieven() {
               <div key={init.id} className="card card-hover p-5 flex flex-col">
                 <div className="flex items-start justify-between mb-3">
                   <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${s.kleur}`}>{s.label}</span>
-                  <span className={`text-xs px-2 py-1 rounded-lg font-medium ${init.type === 'extern' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
-                    {init.type === 'extern' ? 'Extern' : 'Intern'}
+                  <span className={`text-xs px-2 py-1 rounded-lg font-medium ${
+                    init.type === 'surf' ? 'bg-purple-50 text-purple-700' :
+                    init.type === 'extern' ? 'bg-green-50 text-green-700' :
+                    'bg-blue-50 text-nhl-blauw'
+                  }`}>
+                    {init.type === 'surf' ? 'SURF / Nationaal' : init.type === 'extern' ? 'Extern' : 'Intern'}
                   </span>
                 </div>
                 <div className="font-bold text-nhl-blauw text-sm mb-2 leading-snug">{init.naam}</div>

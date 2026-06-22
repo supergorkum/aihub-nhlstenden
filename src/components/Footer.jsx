@@ -18,7 +18,7 @@ export default function Footer() {
           <div>
             <div className="font-semibold mb-4 text-xs uppercase tracking-wider text-blue-300">Navigatie</div>
             <div className="space-y-2 text-sm">
-              {[['/', 'Start'],['/over','Over de HUB'],['/sporen','Sporen'],['/netwerk','Netwerk'],['/initiatieven','Initiatieven'],['/documentatie','Documentatie'],['/meld','Meld je in'],['/inspiratie','Inspiratie']].map(([to, label]) => (
+              {[['/', 'Start'],['/themas',"Thema's"],['/fundament','Fundament'],['/netwerk','Netwerk'],['/initiatieven','Initiatieven'],['/documentatie','Documentatie'],['/meld','Vraag of idee'],['/inspiratie','Inspiratie'],['/evenementen','Evenementen'],['/video',"Video's"],['/over','Over de HUB']].map(([to, label]) => (
                 <Link key={to} to={to} className="block text-blue-200 hover:text-white transition-colors">{label}</Link>
               ))}
             </div>

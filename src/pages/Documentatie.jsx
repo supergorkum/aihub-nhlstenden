@@ -27,8 +27,7 @@ const typeKleur = {
   overig: 'bg-gray-100 text-gray-600',
 }
 
-export default function Documentatie() {
-  const [docs, setDocs] = useState(VOORBEELDDOCS)
+export default function Documentatie({ docs, setDocs }) {
   const [filterCat, setFilterCat] = useState(null)
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadStap, setUploadStap] = useState(0)

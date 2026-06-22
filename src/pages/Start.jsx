@@ -9,7 +9,7 @@ const functies = [
 
 const actieven = initiatieven.filter(i => i.status === 'actief').slice(0, 4)
 
-export default function Start() {
+export default function Start({ videos = [], pilots = [], evenementen = [] }) {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
@@ -40,8 +40,8 @@ export default function Start() {
                 Of je nu docent, student, medewerker of bestuurder bent — hier vind je overzicht, verbinding en richting.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link to="/sporen" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
-                  Ontdek de sporen
+                <Link to="/themas" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
+                  Ontdek de thema's
                 </Link>
                 <Link to="/netwerk" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
                   Bekijk het netwerk
@@ -86,7 +86,7 @@ export default function Start() {
             {sporen.map(s => (
               <Link
                 key={s.id}
-                to="/sporen"
+                to="/themas"
                 className="card card-hover p-5 group"
               >
                 <div className="text-2xl mb-3">{s.icon}</div>
@@ -148,6 +148,93 @@ export default function Start() {
           </div>
         </div>
       </section>
+
+      {/* Laatste nieuws blok */}
+      {(videos.some(v => v.status === 'goedgekeurd') || pilots.length > 0 || evenementen.length > 0) && (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="section-label mb-2">Vers van de pers</div>
+            <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit de AI-HUB</h2>
+            <div className="grid sm:grid-cols-3 gap-6">
+
+              {/* Laatste video */}
+              {(() => {
+                const v = videos.filter(x => x.status === 'goedgekeurd').slice(-1)[0]
+                if (!v) return null
+                return (
+                  <Link to="/video" className="card card-hover overflow-hidden group">
+                    <div className="relative">
+                      <img src={`https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg`} alt={v.titel}
+                        className="w-full aspect-video object-cover"
+                        onError={e => { e.target.style.background='#e5e7eb' }} />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                          <span className="text-nhl-blauw ml-0.5">▶</span>
+                        </div>
+                      </div>
+                      <div className="absolute top-2 left-2 bg-nhl-roze text-white text-xs px-2 py-0.5 rounded-full font-medium">🎬 Laatste video</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="font-semibold text-nhl-blauw text-sm leading-snug mb-1">{v.titel}</div>
+                      <div className="text-xs text-gray-400">{v.datum} · 👍 {v.omhoog}</div>
+                    </div>
+                  </Link>
+                )
+              })()}
+
+              {/* Laatste pilot */}
+              {(() => {
+                const p = [...pilots].reverse()[0]
+                if (!p) return null
+                const heeftUpdate = p.updates?.length > 0
+                return (
+                  <Link to="/pilots" className="card card-hover p-5 flex flex-col">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">🧪 {heeftUpdate ? 'Pilot update' : 'Nieuwe pilot'}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.status === 'Lopend' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{p.status}</span>
+                    </div>
+                    <div className="font-bold text-nhl-blauw mb-2 leading-snug">{p.naam}</div>
+                    <div className="text-xs text-gray-500 mb-2">{p.academie} · {p.platform}</div>
+                    {heeftUpdate && (
+                      <div className="bg-blue-50 rounded-lg p-3 mt-auto">
+                        <div className="text-xs font-medium text-nhl-blauw mb-1">Laatste update · {p.updates[p.updates.length-1].datum}</div>
+                        <p className="text-xs text-gray-600 line-clamp-2">{p.updates[p.updates.length-1].tekst}</p>
+                      </div>
+                    )}
+                  </Link>
+                )
+              })()}
+
+              {/* Volgend evenement */}
+              {(() => {
+                const nu = new Date()
+                const ev = evenementen
+                  .filter(e => new Date(`${e.datum}T${e.startTijd}`) >= nu)
+                  .sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
+                if (!ev) return null
+                const d = new Date(ev.datum)
+                const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
+                return (
+                  <Link to="/evenementen" className="card card-hover overflow-hidden flex flex-col">
+                    <div className="flex items-stretch">
+                      <div className="w-16 flex flex-col items-center justify-center py-4 text-white flex-shrink-0" style={{ backgroundColor: ev.kleur || '#1E3A8A' }}>
+                        <div className="text-2xl font-extrabold leading-none">{d.getDate()}</div>
+                        <div className="text-xs font-medium mt-0.5">{MAANDEN[d.getMonth()]}</div>
+                      </div>
+                      <div className="flex-1 p-4">
+                        <div className="text-xs text-nhl-roze font-medium mb-1">📅 Volgend evenement</div>
+                        <div className="font-bold text-nhl-blauw text-sm leading-snug mb-1">{ev.naam}</div>
+                        <div className="text-xs text-gray-500">🕐 {ev.startTijd} · 📍 {ev.locatie?.split(',')[0]}</div>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })()}
+
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }

@@ -4,14 +4,23 @@ import { useEffect } from 'react'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import Start from './pages/Start'
-import Sporen from './pages/Sporen'
+import Themas from './pages/Themas'
+import Fundament from './pages/Fundament'
 import Netwerk from './pages/Netwerk'
 import Initiatieven from './pages/Initiatieven'
+import Pilots from './pages/Pilots'
 import Documentatie from './pages/Documentatie'
+import Video from './pages/Video'
+import Evenementen from './pages/Evenementen'
+import Linkjes from './pages/Linkjes'
 import Meld from './pages/Meld'
 import Inspiratie from './pages/Inspiratie'
-import Beheer from './pages/Beheer'
 import Over from './pages/Over'
+import Beheer from './pages/Beheer'
+import {
+  INIT_VIDEOS, INIT_PILOTS, INIT_DOCS,
+  INIT_EVENEMENTEN, INIT_LINKJES, INIT_INSPIRATIES
+} from './initialData'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -20,10 +29,14 @@ function ScrollToTop() {
 }
 
 function AppInner() {
+  // ── Centrale state — overleeft navigatie ──────────────────────────
   const [berichten, setBerichten] = useState([])
-  const [extraInitiatieven, setExtraInitiatieven] = useState([])
-
-  const voegBerichtToe = (b) => setBerichten(prev => [b, ...prev])
+  const [videos, setVideos] = useState(INIT_VIDEOS)
+  const [pilots, setPilots] = useState(INIT_PILOTS)
+  const [docs, setDocs] = useState(INIT_DOCS)
+  const [evenementen, setEvenementen] = useState(INIT_EVENEMENTEN)
+  const [linkjes, setLinkjes] = useState(INIT_LINKJES)
+  const [inspiraties, setInspiraties] = useState(INIT_INSPIRATIES)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -31,15 +44,48 @@ function AppInner() {
       <ScrollToTop />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/over" element={<Over />} />
-          <Route path="/sporen" element={<Sporen />} />
+          <Route path="/" element={
+            <Start
+              videos={videos}
+              pilots={pilots}
+              evenementen={evenementen}
+            />
+          } />
+          <Route path="/themas" element={<Themas />} />
+          <Route path="/fundament" element={<Fundament />} />
           <Route path="/netwerk" element={<Netwerk />} />
           <Route path="/initiatieven" element={<Initiatieven />} />
-          <Route path="/documentatie" element={<Documentatie />} />
-          <Route path="/meld" element={<Meld onNieuwBericht={voegBerichtToe} />} />
-          <Route path="/inspiratie" element={<Inspiratie berichten={berichten} />} />
-          <Route path="/beheer" element={<Beheer berichten={berichten} setBerichten={setBerichten} extraInitiatieven={extraInitiatieven} setExtraInitiatieven={setExtraInitiatieven} />} />
+          <Route path="/pilots" element={
+            <Pilots pilots={pilots} setPilots={setPilots} />
+          } />
+          <Route path="/documentatie" element={
+            <Documentatie docs={docs} setDocs={setDocs} />
+          } />
+          <Route path="/video" element={
+            <Video videos={videos} setVideos={setVideos} />
+          } />
+          <Route path="/evenementen" element={
+            <Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />
+          } />
+          <Route path="/linkjes" element={
+            <Linkjes linkjes={linkjes} setLinkjes={setLinkjes} />
+          } />
+          <Route path="/meld" element={
+            <Meld onNieuwBericht={(b) => setBerichten(prev => [b, ...prev])} />
+          } />
+          <Route path="/inspiratie" element={
+            <Inspiratie inspiraties={inspiraties} setInspiraties={setInspiraties} />
+          } />
+          <Route path="/over" element={<Over />} />
+          <Route path="/beheer" element={
+            <Beheer
+              berichten={berichten} setBerichten={setBerichten}
+              videos={videos} setVideos={setVideos}
+              pilots={pilots} setPilots={setPilots}
+              docs={docs} setDocs={setDocs}
+              inspiraties={inspiraties} setInspiraties={setInspiraties}
+            />
+          } />
         </Routes>
       </main>
       <Footer />
