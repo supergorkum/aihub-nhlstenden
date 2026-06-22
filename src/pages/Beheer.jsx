@@ -327,7 +327,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   {cloudStatus === 'saving' ? '⏳ Backup bezig...' :
                    cloudStatus === 'saved' ? '✓ Backup opgeslagen' :
                    cloudStatus === 'error' ? '✗ Backup mislukt' :
-                   cloudTijdstempel ? '✓ Laatste backup gelukt' : '☁ Auto-backup actief'}
+                   cloudTijdstempel ? '✓ Browser backup gelukt' : '💾 Nog geen backup'}
                 </div>
                 <div className="text-gray-400 leading-tight mt-0.5">
                   {cloudTijdstempel
@@ -559,7 +559,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                       'bg-gray-400'
                     }`} />
                     <div>
-                      <div className="text-white font-bold text-sm">Cloud opslag</div>
+                      <div className="text-white font-bold text-sm">Browser opslag</div>
                       <div className="text-blue-200 text-xs">
                         {cloudTijdstempel
                           ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
