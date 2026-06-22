@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { sporen, lagen } from '../data'
 import PageHeader from '../components/PageHeader'
@@ -74,13 +75,8 @@ export default function Linkjes({ linkjes, setLinkjes }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader label="NHL Stenden" title="Bronnen & Handige links"
-            subtitle="Een overzichtelijke verzameling van relevante links voor medewerkers en studenten rondom AI, onderwijs en organisatie bij NHL Stenden." />
-          <button onClick={() => { setAddOpen(true); setToegevoegd(false); setFout(''); setForm({ titel:'',url:'',omschrijving:'',categorie:'',spoor:'',laag:'',trefwoorden:[],toegevoegdDoor:'' }) }}
-            className="btn-roze flex-shrink-0 self-start">+ Link toevoegen</button>
-        </div>
+      <GradientHeader label="Bronnen & referenties" title="Bronnen" subtitle="Handige links naar tools, onderzoek, beleid en inspiratie rondom AI." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Zoek */}
         <input type="text" value={zoek} onChange={e => setZoek(e.target.value)}

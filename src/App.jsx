@@ -32,6 +32,7 @@ function AppInner() {
   // ── Centrale state — overleeft navigatie ──────────────────────────
   const [berichten, setBerichten] = useState([])
   const [videos, setVideos] = useState(INIT_VIDEOS)
+  const [actiefVideoId, setActiefVideoId] = useState(null)
   const [pilots, setPilots] = useState(INIT_PILOTS)
   const [docs, setDocs] = useState(INIT_DOCS)
   const [evenementen, setEvenementen] = useState(INIT_EVENEMENTEN)
@@ -62,7 +63,7 @@ function AppInner() {
             <Documentatie docs={docs} setDocs={setDocs} />
           } />
           <Route path="/video" element={
-            <Video videos={videos} setVideos={setVideos} />
+            <Video videos={videos} setVideos={setVideos} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />
           } />
           <Route path="/evenementen" element={
             <Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />
@@ -81,6 +82,7 @@ function AppInner() {
             <Beheer
               berichten={berichten} setBerichten={setBerichten}
               videos={videos} setVideos={setVideos}
+              actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId}
               pilots={pilots} setPilots={setPilots}
               docs={docs} setDocs={setDocs}
               inspiraties={inspiraties} setInspiraties={setInspiraties}

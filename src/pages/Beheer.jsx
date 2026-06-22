@@ -1,8 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { initiatieven as initData, sporen, lagen, BEHEER_CODE } from '../data'
-import CloudStatus from '../components/CloudStatus'
 import { exportJSON, importJSON } from '../storage'
-import PageHeader from '../components/PageHeader'
 
 const statusOpties = ['actief', 'groeiend', 'in-ontwikkeling']
 const typeOpties = [
@@ -108,14 +106,38 @@ async function laadUitCloud() {
   return value ? JSON.parse(value) : null
 }
 
-export default function Beheer({ berichten, setBerichten, videos, setVideos, pilots, setPilots, docs, setDocs, inspiraties, setInspiraties }) {
+export default function Beheer({ berichten, setBerichten, videos, setVideos, actiefVideoId, setActiefVideoId, pilots, setPilots, docs, setDocs, inspiraties, setInspiraties }) {
   const [code, setCode] = useState('')
   const [toegang, setToegang] = useState(false)
   const [fout, setFout] = useState('')
-  const [cloudStatus, setCloudStatus] = useState('idle')
+  const [cloudStatus, setCloudStatus] = useState('idle') // idle | saving | saved | error
   const [cloudTijdstempel, setCloudTijdstempel] = useState(null)
+  const [autoBackupActief, setAutoBackupActief] = useState(false)
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
+
+  // Auto-backup uitvoeren
+  const voerBackupUit = useCallback(async (data) => {
+    try {
+      setCloudStatus('saving')
+      const ts = await slaOpInCloud(data)
+      setCloudTijdstempel(ts)
+      setCloudStatus('saved')
+      setTimeout(() => setCloudStatus('idle'), 3000)
+    } catch {
+      setCloudStatus('error')
+      setTimeout(() => setCloudStatus('idle'), 5000)
+    }
+  }, [])
+
+  // Auto-backup schema: elke 15 minuten als ingelogd
+  useEffect(() => {
+    if (!toegang || !autoBackupActief) return
+    const interval = setInterval(() => {
+      voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })
+    }, 15 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [toegang, autoBackupActief, alleInitiatieven, berichten, videos, pilots, docs, inspiraties, voerBackupUit])
 
   const login = () => {
     if (code === BEHEER_CODE) { setToegang(true); setFout('') }
@@ -124,13 +146,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
 
   const slaInitiatiefOp = (gewijzigd) => {
     setAlleInitiatieven(prev => prev.map(i => i.id === gewijzigd.id ? gewijzigd : i))
-    setCloudStatus('saved'); setTimeout(() => setCloudStatus('idle'), 2000)
   }
 
   const handleExport = () => {
-    setCloudStatus('saving')
     exportJSON({ alleInitiatieven, berichten, videos, pilots, docs, exportDatum: new Date().toISOString() }, `aihub-export-${Date.now()}.json`)
-    setTimeout(() => setCloudStatus('saved'), 800)
   }
 
   const handleImport = async (file) => {
@@ -141,8 +160,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
       if (data.videos) setVideos(data.videos)
       if (data.pilots) setPilots(data.pilots)
       if (data.docs) setDocs(data.docs)
-      setCloudStatus('saved')
-    } catch { setCloudStatus('error') }
+    } catch { alert('Import mislukt — controleer het bestand.') }
   }
 
   if (!toegang) {
@@ -177,9 +195,44 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
     <div className="min-h-screen pt-16 bg-gray-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
-          <PageHeader label="Beheer" title="AI-HUB Beheer" subtitle="Beheer alle content van de AI-HUB." />
-          <div className="flex items-center gap-3">
-            <CloudStatus status={cloudStatus} />
+          <div>
+            <div className="text-nhl-roze font-semibold text-xs uppercase tracking-widest mb-1">Beheer</div>
+            <h1 className="text-2xl font-bold text-nhl-blauw">AI-HUB Beheer</h1>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+
+            {/* Cloud status lampje */}
+            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs">
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                cloudStatus === 'saving' ? 'bg-yellow-400 animate-pulse' :
+                cloudStatus === 'saved' ? 'bg-green-500' :
+                cloudStatus === 'error' ? 'bg-red-500' :
+                autoBackupActief ? 'bg-blue-400 pulse-soft' : 'bg-gray-300'
+              }`} />
+              <span className="text-gray-600">
+                {cloudStatus === 'saving' ? 'Backup bezig...' :
+                 cloudStatus === 'saved' ? 'Opgeslagen ✓' :
+                 cloudStatus === 'error' ? 'Fout bij backup' :
+                 cloudTijdstempel
+                   ? `Backup ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
+                   : 'Geen backup'}
+              </span>
+            </div>
+
+            {/* Auto-backup toggle */}
+            <button
+              onClick={() => setAutoBackupActief(v => !v)}
+              className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border font-medium transition-colors ${
+                autoBackupActief
+                  ? 'bg-green-50 border-green-300 text-green-700'
+                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+              }`}
+              title="Automatische backup elke 15 minuten"
+            >
+              <span>{autoBackupActief ? '⏱️' : '⏱️'}</span>
+              Auto-backup {autoBackupActief ? 'aan' : 'uit'}
+            </button>
+
             <button onClick={() => setToegang(false)} className="btn-ghost text-xs border border-gray-200">Uitloggen</button>
           </div>
         </div>
@@ -278,7 +331,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
                       <div className="font-medium text-nhl-blauw text-sm mb-1">{v.titel}</div>
                       <p className="text-gray-500 text-xs mb-3">{v.omschrijving}</p>
                       <div className="flex gap-2">
-                        <button onClick={() => setVideos(prev => prev.map(x => x.id === v.id ? { ...x, status: 'goedgekeurd' } : x))}
+                        <button onClick={() => { setVideos(prev => prev.map(x => x.id === v.id ? { ...x, status: 'goedgekeurd' } : x)); if (setActiefVideoId) setActiefVideoId(v.id) }}
                           className="flex-1 bg-green-600 text-white text-xs py-2 rounded-lg font-medium">✓ Goedkeuren</button>
                         <button onClick={() => setVideos(prev => prev.filter(x => x.id !== v.id))}
                           className="flex-1 bg-red-100 text-red-600 text-xs py-2 rounded-lg font-medium">✕ Afwijzen</button>
@@ -351,78 +404,121 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, pil
 
         {/* Data beheer */}
         {actieveTab === 'data' && (
-          <div className="grid sm:grid-cols-2 gap-6">
-            {/* Cloud backup */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <div className="text-2xl mb-3">☁️</div>
-              <h3 className="font-bold text-nhl-blauw mb-2">Cloud backup</h3>
-              <p className="text-gray-500 text-sm mb-4">Sla alle data op in de cloud (Netlify Blobs). Beschikbaar na elke herstart.</p>
-              {cloudTijdstempel && (
-                <div className="text-xs text-green-600 bg-green-50 rounded-lg px-3 py-2 mb-3">
-                  ✓ Laatste backup: {new Date(cloudTijdstempel).toLocaleString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+          <div className="space-y-6">
+
+            {/* Cloud backup blok — prominent bovenaan */}
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="nhl-gradient-deep px-6 py-5">
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
+                      cloudStatus === 'saving' ? 'bg-yellow-300 animate-pulse' :
+                      cloudStatus === 'saved' ? 'bg-green-400' :
+                      cloudStatus === 'error' ? 'bg-red-400' :
+                      autoBackupActief ? 'bg-blue-300 pulse-soft' : 'bg-gray-400'
+                    }`} />
+                    <div>
+                      <div className="text-white font-bold text-sm">Cloud opslag</div>
+                      <div className="text-blue-200 text-xs">
+                        {cloudTijdstempel
+                          ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
+                          : 'Nog geen backup gemaakt in deze sessie'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => setAutoBackupActief(v => !v)}
+                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-semibold transition-colors ${
+                        autoBackupActief
+                          ? 'bg-green-400/20 border border-green-400/40 text-green-200 hover:bg-green-400/30'
+                          : 'bg-white/10 border border-white/20 text-blue-200 hover:bg-white/20'
+                      }`}
+                    >
+                      ⏱️ Auto {autoBackupActief ? 'AAN · elke 15 min' : 'UIT'}
+                    </button>
+                  </div>
                 </div>
-              )}
-              <button
-                onClick={async () => {
-                  setCloudStatus('saving')
-                  try {
-                    const ts = await slaOpInCloud({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })
-                    setCloudTijdstempel(ts)
-                    setCloudStatus('saved')
-                    setTimeout(() => setCloudStatus('idle'), 3000)
-                  } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 3000) }
-                }}
-                disabled={cloudStatus === 'saving'}
-                className="btn-primary w-full disabled:opacity-50">
-                {cloudStatus === 'saving' ? 'Opslaan...' : cloudStatus === 'saved' ? '✓ Opgeslagen' : 'Sla op in cloud'}
-              </button>
+              </div>
+
+              <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+                {/* Backup knop */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">☁️</span>
+                    <h3 className="font-bold text-nhl-blauw">Nu opslaan</h3>
+                  </div>
+                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat van alle data op in Netlify Blobs. Blijft beschikbaar na herstart.</p>
+                  <button
+                    onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
+                    disabled={cloudStatus === 'saving'}
+                    className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {cloudStatus === 'saving' ? (
+                      <><span className="animate-spin">⟳</span> Bezig...</>
+                    ) : cloudStatus === 'saved' ? (
+                      <>✓ Opgeslagen</>
+                    ) : (
+                      <>☁ Sla op in cloud</>
+                    )}
+                  </button>
+                </div>
+
+                {/* Restore knop */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">🔄</span>
+                    <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
+                  </div>
+                  <p className="text-gray-500 text-sm mb-4">Laad de laatste cloud backup terug. Overschrijft de huidige sessie-data volledig.</p>
+                  <button
+                    onClick={async () => {
+                      if (!window.confirm('Huidige data wordt overschreven met de cloud backup. Doorgaan?')) return
+                      setCloudStatus('saving')
+                      try {
+                        const data = await laadUitCloud()
+                        if (!data) { alert('Geen cloud backup gevonden.'); setCloudStatus('idle'); return }
+                        if (data.alleInitiatieven) setAlleInitiatieven(data.alleInitiatieven)
+                        if (data.berichten) setBerichten(data.berichten)
+                        if (data.videos) setVideos(data.videos)
+                        if (data.pilots) setPilots(data.pilots)
+                        if (data.docs) setDocs(data.docs)
+                        if (data.inspiraties) setInspiraties(data.inspiraties)
+                        if (data.backupDatum) setCloudTijdstempel(data.backupDatum)
+                        setCloudStatus('saved')
+                        setTimeout(() => setCloudStatus('idle'), 3000)
+                      } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 5000) }
+                    }}
+                    disabled={cloudStatus === 'saving'}
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm border-2 border-nhl-blauw text-nhl-blauw hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Laden...</> : <>🔄 Herstel backup</>}
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* Cloud herstel */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <div className="text-2xl mb-3">🔄</div>
-              <h3 className="font-bold text-nhl-blauw mb-2">Cloud herstel</h3>
-              <p className="text-gray-500 text-sm mb-4">Herstel de laatste cloud backup. Overschrijft de huidige data.</p>
-              <button
-                onClick={async () => {
-                  setCloudStatus('saving')
-                  try {
-                    const data = await laadUitCloud()
-                    if (!data) { alert('Geen cloud backup gevonden.'); setCloudStatus('idle'); return }
-                    if (data.alleInitiatieven) setAlleInitiatieven(data.alleInitiatieven)
-                    if (data.berichten) setBerichten(data.berichten)
-                    if (data.videos) setVideos(data.videos)
-                    if (data.pilots) setPilots(data.pilots)
-                    if (data.docs) setDocs(data.docs)
-                    if (data.inspiraties) setInspiraties(data.inspiraties)
-                    if (data.backupDatum) setCloudTijdstempel(data.backupDatum)
-                    setCloudStatus('saved')
-                    setTimeout(() => setCloudStatus('idle'), 3000)
-                  } catch { setCloudStatus('error'); setTimeout(() => setCloudStatus('idle'), 3000) }
-                }}
-                disabled={cloudStatus === 'saving'}
-                className="btn-ghost border border-gray-200 w-full disabled:opacity-50">
-                {cloudStatus === 'saving' ? 'Laden...' : 'Herstel uit cloud'}
-              </button>
-            </div>
-
-            {/* JSON export */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <div className="text-2xl mb-3">📤</div>
-              <h3 className="font-bold text-nhl-blauw mb-2">Exporteren</h3>
-              <p className="text-gray-500 text-sm mb-4">Download alle data als JSON bestand.</p>
-              <button onClick={handleExport} className="btn-primary w-full">Exporteer als JSON</button>
-            </div>
-
-            {/* JSON import */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <div className="text-2xl mb-3">📥</div>
-              <h3 className="font-bold text-nhl-blauw mb-2">Importeren</h3>
-              <p className="text-gray-500 text-sm mb-4">Laad een eerder geëxporteerd JSON bestand in.</p>
-              <label className="btn-primary w-full text-center cursor-pointer block">
-                Selecteer JSON bestand
-                <input type="file" accept=".json" className="hidden" onChange={e => handleImport(e.target.files[0])} />
-              </label>
+            {/* JSON export / import */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">📤</span>
+                  <h3 className="font-bold text-nhl-blauw">Exporteren</h3>
+                </div>
+                <p className="text-gray-500 text-sm mb-4">Download alle data als JSON bestand voor lokale backup.</p>
+                <button onClick={handleExport} className="btn-primary w-full">Exporteer als JSON</button>
+              </div>
+              <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">📥</span>
+                  <h3 className="font-bold text-nhl-blauw">Importeren</h3>
+                </div>
+                <p className="text-gray-500 text-sm mb-4">Laad een eerder geëxporteerd JSON bestand in.</p>
+                <label className="btn-primary w-full text-center cursor-pointer block">
+                  Selecteer JSON bestand
+                  <input type="file" accept=".json" className="hidden" onChange={e => handleImport(e.target.files[0])} />
+                </label>
+              </div>
             </div>
           </div>
         )}

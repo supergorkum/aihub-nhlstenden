@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState, useCallback } from 'react'
 import { initiatieven, sporen } from '../data'
 import PageHeader from '../components/PageHeader'
@@ -161,14 +162,9 @@ export default function Netwerk() {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <PageHeader
-          label="Netwerkorganisatie"
-          title="Het AI-netwerk van NHL Stenden"
-          subtitle="Klik op een knoop om details te zien. Beweeg erover voor een preview. De verbindingen laten zien hoe initiatieven en thema's samenhangen."
-        />
-
-        {/* Uitleg legenda */}
+      <GradientHeader label="Netwerkorganisatie" title="Het AI-netwerk van NHL Stenden" subtitle="Klik op een knoop om details te zien. De verbindingen laten zien hoe initiatieven en thema's samenhangen." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+{/* Uitleg legenda */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-6">
           <div className="grid sm:grid-cols-3 gap-5">
             <div className="flex gap-3">

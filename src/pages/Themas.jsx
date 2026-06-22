@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { sporen } from '../data'
@@ -8,15 +9,10 @@ export default function Themas() {
   const thema = sporen.find(s => s.id === actief)
 
   return (
-    <div className="min-h-screen pt-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <PageHeader
-          label="Vier thema's"
-          title="AI Thema's"
-          subtitle="De AI-HUB werkt langs vier thema's die samen het volledige AI-landschap van NHL Stenden beslaan. Elk thema heeft een eigen ingang, eigen vraagstukken en eigen verantwoordelijken — maar ze zijn onlosmakelijk met elkaar verbonden."
-        />
-
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
+    <div className="min-h-screen pt-16 bg-gray-50">
+      <GradientHeader label="Vier thema's" title="AI Thema's" subtitle="De vier sporen waarlangs NHL Stenden AI aanpakt." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+<div className="grid lg:grid-cols-3 gap-8 mb-12">
           {/* Thema kiezer */}
           <div className="space-y-3">
             {sporen.map(s => (

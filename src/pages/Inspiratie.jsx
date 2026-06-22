@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { sporen, lagen } from '../data'
 import PageHeader from '../components/PageHeader'
@@ -109,13 +110,8 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader label="Inspiratie & initiatieven" title="Inspiratie"
-            subtitle="Deel wat jou inspireert op het gebied van AI. Artikelen, tools, initiatieven, evenementen — alles wat bijdraagt aan het AI-gesprek binnen NHL Stenden." />
-          <button onClick={() => { setAddOpen(true); setVerstuurd(false); setStap(0); setForm({ type:'',rol:'',naam:'',titel:'',tekst:'',url:'',spoor:'',laag:'',trefwoorden:[] }) }}
-            className="btn-roze flex-shrink-0 self-start">+ Deel inspiratie</button>
-        </div>
+      <GradientHeader label="Inspiratie & initiatieven" title="Inspiratie" subtitle="Deel wat jou inspireert op het gebied van AI." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Type filters */}
         <div className="flex flex-wrap gap-2 mb-8">

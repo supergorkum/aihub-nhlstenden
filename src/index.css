@@ -9,6 +9,7 @@
 
 @layer components {
   .nhl-gradient { background: linear-gradient(135deg, #162D6E 0%, #1E3A8A 60%, #2563EB 100%); }
+  .nhl-gradient-deep { background: linear-gradient(160deg, #0F1E52 0%, #162D6E 40%, #1E3A8A 70%, #2563EB 100%); }
   .card { @apply bg-white rounded-2xl border border-gray-100 shadow-sm; }
   .card-hover { @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5; }
   .btn-primary { @apply bg-nhl-blauw hover:bg-nhl-blauw-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors; }

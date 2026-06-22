@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PageHeader from '../components/PageHeader'
+import GradientHeader from '../components/GradientHeader'
 
 const CATEGORIEEN = [
   { id: 'strategie', label: 'Strategie & Beleid', icon: '🧭', kleur: '#1E3A8A' },
@@ -11,12 +11,6 @@ const CATEGORIEEN = [
 ]
 
 const SPOREN_OPTIES = ['AI & Onderwijs', 'AI & Organisatie', 'AI & Verantwoordelijkheid', 'AI-Geletterdheid', 'Overkoepelend']
-
-const VOORBEELDDOCS = [
-  { id: 1, titel: 'AI Kompas NHL Stenden', categorie: 'strategie', spoor: 'Overkoepelend', type: 'pdf', datum: 'Juni 2026', omschrijving: 'Strategisch overzicht van de AI-architectuur en vijf lagen model.', icon: '📄' },
-  { id: 2, titel: 'AI-HUB Fundament v1.2', categorie: 'strategie', spoor: 'Overkoepelend', type: 'pdf', datum: 'Juni 2026', omschrijving: 'Fundament document met opzet, sporen en netwerkorganisatie.', icon: '📄' },
-  { id: 3, titel: 'Blueprint AI-HUB presentatie', categorie: 'strategie', spoor: 'Overkoepelend', type: 'pptx', datum: 'Juni 2026', omschrijving: 'Visuele presentatie van de architectuur en werking van de AI-HUB.', icon: '📊' },
-]
 
 const typeKleur = {
   pdf:  'bg-red-50 text-red-600',
@@ -32,6 +26,7 @@ export default function Documentatie({ docs, setDocs }) {
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadStap, setUploadStap] = useState(0)
   const [bestand, setBestand] = useState(null)
+  const [bestandData, setBestandData] = useState(null) // base64 voor download
   const [uploadForm, setUploadForm] = useState({ titel: '', categorie: '', spoor: '', omschrijving: '' })
   const [fout, setFout] = useState('')
 
@@ -44,6 +39,10 @@ export default function Documentatie({ docs, setDocs }) {
     setBestand(file)
     const ext = file.name.split('.').pop().toLowerCase()
     setUploadForm(f => ({ ...f, titel: file.name.replace(`.${ext}`, '') }))
+    // Lees bestand als dataURL voor download
+    const reader = new FileReader()
+    reader.onload = (e) => setBestandData(e.target.result)
+    reader.readAsDataURL(file)
   }
 
   const verstuurUpload = () => {
@@ -54,6 +53,8 @@ export default function Documentatie({ docs, setDocs }) {
       id: Date.now(),
       ...uploadForm,
       type: ext,
+      bestandNaam: bestand.name,
+      bestandData: bestandData,
       datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
       icon,
       nieuw: true,
@@ -61,23 +62,43 @@ export default function Documentatie({ docs, setDocs }) {
     setUploadOpen(false)
     setUploadStap(0)
     setBestand(null)
+    setBestandData(null)
     setUploadForm({ titel: '', categorie: '', spoor: '', omschrijving: '' })
+  }
+
+  const downloadDoc = (doc) => {
+    if (doc.bestandData) {
+      const a = document.createElement('a')
+      a.href = doc.bestandData
+      a.download = doc.bestandNaam || `${doc.titel}.${doc.type}`
+      a.click()
+    } else if (doc.url) {
+      window.open(doc.url, '_blank')
+    } else {
+      alert('Dit document heeft geen downloadbaar bestand. Neem contact op met de AI-HUB.')
+    }
   }
 
   const kanVersturen = bestand && uploadForm.titel && uploadForm.categorie
 
   return (
     <div className="min-h-screen pt-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader label="Kennis & materiaal" title="Documentatie" subtitle="Presentaties, rapporten, beleidsdocumenten en andere materialen over AI bij NHL Stenden." />
-          <button onClick={() => setUploadOpen(true)} className="btn-roze flex-shrink-0 self-start">
+      <GradientHeader
+        label="Kennis & materiaal"
+        title="Documentatie"
+        subtitle="Presentaties, rapporten, beleidsdocumenten en andere materialen over AI bij NHL Stenden."
+      >
+        <div className="mt-5">
+          <button onClick={() => setUploadOpen(true)} className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
             + Document uploaden
           </button>
         </div>
+      </GradientHeader>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Categorie filter */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-8">
+        <div className="grid grid-cols-3 sm:grid-cols-7 gap-3 mb-8">
           <button
             onClick={() => setFilterCat(null)}
             className={`rounded-xl p-3 text-center border-2 transition-colors ${!filterCat ? 'border-nhl-blauw bg-blue-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}
@@ -104,18 +125,19 @@ export default function Documentatie({ docs, setDocs }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {gefilterd.map(doc => {
             const cat = CATEGORIEEN.find(c => c.id === doc.categorie)
+            const kanDownloaden = !!(doc.bestandData || doc.url)
             return (
               <div key={doc.id} className="card card-hover p-5 flex flex-col">
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-3xl">{doc.icon}</div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center">
                     {doc.nieuw && <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">Nieuw</span>}
                     <span className={`text-xs px-2 py-0.5 rounded font-medium ${typeKleur[doc.type] || typeKleur.overig}`}>{doc.type?.toUpperCase()}</span>
                   </div>
                 </div>
                 <div className="font-bold text-nhl-blauw mb-1 leading-snug">{doc.titel}</div>
                 {doc.omschrijving && <p className="text-gray-500 text-sm leading-relaxed mb-3 flex-1">{doc.omschrijving}</p>}
-                <div className="flex items-center gap-2 pt-3 border-t border-gray-100 mt-auto">
+                <div className="flex items-center gap-2 pt-3 border-t border-gray-100 mt-auto flex-wrap">
                   {cat && (
                     <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: cat.kleur }}>
                       {cat.icon} {cat.label}
@@ -124,6 +146,14 @@ export default function Documentatie({ docs, setDocs }) {
                   {doc.spoor && <span className="text-xs text-gray-400">· {doc.spoor}</span>}
                   <span className="text-xs text-gray-400 ml-auto">{doc.datum}</span>
                 </div>
+                {/* Download knop */}
+                <button
+                  onClick={() => downloadDoc(doc)}
+                  className={`mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-xl text-sm font-semibold transition-colors ${kanDownloaden ? 'bg-nhl-blauw text-white hover:bg-nhl-blauw-dark' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                  title={kanDownloaden ? 'Download dit document' : 'Geen bestand beschikbaar'}
+                >
+                  <span>⬇</span> Download
+                </button>
               </div>
             )
           })}
@@ -145,17 +175,13 @@ export default function Documentatie({ docs, setDocs }) {
               <h2 className="font-bold text-nhl-blauw text-lg">Document uploaden</h2>
               <button onClick={() => { setUploadOpen(false); setUploadStap(0); setBestand(null) }} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
             </div>
-
             <div className="p-6 space-y-4">
-              {/* Stap 1: bestand */}
               {uploadStap === 0 && (
                 <div>
-                  <div
-                    onClick={() => document.getElementById('doc-upload').click()}
+                  <div onClick={() => document.getElementById('doc-upload').click()}
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0]) }}
-                    className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors"
-                  >
+                    className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors">
                     {bestand ? (
                       <div>
                         <div className="text-4xl mb-2">{bestand.type.includes('pdf') ? '📄' : bestand.type.includes('image') ? '🖼️' : '📝'}</div>
@@ -177,8 +203,6 @@ export default function Documentatie({ docs, setDocs }) {
                   )}
                 </div>
               )}
-
-              {/* Stap 2: rubricering */}
               {uploadStap === 1 && (
                 <div className="space-y-4">
                   <div>

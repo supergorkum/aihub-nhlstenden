@@ -18,7 +18,7 @@ export default function Fundament() {
     <div className="min-h-screen pt-16 bg-white">
 
       {/* Hero */}
-      <div className="nhl-gradient relative overflow-hidden">
+      <div className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 w-72 h-72 border border-white rounded-full" />
           <div className="absolute -bottom-10 left-20 w-52 h-52 border border-white rounded-full" />
@@ -39,7 +39,7 @@ export default function Fundament() {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 40" fill="none"><path d="M0 40L1440 40L1440 12C1200 40 960 0 720 12C480 24 240 0 0 12L0 40Z" fill="white"/></svg>
+          <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block"><path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/><path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/></svg>
         </div>
       </div>
 

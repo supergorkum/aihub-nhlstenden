@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { vraagCategorieen, rolOpties, sporen } from '../data'
@@ -129,9 +130,12 @@ export default function Meld({ onNieuwBericht }) {
 
   return (
     <div className="min-h-screen pt-16 bg-white">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-        <PageHeader label="Vragen & ideeën" title="Heb je een vraag of idee?"
-          subtitle="Stel je vraag, deel een idee, zoek samenwerking of geef een signaal. Het AI-HUB team neemt elk bericht serieus." />
+      <GradientHeader
+        label="Vragen & ideeën"
+        title="Heb je een vraag of idee?"
+        subtitle="Stel je vraag, deel een idee, zoek samenwerking of geef een signaal. Het AI-HUB team neemt elk bericht serieus."
+      />
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Tip voor inspiratie */}
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-8 flex gap-3">

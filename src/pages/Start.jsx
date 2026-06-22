@@ -13,7 +13,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
-      <section className="nhl-gradient relative overflow-hidden">
+      <section className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 w-80 h-80 border border-white rounded-full" />
           <div className="absolute top-20 right-20 w-52 h-52 border border-white rounded-full" />
@@ -71,9 +71,43 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 48" fill="none"><path d="M0 48L1440 48L1440 16C1200 48 960 0 720 16C480 32 240 0 0 16L0 48Z" fill="white"/></svg>
+                  <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block">
+          <path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/>
+          <path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/>
+        </svg>
         </div>
       </section>
+
+      {/* Eerstvolgende evenement — subtiele balk */}
+      {(() => {
+        const nu = new Date()
+        const ev = evenementen
+          .filter(e => new Date(`${e.datum}T${e.startTijd || '00:00'}`) >= nu)
+          .sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
+        if (!ev) return null
+        const d = new Date(ev.datum)
+        const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
+        return (
+          <Link to="/evenementen"
+            className="block bg-nhl-blauw/5 hover:bg-nhl-blauw/10 border-b border-nhl-blauw/10 transition-colors">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+              <span className="text-sm">📅</span>
+              <span className="text-xs text-nhl-blauw font-semibold uppercase tracking-wide flex-shrink-0">Volgend evenement</span>
+              <span className="text-gray-300">·</span>
+              <span className="text-sm font-medium text-nhl-blauw">
+                {d.getDate()} {MAANDEN[d.getMonth()]} — {ev.naam}
+              </span>
+              {ev.startTijd && (
+                <span className="text-xs text-gray-500 hidden sm:inline">🕐 {ev.startTijd}</span>
+              )}
+              {ev.locatie && (
+                <span className="text-xs text-gray-500 hidden md:inline">📍 {ev.locatie.split(',')[0]}</span>
+              )}
+              <span className="ml-auto text-xs text-nhl-roze font-medium flex-shrink-0">Bekijken →</span>
+            </div>
+          </Link>
+        )
+      })()}
 
       {/* Snelle navigatie */}
       <section className="py-16 bg-white">

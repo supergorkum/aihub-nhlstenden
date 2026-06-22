@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { sporen } from '../data'
 import PageHeader from '../components/PageHeader'
@@ -127,17 +128,8 @@ export default function Evenementen({ evenementen, setEvenementen }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader
-            label="Agenda"
-            title="Evenementen"
-            subtitle="Bijeenkomsten, workshops en conferenties rond AI bij NHL Stenden en partners. Voeg ze toe aan je agenda of meld zelf een evenement aan."
-          />
-          <button onClick={() => { setAddOpen(true); setToegevoegd(false) }} className="btn-roze flex-shrink-0 self-start">
-            + Evenement toevoegen
-          </button>
-        </div>
+      <GradientHeader label="Agenda" title="Evenementen" subtitle="Bijeenkomsten, workshops en conferenties rond AI bij NHL Stenden en partners." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Thema filters */}
         <div className="flex flex-wrap gap-2 mb-8">

@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { NHL_DIENSTEN, NHL_ACADEMIES, NHL_EXTERN } from '../initialData'
 import { sporen, lagen } from '../data'
@@ -97,13 +98,8 @@ export default function Pilots({ pilots, setPilots }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader label="Praktijk & experiment" title="AI Pilots"
-            subtitle="Overzicht van lopende en afgeronde AI-pilots binnen NHL Stenden. Voeg jouw pilot toe en houd de voortgang bij." />
-          <button onClick={() => { setAddOpen(true); setToegevoegd(false); setStap(0); setForm({ naam:'',academie:'',platform:'',status:'In voorbereiding',doel:'',bereiken:'',aanpak:'',spoor:'',laag:'',surf:'',trefwoorden:[],contactNaam:'',contactEmail:'',startDatum:'' }); setFout('') }}
-            className="btn-roze flex-shrink-0 self-start">+ Pilot aanmelden</button>
-        </div>
+      <GradientHeader label="Praktijk & experiment" title="AI Pilots" subtitle="Overzicht van lopende en afgeronde AI-pilots binnen NHL Stenden." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Pilots grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">

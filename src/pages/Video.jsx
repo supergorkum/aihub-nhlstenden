@@ -1,6 +1,6 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState, useCallback } from 'react'
 import { sporen, BEHEER_CODE } from '../data'
-import PageHeader from '../components/PageHeader'
 
 function getYouTubeId(url) {
   if (!url) return null
@@ -12,9 +12,10 @@ function getThumbUrl(videoId) {
   return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
 }
 
-// Props: videos, setVideos komen van App.jsx
-export default function Video({ videos, setVideos }) {
-  const [actiefId, setActiefId] = useState(null)
+// Props: videos, setVideos, actiefVideoId, setActiefVideoId komen van App.jsx
+export default function Video({ videos, setVideos, actiefVideoId, setActiefVideoId }) {
+  const setActiefId = setActiefVideoId
+  const actiefId = actiefVideoId
   const [eigenStemmen, setEigenStemmen] = useState({})
   const [meldOpen, setMeldOpen] = useState(false)
   const [beheerOpen, setBeheerOpen] = useState(false)
@@ -30,13 +31,11 @@ export default function Video({ videos, setVideos }) {
   const goedgekeurd = (videos || []).filter(v => v.status === 'goedgekeurd')
   const wachtrij = (videos || []).filter(v => v.status === 'wachtrij')
 
-  // Actieve video: eerste goedgekeurde als actiefId niet gezet of niet bestaat
   const actief = actiefId
     ? goedgekeurd.find(v => v.id === actiefId) || goedgekeurd[0]
     : goedgekeurd[0]
 
   const top4 = goedgekeurd.filter(v => v.id !== actief?.id).slice(0, 4)
-
   const gesorteerd = [...goedgekeurd].sort((a, b) => (b.omhoog - b.omlaag) - (a.omhoog - a.omlaag))
   const top5 = gesorteerd.slice(0, 5)
 
@@ -93,19 +92,20 @@ export default function Video({ videos, setVideos }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader label="Kennis & inspiratie" title="AI Video's"
-            subtitle="Relevante video's over AI in het onderwijs en de organisatie, samengesteld door en voor NHL Stenden." />
-          <div className="flex gap-2 flex-shrink-0">
-            <button onClick={() => { setBeheerOpen(true); setBeheerCode(''); setBeheerIn(false); setBeheerFout('') }}
-              className="btn-ghost border border-gray-200 text-xs">
-              🔐 Beheer
-              {wachtrij.length > 0 && <span className="ml-1.5 bg-nhl-roze text-white rounded-full px-1.5 py-0.5 text-xs">{wachtrij.length}</span>}
-            </button>
-            <button onClick={() => { setMeldOpen(true); setMeldVerstuurd(false); setForm({ url:'',titel:'',omschrijving:'',trefwoorden:'',spoor:'',ingediendDoor:'' }); setFormFout('') }}
-              className="btn-roze text-sm">+ Video aanmelden</button>
-          </div>
+      <GradientHeader
+        label="Kennis & inspiratie"
+        title="AI Video's"
+        subtitle="Relevante video's over AI in het onderwijs en de organisatie, samengesteld door en voor NHL Stenden."
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <div className="flex items-center justify-end gap-2 mb-8">
+          <button onClick={() => { setBeheerOpen(true); setBeheerCode(''); setBeheerIn(false); setBeheerFout('') }}
+            className="btn-ghost border border-gray-200 text-xs">
+            🔐 Beheer
+            {wachtrij.length > 0 && <span className="ml-1.5 bg-nhl-roze text-white rounded-full px-1.5 py-0.5 text-xs">{wachtrij.length}</span>}
+          </button>
+          <button onClick={() => { setMeldOpen(true); setMeldVerstuurd(false); setForm({ url:'',titel:'',omschrijving:'',trefwoorden:'',spoor:'',ingediendDoor:'' }); setFormFout('') }}
+            className="btn-roze text-sm">+ Video aanmelden</button>
         </div>
 
         {goedgekeurd.length === 0 ? (

@@ -1,3 +1,4 @@
+import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
@@ -22,18 +23,9 @@ export default function Initiatieven() {
   })
 
   return (
-    <div className="min-h-screen pt-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
-          <PageHeader
-            label="Wat loopt er al"
-            title="Initiatieven & projecten"
-            subtitle="Een eerste overzicht van wat er binnen en buiten NHL Stenden al loopt op het gebied van AI."
-          />
-          <Link to="/meld" className="btn-roze flex-shrink-0 self-start">
-            + Initiatief aanmelden
-          </Link>
-        </div>
+    <div className="min-h-screen pt-16 bg-gray-50">
+      <GradientHeader label="Wat loopt er" title="Alle initiatieven" subtitle="Overzicht van alle AI-initiatieven bij NHL Stenden — intern, extern en in samenwerking met partners." />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Zoek + filters */}
         <div className="bg-gray-50 rounded-2xl p-4 mb-8 space-y-4">
