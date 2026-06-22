@@ -122,7 +122,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             {sporen.map(s => (
               <Link
                 key={s.id}
-                to="/themas"
+                to={`/themas?spoor=${s.id}`}
                 className="card card-hover p-5 group"
               >
                 <div className="text-2xl mb-3">{s.icon}</div>

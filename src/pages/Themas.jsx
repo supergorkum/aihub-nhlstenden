@@ -1,11 +1,20 @@
 import GradientHeader from '../components/GradientHeader'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { sporen } from '../data'
 import PageHeader from '../components/PageHeader'
 
 export default function Themas() {
-  const [actief, setActief] = useState(1)
+  const location = useLocation()
+  const [actief, setActief] = useState(() => {
+    const spoor = new URLSearchParams(location.search).get('spoor')
+    return spoor ? parseInt(spoor) : 1
+  })
+
+  useEffect(() => {
+    const spoor = new URLSearchParams(location.search).get('spoor')
+    if (spoor) setActief(parseInt(spoor))
+  }, [location.search])
   const thema = sporen.find(s => s.id === actief)
 
   return (

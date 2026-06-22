@@ -705,8 +705,17 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           <div className="p-6 space-y-6">
             {[
               {
-                versie: 'v1.2', datum: 'Juni 2026',
+                versie: 'v1.3', datum: 'Juni 2026',
                 label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
+                items: [
+                  'Impact dashboard herontworpen: aantallen en namen per ambitie, geen misleidende procentbalken',
+                  'Thema-navigatie gefixed: klikken op een thema op de startpagina opent nu het juiste thema',
+                  'Zippad fix voor bestandsinstallatie',
+                ],
+              },
+              {
+                versie: 'v1.2', datum: 'Juni 2026',
+                label: null, labelKleur: '',
                 items: [
                   'Impact dashboard op startpagina — drie meters voor studiesucces, uitval en voortijdig vertrek',
                   'Contact via AI-HUB knop op pilots — geen e-mailadressen in de app',
