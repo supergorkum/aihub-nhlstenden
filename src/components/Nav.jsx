@@ -13,6 +13,7 @@ const navGroepen = [
   {
     label: 'Kennis',
     items: [
+      { label: 'AI-Geletterdheid', to: '/geletterdheid', icon: '🤝' },
       { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
@@ -140,10 +141,7 @@ export default function Nav() {
                 alt="NHL Stenden"
                 className="h-9 w-auto flex-shrink-0"
               />
-              <div className="hidden sm:block leading-tight">
-                <div className="text-white font-bold text-sm">AI-HUB</div>
-                <div className="text-blue-200 text-xs">NHL Stenden</div>
-              </div>
+              <div className="text-white font-extrabold text-lg tracking-tight">AI-HUB</div>
             </NavLink>
 
             {/* Scheidingslijn */}

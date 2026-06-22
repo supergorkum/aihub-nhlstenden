@@ -2,6 +2,122 @@ import { useState, useEffect, useCallback } from 'react'
 import { initiatieven as initData, sporen, lagen, BEHEER_CODE } from '../data'
 import { exportJSON, importJSON } from '../storage'
 
+const NIEUWS_URL = '/.netlify/functions/nieuws-ophalen'
+
+function NieuwsOphalen({ onNieuwItems }) {
+  const [status, setStatus] = useState('idle') // idle | bezig | klaar | fout
+  const [resultaat, setResultaat] = useState(null)
+  const [tijdstip, setTijdstip] = useState(null)
+
+  const haalOp = async () => {
+    setStatus('bezig')
+    setResultaat(null)
+    try {
+      const res = await fetch(NIEUWS_URL, { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Fout bij ophalen')
+      setResultaat(data)
+      setTijdstip(new Date().toISOString())
+      if (data.items?.length > 0) onNieuwItems(data.items)
+      setStatus('klaar')
+    } catch (err) {
+      setResultaat({ fout: err.message })
+      setStatus('fout')
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      {/* Header */}
+      <div className="nhl-gradient-deep px-6 py-5 flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+            status === 'bezig' ? 'bg-yellow-300 animate-pulse' :
+            status === 'klaar' ? 'bg-green-400' :
+            status === 'fout' ? 'bg-red-400' : 'bg-gray-400'
+          }`} />
+          <div>
+            <div className="text-white font-bold text-sm">🤖 Slim nieuws ophalen</div>
+            <div className="text-blue-200 text-xs">
+              {tijdstip
+                ? `Laatste refresh: ${new Date(tijdstip).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
+                : 'Nog niet uitgevoerd in deze sessie'}
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={haalOp}
+          disabled={status === 'bezig'}
+          className="flex items-center gap-2 bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors disabled:opacity-50 flex-shrink-0"
+        >
+          {status === 'bezig' ? (
+            <><span className="animate-spin inline-block">⟳</span> Bezig met ophalen...</>
+          ) : (
+            <>🔄 Nieuws ophalen</>
+          )}
+        </button>
+      </div>
+
+      {/* Uitleg */}
+      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
+        <p className="text-sm text-gray-600">
+          Haalt nieuws op van <strong>SURF</strong>, <strong>Rathenau Instituut</strong>, <strong>Europese Commissie</strong> en <strong>Rijksoverheid</strong>.
+          De Anthropic AI beoordeelt elk artikel op relevantie voor NHL Stenden en schrijft een Nederlandse samenvatting.
+          Relevante items worden direct toegevoegd aan <strong>Inspiratie</strong>.
+        </p>
+        <p className="text-xs text-gray-400 mt-1">
+          Vereist: <code className="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> als Netlify environment variable.
+        </p>
+      </div>
+
+      {/* Resultaat */}
+      {resultaat && (
+        <div className="px-6 py-4">
+          {status === 'klaar' && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm font-semibold text-green-700">
+                <span>✓</span>
+                <span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
+              </div>
+              {resultaat.fouten?.length > 0 && (
+                <div className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+                  ⚠️ Niet alle feeds konden worden bereikt: {resultaat.fouten.join(' · ')}
+                </div>
+              )}
+              {resultaat.aantalNieuw === 0 && (
+                <p className="text-sm text-gray-500">Geen nieuwe relevante items gevonden — alles is al actueel of de feeds bevatten niets nieuws voor NHL Stenden.</p>
+              )}
+              {resultaat.items?.slice(0, 3).map((item, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
+                  <span>{item.icon}</span>
+                  <div>
+                    <div className="font-medium text-nhl-blauw">{item.titel}</div>
+                    <div className="text-gray-400">{item.naam} · {item.doelgroep}</div>
+                  </div>
+                </div>
+              ))}
+              {resultaat.items?.length > 3 && (
+                <div className="text-xs text-gray-400">+{resultaat.items.length - 3} meer toegevoegd</div>
+              )}
+            </div>
+          )}
+          {status === 'fout' && (
+            <div className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">
+              <div className="font-semibold mb-1">❌ Ophalen mislukt</div>
+              <div className="text-xs">{resultaat.fout}</div>
+              {resultaat.fout?.includes('API key') && (
+                <div className="text-xs mt-2 text-gray-600">
+                  Ga naar Netlify → Site settings → Environment variables → voeg <code className="bg-white px-1 rounded border">ANTHROPIC_API_KEY</code> toe.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 const statusOpties = ['actief', 'groeiend', 'in-ontwikkeling']
 const typeOpties = [
   { id: 'intern', label: 'Intern' },
@@ -506,6 +622,15 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 </div>
               </div>
             </div>
+
+            {/* Nieuws ophalen met AI */}
+            <NieuwsOphalen onNieuwItems={(items) => {
+              setInspiraties(prev => {
+                const nieuweIds = new Set(prev.map(i => i.titel))
+                const gefilterd = items.filter(i => !nieuweIds.has(i.titel))
+                return [...gefilterd, ...prev]
+              })
+            }} />
 
             {/* JSON export / import */}
             <div className="grid sm:grid-cols-2 gap-4">

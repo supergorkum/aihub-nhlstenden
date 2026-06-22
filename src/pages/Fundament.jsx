@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { lagen } from '../data'
-import PageHeader from '../components/PageHeader'
+import { lagen, initiatieven } from '../data'
+import GradientHeader from '../components/GradientHeader'
 
 const eigenaarKleur = {
   'Alle Academies & Diensten': 'bg-blue-50 text-nhl-blauw border-blue-200',
@@ -121,6 +121,27 @@ export default function Fundament() {
                       <div className="sm:col-span-2">
                         <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Toelichting</div>
                         <p className="text-gray-600 text-sm leading-relaxed">{laag.uitleg}</p>
+
+                        {/* Initiatieven op deze laag */}
+                        {(() => {
+                          const laagInitiatieven = initiatieven.filter(i => i.laag === laag.nr)
+                          if (!laagInitiatieven.length) return null
+                          return (
+                            <div className="mt-4">
+                              <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Initiatieven op deze laag</div>
+                              <div className="flex flex-wrap gap-2">
+                                {laagInitiatieven.map(i => (
+                                  <Link key={i.id} to="/initiatieven"
+                                    className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors hover:opacity-80"
+                                    style={{ borderColor: laag.kleur, color: laag.kleur, backgroundColor: `${laag.kleur}15` }}>
+                                    <span>{i.type === 'surf' ? '🌐' : i.type === 'extern' ? '🤝' : '🏫'}</span>
+                                    {i.naam}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )
+                        })()}
                       </div>
                       <div>
                         <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Primaire eigenaar</div>
@@ -131,9 +152,10 @@ export default function Fundament() {
                           <Link
                             to="/initiatieven"
                             onClick={e => e.stopPropagation()}
-                            className="text-xs text-nhl-blauw hover:underline font-medium"
+                            className="text-xs font-medium hover:underline"
+                            style={{ color: laag.kleur }}
                           >
-                            Initiatieven op laag {laag.nr} →
+                            Alle initiatieven op laag {laag.nr} →
                           </Link>
                         </div>
                       </div>
