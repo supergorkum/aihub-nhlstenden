@@ -1,12 +1,9 @@
-// Netlify Function v2 — esbuild bundler, export default syntax
+// Netlify Function — snel: max 3 feeds, parallel Anthropic calls, timeout 8s
 
 const RSS_FEEDS = [
-  { naam: 'The Gradient',     url: 'https://thegradient.pub/rss/',              label: 'The Gradient',    icon: '📊' },
-  { naam: '80,000 Hours',     url: 'https://80000hours.org/feed/',               label: '80,000 Hours',    icon: '💡' },
-  { naam: 'Import AI',        url: 'https://importai.substack.com/feed',         label: 'Import AI',       icon: '🤖' },
-  { naam: 'Future of Life',   url: 'https://futureoflife.org/feed/',             label: 'Future of Life',  icon: '🌍' },
-  { naam: 'VentureBeat AI',   url: 'https://venturebeat.com/category/ai/feed/', label: 'VentureBeat',     icon: '🚀' },
-  { naam: 'Alignment Forum',  url: 'https://www.alignmentforum.org/feed.xml',   label: 'Alignment Forum', icon: '⚖️' },
+  { naam: 'The Gradient',   url: 'https://thegradient.pub/rss/',              label: 'The Gradient',   icon: '📊' },
+  { naam: '80,000 Hours',   url: 'https://80000hours.org/feed/',               label: '80,000 Hours',   icon: '💡' },
+  { naam: 'Import AI',      url: 'https://importai.substack.com/feed',         label: 'Import AI',      icon: '🤖' },
 ]
 
 function parseRSS(xml) {
@@ -23,7 +20,7 @@ function parseRSS(xml) {
         c.match(/<description[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1] ||
         c.match(/<description[^>]*>([\s\S]*?)<\/description>/)?.[1] ||
         c.match(/<summary[^>]*>([\s\S]*?)<\/summary>/)?.[1] || ''
-      ).replace(/<[^>]+>/g, '').trim().slice(0, 400)
+      ).replace(/<[^>]+>/g, '').trim().slice(0, 300)
       const link = (
         c.match(/<link>(.*?)<\/link>/)?.[1] ||
         c.match(/<link[^>]*href="([^"]+)"/)?.[1] || ''
@@ -32,14 +29,54 @@ function parseRSS(xml) {
     }
     if (items.length > 0) break
   }
-  return items.slice(0, 5)
+  return items.slice(0, 3) // max 3 per feed
 }
 
-export default async (req, context) => {
+async function beoordeelItem(item, feed, apiKey) {
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 150,
+        messages: [{
+          role: 'user',
+          content: `Relevant voor NHL Stenden AI-HUB (AI onderwijs, AI Act, digitale soevereiniteit, hoger onderwijs)?\n\nTitel: ${item.titel}\nBeschrijving: ${item.beschrijving.slice(0, 150)}\n\nJSON alleen:\n{"relevant":true/false,"samenvatting":"max 1 zin Nederlands","doelgroep":"docenten/studenten/management/algemeen"}`
+        }]
+      }),
+      signal: AbortSignal.timeout(5000),
+    })
+    if (!r.ok) return null
+    const data = await r.json()
+    const tekst = data.content?.[0]?.text || ''
+    let b
+    try { b = JSON.parse(tekst.replace(/```[\w]*|```/g, '').trim()) } catch { return null }
+    if (!b.relevant || !b.samenvatting) return null
+    return {
+      id: Date.now() + Math.random(),
+      type: 'ontwikkeling', icon: feed.icon,
+      typelabel: 'Interessante ontwikkeling',
+      rol: 'Auto-update', naam: feed.label,
+      spoor: null, sporeDef: null, laag: null,
+      titel: item.titel, tekst: b.samenvatting,
+      url: item.link,
+      trefwoorden: ['AI', 'Nieuws', feed.label],
+      datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
+      nieuw: true, autoUpdate: true,
+      doelgroep: b.doelgroep || 'algemeen',
+    }
+  } catch { return null }
+}
+
+export default async (req) => {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'POST only' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' }
+      status: 405, headers: { 'Content-Type': 'application/json' }
     })
   }
 
@@ -50,69 +87,43 @@ export default async (req, context) => {
     }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 
-  const resultaten = []
   const fouten = []
+  const alleItems = []
 
-  for (const feed of RSS_FEEDS) {
-    try {
+  // Feeds parallel ophalen
+  const feedResults = await Promise.allSettled(
+    RSS_FEEDS.map(async (feed) => {
       const res = await fetch(feed.url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; NHLStendenAIHUB/1.3)',
-          'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-        },
-        signal: AbortSignal.timeout(10000),
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; NHLStendenAIHUB/1.3)', Accept: 'application/rss+xml, */*' },
+        signal: AbortSignal.timeout(6000),
       })
-      if (!res.ok) { fouten.push(`${feed.naam}: HTTP ${res.status}`); continue }
-
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const xml = await res.text()
       const items = parseRSS(xml)
-      if (items.length === 0) { fouten.push(`${feed.naam}: geen items`); continue }
+      if (items.length === 0) throw new Error('geen items')
+      return { feed, items }
+    })
+  )
 
-      for (const item of items) {
-        try {
-          const r = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': apiKey,
-              'anthropic-version': '2023-06-01',
-            },
-            body: JSON.stringify({
-              model: 'claude-haiku-4-5-20251001',
-              max_tokens: 250,
-              messages: [{
-                role: 'user',
-                content: `Beoordeel of dit nieuwsitem relevant is voor de AI-HUB van NHL Stenden (AI in onderwijs, AI-geletterdheid, EU AI Act, digitale soevereiniteit, AI-governance hoger onderwijs).\n\nTitel: ${item.titel}\nBeschrijving: ${item.beschrijving.slice(0, 200)}\n\nAntwoord ALLEEN met dit JSON (geen uitleg, geen markdown):\n{"relevant":true/false,"samenvatting":"1-2 zinnen Nederlands als relevant, anders leeg","doelgroep":"docenten/studenten/management/medewerkers/algemeen"}`
-              }]
-            })
-          })
-          if (!r.ok) continue
-          const data = await r.json()
-          const tekst = data.content?.[0]?.text || ''
-          let b
-          try { b = JSON.parse(tekst.replace(/```[\w]*|```/g, '').trim()) } catch { continue }
-          if (b.relevant && b.samenvatting) {
-            resultaten.push({
-              id: Date.now() + Math.random(),
-              type: 'ontwikkeling', icon: feed.icon,
-              typelabel: 'Interessante ontwikkeling',
-              rol: 'Auto-update', naam: feed.label,
-              spoor: null, sporeDef: null, laag: null,
-              titel: item.titel, tekst: b.samenvatting,
-              url: item.link,
-              trefwoorden: ['AI', 'Nieuws', feed.label],
-              datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
-              nieuw: true, autoUpdate: true,
-              doelgroep: b.doelgroep || 'algemeen',
-            })
-          }
-          await new Promise(r => setTimeout(r, 150))
-        } catch { /* sla item over */ }
-      }
-    } catch (err) {
-      fouten.push(`${feed.naam}: ${err.message?.slice(0, 60)}`)
+  for (let i = 0; i < feedResults.length; i++) {
+    const result = feedResults[i]
+    if (result.status === 'rejected') {
+      fouten.push(`${RSS_FEEDS[i].naam}: ${result.reason?.message?.slice(0, 50)}`)
+    } else {
+      alleItems.push(result.value)
     }
   }
+
+  // Alle Anthropic beoordelingen parallel
+  const beoordelingen = await Promise.allSettled(
+    alleItems.flatMap(({ feed, items }) =>
+      items.map(item => beoordeelItem(item, feed, apiKey))
+    )
+  )
+
+  const resultaten = beoordelingen
+    .filter(r => r.status === 'fulfilled' && r.value !== null)
+    .map(r => r.value)
 
   return new Response(JSON.stringify({
     ok: true,
