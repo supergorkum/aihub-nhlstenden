@@ -4,6 +4,18 @@ import { exportJSON, importJSON } from '../storage'
 
 const NIEUWS_URL = '/.netlify/functions/nieuws-ophalen'
 const REFRESH_KEY = 'aihub-laatste-refresh'
+const BACKUP_KEY = 'aihub-backup-v1'
+
+async function slaOpInCloud(data) {
+  const payload = { ...data, backupDatum: new Date().toISOString() }
+  localStorage.setItem(BACKUP_KEY, JSON.stringify(payload))
+  return payload.backupDatum
+}
+
+async function laadUitCloud() {
+  const raw = localStorage.getItem(BACKUP_KEY)
+  return raw ? JSON.parse(raw) : null
+}
 
 function NieuwsOphalen({ onNieuwItems }) {
   const [status, setStatus] = useState('idle')
@@ -31,7 +43,6 @@ function NieuwsOphalen({ onNieuwItems }) {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-      {/* Header */}
       <div className="nhl-gradient-deep px-6 py-5 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
@@ -60,8 +71,6 @@ function NieuwsOphalen({ onNieuwItems }) {
           )}
         </button>
       </div>
-
-      {/* Uitleg */}
       <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
         <p className="text-sm text-gray-600">
           Haalt nieuws op van <strong>The Gradient</strong>, <strong>MIT Tech Review</strong>, <strong>VentureBeat</strong>, <strong>Import AI</strong> en anderen.
@@ -72,8 +81,6 @@ function NieuwsOphalen({ onNieuwItems }) {
           Vereist: <code className="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> als Netlify environment variable.
         </p>
       </div>
-
-      {/* Resultaat */}
       {resultaat && (
         <div className="px-6 py-4">
           {status === 'klaar' && (
@@ -88,7 +95,7 @@ function NieuwsOphalen({ onNieuwItems }) {
                 </div>
               )}
               {resultaat.aantalNieuw === 0 && (
-                <p className="text-sm text-gray-500">Geen nieuwe relevante items gevonden — alles is al actueel of de feeds bevatten niets nieuws voor NHL Stenden.</p>
+                <p className="text-sm text-gray-500">Geen nieuwe relevante items gevonden — alles is al actueel.</p>
               )}
               {resultaat.items?.slice(0, 3).map((item, i) => (
                 <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
@@ -205,27 +212,13 @@ function InitiatiefRij({ init, onSave, onDelete }) {
   )
 }
 
-const BACKUP_KEY = 'aihub-backup-v1'
-
-async function slaOpInCloud(data) {
-  const payload = { ...data, backupDatum: new Date().toISOString() }
-  localStorage.setItem(BACKUP_KEY, JSON.stringify(payload))
-  return payload.backupDatum
-}
-
-async function laadUitCloud() {
-  const raw = localStorage.getItem(BACKUP_KEY)
-  return raw ? JSON.parse(raw) : null
-}
-
 function AntwoordVeld({ berichtId, onAntwoord }) {
   const [open, setOpen] = useState(false)
   const [tekst, setTekst] = useState('')
 
   if (!open) {
     return (
-      <button onClick={() => setOpen(true)}
-        className="ml-6 text-xs text-nhl-blauw hover:underline font-medium">
+      <button onClick={() => setOpen(true)} className="ml-6 text-xs text-nhl-blauw hover:underline font-medium">
         + Reageren als AI-HUB team
       </button>
     )
@@ -243,10 +236,7 @@ function AntwoordVeld({ berichtId, onAntwoord }) {
           className="w-full bg-white border border-nhl-blauw/20 rounded-xl px-3 py-2 text-sm text-nhl-blauw focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none mb-2"
         />
         <div className="flex gap-2 justify-end">
-          <button onClick={() => { setOpen(false); setTekst('') }}
-            className="text-xs text-gray-400 hover:text-gray-600 px-3 py-1.5 rounded-lg">
-            Annuleren
-          </button>
+          <button onClick={() => { setOpen(false); setTekst('') }} className="text-xs text-gray-400 hover:text-gray-600 px-3 py-1.5 rounded-lg">Annuleren</button>
           <button
             onClick={() => { if (tekst.trim()) { onAntwoord(berichtId, tekst.trim()); setOpen(false) } }}
             disabled={!tekst.trim()}
@@ -263,13 +253,12 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   const [code, setCode] = useState('')
   const [toegang, setToegang] = useState(false)
   const [fout, setFout] = useState('')
-  const [cloudStatus, setCloudStatus] = useState('idle') // idle | saving | saved | error
+  const [cloudStatus, setCloudStatus] = useState('idle')
   const [cloudTijdstempel, setCloudTijdstempel] = useState(null)
   const [changelogOpen, setChangelogOpen] = useState(false)
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
 
-  // Auto-backup uitvoeren
   const voerBackupUit = useCallback(async (data) => {
     try {
       setCloudStatus('saving')
@@ -283,7 +272,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     }
   }, [])
 
-
   const login = () => {
     if (code === BEHEER_CODE) { setToegang(true); setFout('') }
     else setFout('Onjuiste code.')
@@ -294,7 +282,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   }
 
   const handleExport = () => {
-    exportJSON({ alleInitiatieven, berichten, videos, pilots, docs, exportDatum: new Date().toISOString() }, `aihub-export-${Date.now()}.json`)
+    exportJSON({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties, exportDatum: new Date().toISOString() }, `aihub-export-${Date.now()}.json`)
   }
 
   const handleImport = async (file) => {
@@ -305,6 +293,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
       if (data.videos) setVideos(data.videos)
       if (data.pilots) setPilots(data.pilots)
       if (data.docs) setDocs(data.docs)
+      if (data.inspiraties) setInspiraties(data.inspiraties)
     } catch { alert('Import mislukt — controleer het bestand.') }
   }
 
@@ -347,7 +336,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
           <div className="flex items-center gap-3 flex-wrap">
 
-            {/* Cloud backup status — groen licht + tijdstip */}
+            {/* Cloud backup status */}
             <div className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs border transition-colors ${
               cloudStatus === 'saving' ? 'bg-yellow-50 border-yellow-300' :
               cloudStatus === 'saved' ? 'bg-green-50 border-green-400' :
@@ -366,14 +355,14 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   cloudTijdstempel || cloudStatus === 'saved' ? 'text-green-700' : 'text-gray-500'
                 }`}>
                   {cloudStatus === 'saving' ? '⏳ Backup bezig...' :
-                   cloudStatus === 'saved' ? '✓ Backup opgeslagen' :
-                   cloudStatus === 'error' ? '✗ Backup mislukt' :
-                   cloudTijdstempel ? '✓ Browser backup gelukt' : '💾 Nog geen backup'}
+                   cloudStatus === 'saved' ? '✓ Cloud backup opgeslagen' :
+                   cloudStatus === 'error' ? '✗ Cloud backup mislukt' :
+                   cloudTijdstempel ? '✓ Cloud backup gelukt' : '☁️ Nog geen cloud backup'}
                 </div>
                 <div className="text-gray-400 leading-tight mt-0.5">
                   {cloudTijdstempel
                     ? new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : 'Automatisch backup om 12:00 en 18:00'}
+                    : 'Automatisch om 08:00, 12:00 en 18:00'}
                 </div>
               </div>
             </div>
@@ -403,7 +392,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             <button
               onClick={() => setActieveTab('data')}
               className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-roze hover:text-nhl-roze transition-colors font-medium"
-              title="Ga naar Data tab voor nieuws ophalen"
             >
               🤖 Nieuws ophalen
             </button>
@@ -453,7 +441,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               <div className="space-y-4">
                 {berichten.map(b => (
                   <div key={b.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                    {/* Vraag / idee bubbel */}
                     <div className="p-5">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -462,7 +449,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                         </div>
                         <button onClick={() => setBerichten(prev => prev.filter(x => x.id !== b.id))} className="text-red-400 hover:text-red-600 text-xs flex-shrink-0">Verwijder</button>
                       </div>
-                      {/* Bubbel */}
                       <div className="bg-blue-50 border border-blue-200 rounded-2xl rounded-tl-sm px-4 py-3 mb-3 max-w-lg">
                         {b.titel && <div className="font-semibold text-gray-800 text-sm mb-1">{b.titel}</div>}
                         <p className="text-gray-600 text-sm leading-relaxed">{b.tekst}</p>
@@ -473,8 +459,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                         )}
                         {b.url && <a href={b.url} target="_blank" rel="noopener noreferrer" className="text-nhl-roze text-xs underline mt-2 block">🔗 {b.url}</a>}
                       </div>
-
-                      {/* Reactie van het team */}
                       {b.antwoord ? (
                         <div className="ml-6">
                           <div className="bg-nhl-blauw/5 border border-nhl-blauw/20 rounded-2xl rounded-tr-sm px-4 py-3 max-w-lg ml-auto">
@@ -610,7 +594,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
         {actieveTab === 'data' && (
           <div className="space-y-6">
 
-            {/* Cloud backup blok — prominent bovenaan */}
+            {/* Cloud backup blok */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="nhl-gradient-deep px-6 py-5">
                 <div className="flex items-center justify-between flex-wrap gap-4">
@@ -618,15 +602,14 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <div className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
                       cloudStatus === 'saving' ? 'bg-yellow-300 animate-pulse' :
                       cloudStatus === 'saved' ? 'bg-green-400' :
-                      cloudStatus === 'error' ? 'bg-red-400' :
-                      'bg-gray-400'
+                      cloudStatus === 'error' ? 'bg-red-400' : 'bg-gray-400'
                     }`} />
                     <div>
-                      <div className="text-white font-bold text-sm">Browser opslag</div>
+                      <div className="text-white font-bold text-sm">☁️ Cloud backup (Netlify)</div>
                       <div className="text-blue-200 text-xs">
                         {cloudTijdstempel
                           ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
-                          : 'Nog geen backup gemaakt in deze sessie'}
+                          : 'Nog geen backup gemaakt — automatisch om 08:00, 12:00 en 18:00'}
                       </div>
                     </div>
                   </div>
@@ -638,9 +621,11 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">☁️</span>
-                    <h3 className="font-bold text-nhl-blauw">Nu opslaan</h3>
+                    <h3 className="font-bold text-nhl-blauw">Sla op in de cloud</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat op in de browser (localStorage). Gebruik JSON-export voor een permanente backup.</p>
+                  <p className="text-gray-500 text-sm mb-4">
+                    Sla de huidige staat op in de cloud (Netlify). Automatisch bewaard — maximaal 12 versies, daarna wordt de oudste overschreven.
+                  </p>
                   <button
                     onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
                     disabled={cloudStatus === 'saving'}
@@ -649,9 +634,9 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     {cloudStatus === 'saving' ? (
                       <><span className="animate-spin">⟳</span> Bezig...</>
                     ) : cloudStatus === 'saved' ? (
-                      <>✓ Opgeslagen</>
+                      <>✓ Opgeslagen in de cloud</>
                     ) : (
-                      <>💾 Sla op lokaal</>
+                      <>☁️ Sla op in de cloud</>
                     )}
                   </button>
                 </div>
@@ -660,9 +645,9 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">🔄</span>
-                    <h3 className="font-bold text-nhl-blauw">Herstel uit browser</h3>
+                    <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Laad de laatste opgeslagen backup terug in deze sessie.</p>
+                  <p className="text-gray-500 text-sm mb-4">Laad de laatste cloud backup terug. De huidige sessie wordt overschreven.</p>
                   <button
                     onClick={async () => {
                       if (!window.confirm('Huidige data wordt overschreven met de cloud backup. Doorgaan?')) return
@@ -680,15 +665,15 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                         setCloudStatus('saved')
                         setTimeout(() => setCloudStatus('idle'), 3000)
                       } catch (err) {
-      setCloudStatus('error')
-      console.error('Cloud backup fout:', err)
-      setTimeout(() => setCloudStatus('idle'), 5000)
-    }
+                        setCloudStatus('error')
+                        console.error('Cloud backup fout:', err)
+                        setTimeout(() => setCloudStatus('idle'), 5000)
+                      }
                     }}
                     disabled={cloudStatus === 'saving'}
                     className="w-full py-2.5 rounded-xl font-semibold text-sm border-2 border-nhl-blauw text-nhl-blauw hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Laden...</> : <>🔄 Herstel backup</>}
+                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Laden...</> : <>🔄 Herstel uit cloud</>}
                   </button>
                 </div>
               </div>
@@ -703,22 +688,24 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               })
             }} />
 
-            {/* JSON export / import */}
+            {/* JSON export / import — duidelijk lokaal */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xl">📤</span>
-                  <h3 className="font-bold text-nhl-blauw">Exporteren</h3>
+                  <span className="text-xl">💻</span>
+                  <h3 className="font-bold text-nhl-blauw">Download naar laptop</h3>
                 </div>
-                <p className="text-gray-500 text-sm mb-4">Download alle data als JSON bestand voor lokale backup.</p>
-                <button onClick={handleExport} className="btn-primary w-full">Exporteer als JSON</button>
+                <p className="text-gray-500 text-sm mb-4">
+                  Sla alle data op als JSON-bestand op jouw eigen laptop. Handig als extra lokale backup of om te importeren op een andere plek.
+                </p>
+                <button onClick={handleExport} className="btn-primary w-full">⬇ Download als JSON</button>
               </div>
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">📥</span>
-                  <h3 className="font-bold text-nhl-blauw">Importeren</h3>
+                  <h3 className="font-bold text-nhl-blauw">Importeren vanuit bestand</h3>
                 </div>
-                <p className="text-gray-500 text-sm mb-4">Laad een eerder geëxporteerd JSON bestand in.</p>
+                <p className="text-gray-500 text-sm mb-4">Laad een eerder gedownload JSON-bestand terug in de AI-HUB.</p>
                 <label className="btn-primary w-full text-center cursor-pointer block">
                   Selecteer JSON bestand
                   <input type="file" accept=".json" className="hidden" onChange={e => handleImport(e.target.files[0])} />
@@ -744,52 +731,46 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           <div className="p-6 space-y-6">
             {[
               {
-                versie: 'v1.3', datum: 'Juni 2026',
+                versie: 'v1.4', datum: 'Juni 2026',
                 label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
                 items: [
-                  'Impact dashboard herontworpen: aantallen en namen per ambitie, geen misleidende procentbalken',
-                  'Thema-navigatie gefixed: klikken op een thema op de startpagina opent nu het juiste thema',
+                  'Backup terminologie verduidelijkt: "Sla op in de cloud" (Netlify) vs. "Download naar laptop" (lokale JSON)',
+                  'Video aanmelden: knop alleen nog in de header, niet dubbel op de pagina',
+                  'Videobibliotheek altijd zichtbaar zodra er video\'s zijn (was: pas bij 5+)',
+                  'Vier frames tonen nieuwste video\'s op datum (FIFO), exclusief de actieve video',
+                  'Start.jsx: nieuwste goedgekeurde video correct getoond',
+                ],
+              },
+              {
+                versie: 'v1.3', datum: 'Juni 2026',
+                label: null, labelKleur: '',
+                items: [
+                  'Impact dashboard herontworpen: aantallen en namen per ambitie',
+                  'Thema-navigatie gefixed',
                   'Zippad fix voor bestandsinstallatie',
                 ],
               },
               {
-                versie: 'v1.2', datum: 'Juni 2026',
-                label: null, labelKleur: '',
+                versie: 'v1.2', datum: 'Juni 2026', label: null, labelKleur: '',
                 items: [
-                  'Impact dashboard op startpagina — drie meters voor studiesucces, uitval en voortijdig vertrek',
-                  'Contact via AI-HUB knop op pilots — geen e-mailadressen in de app',
-                  'Ambities koppelen bij aanmelden van een pilot of initiatief',
-                  'NHL Stenden logo verwerkt in navigatiebalk en footer',
-                  'Volledige gradient headers op alle pagina\'s',
-                  'Dropdown navigatiemenu met vier groepen alfabetisch geordend',
+                  'Impact dashboard op startpagina',
                   'Cloud backup met auto-schema, lampje en tijdstempel in beheer',
-                  'Changelog toegevoegd aan beheeromgeving',
+                  'Changelog toegevoegd',
+                  'NHL Stenden logo en gradient headers',
+                  'Dropdown navigatiemenu',
                 ],
               },
               {
-                versie: 'v1.1', datum: 'Juni 2026', label: null,
-                items: [
-                  'Video pagina met YouTube-integratie, stemmen en beheer',
-                  'Evenementenagenda met filtering op thema',
-                  'Bronnen (linkjes) pagina',
-                  'Pilots pagina met voortgang-updates',
-                  'Inspiratie pagina met stemfunctie en masonry grid',
-                  'Fundament pagina met vijflagenmodel',
-                  'Over pagina',
+                versie: 'v1.1', datum: 'Juni 2026', label: null, items: [
+                  'Video pagina, Evenementen, Bronnen, Pilots, Inspiratie, Fundament, Over',
                   'Bestandsupload in documentatie',
-                  'Beheeromgeving met tabs voor alle content',
+                  'Beheeromgeving met tabs',
                 ],
               },
               {
-                versie: 'v1.0', datum: 'Mei 2026', label: null,
-                items: [
+                versie: 'v1.0', datum: 'Mei 2026', label: null, items: [
                   'Eerste versie AI-HUB gelanceerd',
-                  'Startpagina met hero, thema\'s en actuele initiatieven',
-                  'Netwerk visualisatie — interactief knopendiagram',
-                  'Thema\'s pagina — vier sporen',
-                  'Initiatieven overzicht',
-                  'Vragen & ideeën formulier',
-                  'Documentatie pagina',
+                  'Startpagina, Netwerk, Thema\'s, Initiatieven, Vragen & ideeën, Documentatie',
                   'Netlify deployment en GitHub koppeling',
                 ],
               },

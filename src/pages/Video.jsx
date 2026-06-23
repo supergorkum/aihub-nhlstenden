@@ -12,7 +12,6 @@ function getThumbUrl(videoId) {
   return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
 }
 
-// Props: videos, setVideos, actiefVideoId, setActiefVideoId komen van App.jsx
 export default function Video({ videos, setVideos, actiefVideoId, setActiefVideoId }) {
   const setActiefId = setActiefVideoId
   const actiefId = actiefVideoId
@@ -31,14 +30,21 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
   const goedgekeurd = (videos || []).filter(v => v.status === 'goedgekeurd')
   const wachtrij = (videos || []).filter(v => v.status === 'wachtrij')
 
-  // Actieve video: gebruik actiefId als die bestaat en geldig is,
-  // anders de video met de hoogste score
+  // Top 5 op score (voor de ranglijst)
   const gesorteerd = [...goedgekeurd].sort((a, b) => (b.omhoog - b.omlaag) - (a.omhoog - a.omlaag))
+
+  // Actieve video: gebruik actiefId als geldig, anders beste score
   const actief = actiefId
     ? goedgekeurd.find(v => v.id === actiefId) || gesorteerd[0]
     : gesorteerd[0]
 
-  const top4 = goedgekeurd.filter(v => v.id !== actief?.id).slice(0, 4)
+  // Vier frames onder de hoofdvideo: nieuwste goedgekeurde video's,
+  // exclusief de actief getoonde, max 4 — FIFO: oudste valt eraf als er meer dan 4 zijn
+  const frameVideos = [...goedgekeurd]
+    .filter(v => v.id !== actief?.id)
+    .sort((a, b) => new Date(b.datum) - new Date(a.datum))
+    .slice(0, 4)
+
   const top5 = gesorteerd.slice(0, 5)
 
   const stem = useCallback((id, richting) => {
@@ -94,30 +100,32 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
+      {/* Header — "Video aanmelden" knop alleen hier */}
       <GradientHeader
         label="Kennis & inspiratie"
         title="AI Video's"
         subtitle="Relevante video's over AI in het onderwijs en de organisatie, samengesteld door en voor NHL Stenden."
       >
-        <div className="mt-5">
+        <div className="mt-5 flex items-center gap-3">
           <button
             onClick={() => { setMeldOpen(true); setMeldVerstuurd(false); setForm({ url:'',titel:'',omschrijving:'',trefwoorden:'',spoor:'',ingediendDoor:'' }); setFormFout('') }}
             className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
           >
             + Video aanmelden
           </button>
+          <button
+            onClick={() => { setBeheerOpen(true); setBeheerCode(''); setBeheerIn(false); setBeheerFout('') }}
+            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"
+          >
+            🔐 Beheer
+            {wachtrij.length > 0 && (
+              <span className="bg-nhl-roze text-white rounded-full px-1.5 py-0.5 text-xs">{wachtrij.length}</span>
+            )}
+          </button>
         </div>
       </GradientHeader>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <div className="flex items-center justify-end gap-2 mb-8">
-          <button onClick={() => { setBeheerOpen(true); setBeheerCode(''); setBeheerIn(false); setBeheerFout('') }}
-            className="btn-ghost border border-gray-200 text-xs">
-            🔐 Beheer
-            {wachtrij.length > 0 && <span className="ml-1.5 bg-nhl-roze text-white rounded-full px-1.5 py-0.5 text-xs">{wachtrij.length}</span>}
-          </button>
-          <button onClick={() => { setMeldOpen(true); setMeldVerstuurd(false); setForm({ url:'',titel:'',omschrijving:'',trefwoorden:'',spoor:'',ingediendDoor:'' }); setFormFout('') }}
-            className="btn-roze text-sm">+ Video aanmelden</button>
-        </div>
 
         {goedgekeurd.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
@@ -128,6 +136,7 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
           </div>
         ) : actief && (
           <>
+            {/* Hoofdvideo + Top 5 */}
             <div className="grid lg:grid-cols-3 gap-8 mb-8">
               <div className="lg:col-span-2">
                 <div className="bg-black rounded-2xl overflow-hidden aspect-video mb-4 shadow-lg">
@@ -141,8 +150,17 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
                       <h2 className="font-bold text-nhl-blauw text-lg mb-2 leading-snug">{actief.titel}</h2>
                       <p className="text-gray-600 text-sm leading-relaxed mb-3">{actief.omschrijving}</p>
                       <div className="flex flex-wrap gap-2">
-                        {(actief.trefwoorden || []).map(t => <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>)}
-                        {actief.spoor && (() => { const s = sporen.find(sp => sp.id === actief.spoor); return s ? <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: s.kleur }}>{s.icon} {s.titel}</span> : null })()}
+                        {(actief.trefwoorden || []).map(t => (
+                          <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>
+                        ))}
+                        {actief.spoor && (() => {
+                          const s = sporen.find(sp => sp.id === actief.spoor)
+                          return s ? (
+                            <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: s.kleur }}>
+                              {s.icon} {s.titel}
+                            </span>
+                          ) : null
+                        })()}
                       </div>
                     </div>
                     <div className="flex flex-col items-center gap-2 flex-shrink-0">
@@ -163,6 +181,8 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
                   </div>
                 </div>
               </div>
+
+              {/* Top 5 */}
               <div>
                 <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                   <div className="font-bold text-nhl-blauw mb-4 flex items-center gap-2">🏆 Top 5 best beoordeeld</div>
@@ -170,7 +190,9 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
                     {top5.map((v, i) => (
                       <button key={v.id} onClick={() => setActiefId(v.id)}
                         className={`w-full flex items-center gap-3 text-left p-2.5 rounded-xl transition-colors ${actief.id === v.id ? 'bg-blue-50 border border-nhl-blauw/20' : 'hover:bg-gray-50'}`}>
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-400' : i === 2 ? 'bg-orange-400' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</div>
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-400' : i === 2 ? 'bg-orange-400' : 'bg-gray-200 text-gray-600'}`}>
+                          {i + 1}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-xs font-medium text-nhl-blauw leading-snug line-clamp-2">{v.titel}</div>
                         </div>
@@ -182,11 +204,12 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
               </div>
             </div>
 
-            {top4.length > 0 && (
-              <div className="mb-8">
-                <div className="font-bold text-nhl-blauw mb-4">Andere video's</div>
+            {/* Vier frames — nieuwste video's, FIFO, exclusief huidige */}
+            {frameVideos.length > 0 && (
+              <div className="mb-10">
+                <div className="font-bold text-nhl-blauw mb-4">Recente video's</div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {top4.map(v => (
+                  {frameVideos.map(v => (
                     <button key={v.id} onClick={() => setActiefId(v.id)} className="text-left card card-hover overflow-hidden group">
                       <div className="relative">
                         <img src={getThumbUrl(v.videoId)} alt={v.titel} className="w-full aspect-video object-cover"
@@ -207,19 +230,30 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
               </div>
             )}
 
-            {goedgekeurd.length > 5 && (
+            {/* Videobibliotheek — altijd zichtbaar als er video's zijn */}
+            {goedgekeurd.length > 0 && (
               <div>
-                <div className="font-bold text-nhl-blauw mb-3">Alle video's</div>
-                <div className="space-y-2">
-                  {goedgekeurd.map(v => (
+                <div className="flex items-center justify-between mb-4">
+                  <div className="font-bold text-nhl-blauw">📚 Videobibliotheek</div>
+                  <div className="text-xs text-gray-400">{goedgekeurd.length} video{goedgekeurd.length !== 1 ? "'s" : ''} beschikbaar</div>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                  {goedgekeurd.map((v, i) => (
                     <button key={v.id} onClick={() => setActiefId(v.id)}
-                      className={`w-full flex items-center gap-4 p-3 rounded-xl border text-left transition-colors ${actief.id === v.id ? 'border-nhl-blauw bg-blue-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
-                      <img src={getThumbUrl(v.videoId)} alt="" className="w-20 h-12 object-cover rounded-lg flex-shrink-0" onError={e => e.target.style.display='none'} />
+                      className={`w-full flex items-center gap-4 p-3 text-left transition-colors border-b border-gray-50 last:border-b-0 ${actief.id === v.id ? 'bg-blue-50' : 'hover:bg-gray-50'}`}>
+                      <img src={getThumbUrl(v.videoId)} alt=""
+                        className="w-20 h-12 object-cover rounded-lg flex-shrink-0"
+                        onError={e => e.target.style.display='none'} />
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-nhl-blauw">{v.titel}</div>
-                        <div className="text-xs text-gray-400">{v.datum}</div>
+                        <div className={`text-sm font-medium leading-snug ${actief.id === v.id ? 'text-nhl-blauw' : 'text-gray-800'}`}>{v.titel}</div>
+                        <div className="text-xs text-gray-400 mt-0.5">{v.ingediendDoor} · {v.datum}</div>
                       </div>
-                      <div className="text-xs text-gray-400 flex-shrink-0">👍 {v.omhoog}</div>
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        {actief.id === v.id && (
+                          <span className="text-xs bg-nhl-blauw text-white px-2 py-0.5 rounded-full font-medium">Nu</span>
+                        )}
+                        <div className="text-xs text-gray-400">👍 {v.omhoog}</div>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -281,12 +315,14 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Trefwoorden (komma-gescheiden)</label>
                   <input type="text" value={form.trefwoorden} onChange={e => upd('trefwoorden', e.target.value)}
-                    placeholder="Bijv. AI, Onderwijs, Didactiek" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    placeholder="Bijv. AI, Onderwijs, Didactiek"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Jouw naam (optioneel)</label>
                   <input type="text" value={form.ingediendDoor} onChange={e => upd('ingediendDoor', e.target.value)}
-                    placeholder="Bijv. Jan de Vries" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    placeholder="Bijv. Jan de Vries"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
                 {formFout && <div className="text-red-500 text-xs bg-red-50 p-3 rounded-lg">{formFout}</div>}
                 <button onClick={verstuurVideo} className="btn-roze w-full">Video aanmelden →</button>
@@ -327,7 +363,8 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
                     <div className="space-y-4">
                       {wachtrij.map(v => (
                         <div key={v.id} className="border border-orange-200 bg-orange-50 rounded-xl p-4">
-                          <img src={getThumbUrl(v.videoId)} alt="" className="w-full h-28 object-cover rounded-lg mb-3" onError={e => { e.target.style.background='#e5e7eb'; e.target.style.height='60px' }} />
+                          <img src={getThumbUrl(v.videoId)} alt="" className="w-full h-28 object-cover rounded-lg mb-3"
+                            onError={e => { e.target.style.background='#e5e7eb'; e.target.style.height='60px' }} />
                           <div className="font-medium text-nhl-blauw text-sm mb-1">{v.titel}</div>
                           <p className="text-gray-500 text-xs mb-3">{v.omschrijving}</p>
                           <div className="flex gap-2">

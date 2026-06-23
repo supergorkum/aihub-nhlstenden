@@ -26,7 +26,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.3 · Juni 2026
+                In ontwikkeling — versie 1.4 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
@@ -73,14 +73,14 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-                  <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block">
-          <path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/>
-          <path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/>
-        </svg>
+          <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block">
+            <path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/>
+            <path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/>
+          </svg>
         </div>
       </section>
 
-      {/* Eerstvolgende evenement — subtiele balk */}
+      {/* Eerstvolgende evenement */}
       {(() => {
         const nu = new Date()
         const ev = evenementen
@@ -90,8 +90,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         const d = new Date(ev.datum)
         const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
         return (
-          <Link to="/evenementen"
-            className="block bg-nhl-blauw/5 hover:bg-nhl-blauw/10 border-b border-nhl-blauw/10 transition-colors">
+          <Link to="/evenementen" className="block bg-nhl-blauw/5 hover:bg-nhl-blauw/10 border-b border-nhl-blauw/10 transition-colors">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
               <span className="text-sm">📅</span>
               <span className="text-xs text-nhl-blauw font-semibold uppercase tracking-wide flex-shrink-0">Volgend evenement</span>
@@ -99,12 +98,8 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
               <span className="text-sm font-medium text-nhl-blauw">
                 {d.getDate()} {MAANDEN[d.getMonth()]} — {ev.naam}
               </span>
-              {ev.startTijd && (
-                <span className="text-xs text-gray-500 hidden sm:inline">🕐 {ev.startTijd}</span>
-              )}
-              {ev.locatie && (
-                <span className="text-xs text-gray-500 hidden md:inline">📍 {ev.locatie.split(',')[0]}</span>
-              )}
+              {ev.startTijd && <span className="text-xs text-gray-500 hidden sm:inline">🕐 {ev.startTijd}</span>}
+              {ev.locatie && <span className="text-xs text-gray-500 hidden md:inline">📍 {ev.locatie.split(',')[0]}</span>}
               <span className="ml-auto text-xs text-nhl-roze font-medium flex-shrink-0">Bekijken →</span>
             </div>
           </Link>
@@ -120,11 +115,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {sporen.map(s => (
-              <Link
-                key={s.id}
-                to={`/themas?spoor=${s.id}`}
-                className="card card-hover p-5 group"
-              >
+              <Link key={s.id} to={`/themas?spoor=${s.id}`} className="card card-hover p-5 group">
                 <div className="text-2xl mb-3">{s.icon}</div>
                 <div className="font-bold text-nhl-blauw mb-1 group-hover:text-nhl-roze transition-colors">{s.titel}</div>
                 <div className="text-gray-500 text-sm leading-relaxed">{s.kort}</div>
@@ -142,9 +133,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
               <div className="section-label mb-1">Wat loopt er</div>
               <h2 className="text-2xl font-bold text-nhl-blauw">Actuele initiatieven</h2>
             </div>
-            <Link to="/initiatieven" className="btn-ghost text-nhl-blauw font-medium">
-              Alle initiatieven →
-            </Link>
+            <Link to="/initiatieven" className="btn-ghost text-nhl-blauw font-medium">Alle initiatieven →</Link>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {actieven.map(init => (
@@ -163,7 +152,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         </div>
       </section>
 
-      {/* Impact dashboard — bestuurlijke ambitie */}
+      {/* Impact dashboard */}
       <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} />
 
       {/* CTA strip */}
@@ -188,7 +177,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         </div>
       </section>
 
-      {/* Laatste nieuws blok */}
+      {/* Laatste nieuws */}
       {(videos.some(v => v.status === 'goedgekeurd') || pilots.length > 0 || evenementen.length > 0) && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -196,9 +185,10 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit de AI-HUB</h2>
             <div className="grid sm:grid-cols-3 gap-6">
 
-              {/* Laatste video */}
+              {/* Nieuwste goedgekeurde video — gesorteerd op datum aflopend, eerste = nieuwste */}
               {(() => {
-                const v = videos.filter(x => x.status === 'goedgekeurd').slice(-1)[0]
+                const goedgekeurd = videos.filter(x => x.status === 'goedgekeurd')
+                const v = [...goedgekeurd].sort((a, b) => new Date(b.datum) - new Date(a.datum))[0]
                 if (!v) return null
                 return (
                   <Link to="/video" className="card card-hover overflow-hidden group">
