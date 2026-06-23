@@ -26,7 +26,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.4 · Juni 2026
+                In ontwikkeling — versie 1.5 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
@@ -185,10 +185,10 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit de AI-HUB</h2>
             <div className="grid sm:grid-cols-3 gap-6">
 
-              {/* Nieuwste goedgekeurde video — gesorteerd op datum aflopend, eerste = nieuwste */}
+              {/* Nieuwste goedgekeurde video — sort op id (timestamp), betrouwbaar en taal-onafhankelijk */}
               {(() => {
                 const goedgekeurd = videos.filter(x => x.status === 'goedgekeurd')
-                const v = [...goedgekeurd].sort((a, b) => new Date(b.datum) - new Date(a.datum))[0]
+                const v = [...goedgekeurd].sort((a, b) => b.id - a.id)[0]
                 if (!v) return null
                 return (
                   <Link to="/video" className="card card-hover overflow-hidden group">

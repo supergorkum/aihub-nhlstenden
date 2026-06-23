@@ -41,8 +41,10 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
     ? goedgekeurd.find(v => v.id === actiefId) || opDatumNieuwNaarOud[0]
     : opDatumNieuwNaarOud[0]
 
-  // Drie frames: nieuwste video's op datum, exclusief de actieve
-  const frameVideos = opDatumNieuwNaarOud
+  // Drie frames: altijd de drie nieuwste op id (timestamp), exclusief de actieve
+  // Score speelt geen rol — dat is alleen voor de top 5
+  const frameVideos = [...goedgekeurd]
+    .sort((a, b) => b.id - a.id)
     .filter(v => v.id !== actief?.id)
     .slice(0, 3)
 
