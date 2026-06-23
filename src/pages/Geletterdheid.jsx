@@ -129,7 +129,16 @@ export default function Geletterdheid() {
         label="AI-Geletterdheid"
         title="Begrijpen, kunnen en durven"
         subtitle="AI-geletterdheid is het vermogen om AI te begrijpen, kritisch te beoordelen en er eigenaarschap bij te ervaren. Niet iedereen hoeft een developer te zijn — maar iedereen moet kunnen meepraten."
-      />
+      >
+        <div className="mt-5">
+          <button
+            onClick={() => { setAddOpen(true); setToegevoegd(false); setForm({ titel:'', doelgroep: actieveDoelgroep||'', type:'artikel', url:'', omschrijving:'', naam:'' }) }}
+            className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Bron toevoegen
+          </button>
+        </div>
+      </GradientHeader>
 
       {/* Wat is AI-geletterdheid */}
       <section className="bg-white py-14">

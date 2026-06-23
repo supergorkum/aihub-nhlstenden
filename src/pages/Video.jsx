@@ -98,7 +98,16 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
         label="Kennis & inspiratie"
         title="AI Video's"
         subtitle="Relevante video's over AI in het onderwijs en de organisatie, samengesteld door en voor NHL Stenden."
-      />
+      >
+        <div className="mt-5">
+          <button
+            onClick={() => { setMeldOpen(true); setMeldVerstuurd(false); setForm({ url:'',titel:'',omschrijving:'',trefwoorden:'',spoor:'',ingediendDoor:'' }); setFormFout('') }}
+            className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Video aanmelden
+          </button>
+        </div>
+      </GradientHeader>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="flex items-center justify-end gap-2 mb-8">
           <button onClick={() => { setBeheerOpen(true); setBeheerCode(''); setBeheerIn(false); setBeheerFout('') }}

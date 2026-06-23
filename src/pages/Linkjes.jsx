@@ -75,7 +75,16 @@ export default function Linkjes({ linkjes, setLinkjes }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Bronnen & referenties" title="Bronnen" subtitle="Handige links naar tools, onderzoek, beleid en inspiratie rondom AI." />
+      <GradientHeader label="Bronnen & referenties" title="Bronnen" subtitle="Handige links naar tools, onderzoek, beleid en inspiratie rondom AI.">
+        <div className="mt-5">
+          <button
+            onClick={() => setAddOpen(true)}
+            className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Bron toevoegen
+          </button>
+        </div>
+      </GradientHeader>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Zoek */}

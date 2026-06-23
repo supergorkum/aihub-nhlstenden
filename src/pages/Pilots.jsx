@@ -120,7 +120,16 @@ export default function Pilots({ pilots, setPilots }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Praktijk & experiment" title="AI Pilots" subtitle="Overzicht van lopende en afgeronde AI-pilots binnen NHL Stenden." />
+      <GradientHeader label="Praktijk & experiment" title="AI Pilots" subtitle="Overzicht van lopende en afgeronde AI-pilots binnen NHL Stenden.">
+        <div className="mt-5">
+          <button
+            onClick={() => { setAddOpen(true); setToegevoegd(false) }}
+            className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Pilot aanmelden
+          </button>
+        </div>
+      </GradientHeader>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Pilots grid */}
