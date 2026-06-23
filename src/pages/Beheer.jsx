@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { initiatieven as initData, sporen, lagen, BEHEER_CODE } from '../data'
 import { exportJSON, importJSON } from '../storage'
 
@@ -15,6 +15,145 @@ async function slaOpInCloud(data) {
 async function laadUitCloud() {
   const raw = localStorage.getItem(BACKUP_KEY)
   return raw ? JSON.parse(raw) : null
+}
+
+function formatDatumKort(iso) {
+  if (!iso) return null
+  try {
+    return new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+  } catch { return iso }
+}
+
+// Haal de datum van het laatste item op uit een array
+function laatsteDatum(arr) {
+  if (!arr?.length) return null
+  // Probeer id (timestamp), datum string, of backupDatum
+  const items = [...arr].sort((a, b) => {
+    const da = a.id || a.datum || 0
+    const db = b.id || b.datum || 0
+    return db > da ? 1 : -1
+  })
+  const item = items[0]
+  if (item.id && String(item.id).length === 13) {
+    return formatDatumKort(new Date(item.id).toISOString())
+  }
+  return item.datum || null
+}
+
+// Preview modal voor herstel (import of cloud)
+function HerstellModal({ data, bron, onHerstel, onSluiten }) {
+  const categorieën = [
+    { key: 'alleInitiatieven', label: 'Initiatieven', icon: '🚀' },
+    { key: 'berichten', label: 'Vragen & ideeën', icon: '💬' },
+    { key: 'inspiraties', label: 'Inspiratie', icon: '💡' },
+    { key: 'videos', label: "Video's", icon: '🎬' },
+    { key: 'pilots', label: 'Pilots', icon: '🧪' },
+    { key: 'docs', label: 'Documenten', icon: '📁' },
+  ]
+
+  const beschikbaar = categorieën.filter(c => Array.isArray(data[c.key]) && data[c.key].length > 0)
+  const [geselecteerd, setGeselecteerd] = useState(
+    Object.fromEntries(beschikbaar.map(c => [c.key, true]))
+  )
+
+  const toggleAlles = (aan) => {
+    setGeselecteerd(Object.fromEntries(beschikbaar.map(c => [c.key, aan])))
+  }
+
+  const aantalGeselecteerd = Object.values(geselecteerd).filter(Boolean).length
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
+          <div>
+            <h2 className="font-bold text-nhl-blauw text-lg">
+              {bron === 'cloud' ? '☁️ Herstel uit cloud' : '📥 Importeren vanuit bestand'}
+            </h2>
+            {data.backupDatum && (
+              <p className="text-xs text-gray-400 mt-0.5">
+                Backup van {formatDatumKort(data.backupDatum)}
+              </p>
+            )}
+            {data.exportDatum && !data.backupDatum && (
+              <p className="text-xs text-gray-400 mt-0.5">
+                Export van {formatDatumKort(data.exportDatum)}
+              </p>
+            )}
+          </div>
+          <button onClick={onSluiten} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">✕</button>
+        </div>
+
+        <div className="p-6">
+          <p className="text-sm text-gray-600 mb-4">
+            Kies welke onderdelen je wilt terugzetten. De geselecteerde onderdelen <strong>overschrijven</strong> de huidige data.
+          </p>
+
+          {/* Selecteer alles / geen */}
+          <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+            <button onClick={() => toggleAlles(true)}
+              className="text-xs text-nhl-blauw hover:underline font-medium">Alles selecteren</button>
+            <span className="text-gray-300">·</span>
+            <button onClick={() => toggleAlles(false)}
+              className="text-xs text-gray-400 hover:underline">Geen</button>
+            <span className="ml-auto text-xs text-gray-400">{aantalGeselecteerd} van {beschikbaar.length} geselecteerd</span>
+          </div>
+
+          {/* Categorieën */}
+          <div className="space-y-2 mb-6">
+            {beschikbaar.map(c => {
+              const items = data[c.key]
+              const laatste = laatsteDatum(items)
+              return (
+                <label key={c.key}
+                  className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${geselecteerd[c.key] ? 'border-nhl-blauw bg-blue-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'}`}>
+                  <input
+                    type="checkbox"
+                    checked={geselecteerd[c.key] || false}
+                    onChange={e => setGeselecteerd(prev => ({ ...prev, [c.key]: e.target.checked }))}
+                    className="w-4 h-4 accent-nhl-blauw flex-shrink-0"
+                  />
+                  <span className="text-lg flex-shrink-0">{c.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-gray-800">{c.label}</div>
+                    <div className="text-xs text-gray-400">
+                      {items.length} {items.length === 1 ? 'item' : 'items'}
+                      {laatste && <> · laatste: {laatste}</>}
+                    </div>
+                  </div>
+                  {geselecteerd[c.key] && (
+                    <span className="text-xs bg-nhl-blauw text-white px-1.5 py-0.5 rounded-full flex-shrink-0">✓</span>
+                  )}
+                </label>
+              )
+            })}
+
+            {beschikbaar.length === 0 && (
+              <div className="text-center py-6 text-gray-400 text-sm">
+                Geen herstelbare data gevonden in dit bestand.
+              </div>
+            )}
+          </div>
+
+          {/* Knoppen */}
+          <div className="flex gap-3">
+            <button onClick={onSluiten}
+              className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500 hover:border-gray-300 transition-colors">
+              Annuleren
+            </button>
+            <button
+              onClick={() => onHerstel(geselecteerd)}
+              disabled={aantalGeselecteerd === 0}
+              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${aantalGeselecteerd > 0 ? 'bg-nhl-blauw text-white hover:bg-nhl-blauw-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}
+            >
+              {aantalGeselecteerd > 0 ? `↺ Zet ${aantalGeselecteerd} onderdeel${aantalGeselecteerd !== 1 ? 'en' : ''} terug` : 'Niets geselecteerd'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function NieuwsOphalen({ onNieuwItems }) {
@@ -59,16 +198,9 @@ function NieuwsOphalen({ onNieuwItems }) {
             </div>
           </div>
         </div>
-        <button
-          onClick={haalOp}
-          disabled={status === 'bezig'}
-          className="flex items-center gap-2 bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors disabled:opacity-50 flex-shrink-0"
-        >
-          {status === 'bezig' ? (
-            <><span className="animate-spin inline-block">⟳</span> Bezig met ophalen...</>
-          ) : (
-            <>🔄 Nieuws ophalen</>
-          )}
+        <button onClick={haalOp} disabled={status === 'bezig'}
+          className="flex items-center gap-2 bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors disabled:opacity-50 flex-shrink-0">
+          {status === 'bezig' ? <><span className="animate-spin inline-block">⟳</span> Bezig...</> : <>🔄 Nieuws ophalen</>}
         </button>
       </div>
       <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
@@ -86,12 +218,11 @@ function NieuwsOphalen({ onNieuwItems }) {
           {status === 'klaar' && (
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm font-semibold text-green-700">
-                <span>✓</span>
-                <span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
+                <span>✓</span><span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
               </div>
               {resultaat.fouten?.length > 0 && (
                 <div className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
-                  ⚠️ Niet alle feeds konden worden bereikt: {resultaat.fouten.join(' · ')}
+                  ⚠️ Niet alle feeds bereikbaar: {resultaat.fouten.join(' · ')}
                 </div>
               )}
               {resultaat.aantalNieuw === 0 && (
@@ -115,12 +246,6 @@ function NieuwsOphalen({ onNieuwItems }) {
             <div className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">
               <div className="font-semibold mb-1">❌ Ophalen mislukt</div>
               <div className="text-xs mb-2">{resultaat.fout}</div>
-              {resultaat.fout?.includes('API key') && (
-                <div className="text-xs text-gray-600 bg-white rounded border p-2">
-                  Ga naar <strong>Netlify → Site settings → Environment variables</strong> en voeg toe:<br/>
-                  <code className="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> = jouw Anthropic API sleutel
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -228,17 +353,12 @@ function AntwoordVeld({ berichtId, onAntwoord }) {
     <div className="ml-6 mt-2">
       <div className="bg-nhl-blauw/5 border border-nhl-blauw/20 rounded-2xl rounded-tr-sm px-4 py-3 max-w-lg ml-auto">
         <div className="text-xs font-semibold text-nhl-blauw mb-2">🧭 AI-HUB team — jouw reactie</div>
-        <textarea
-          value={tekst}
-          onChange={e => setTekst(e.target.value)}
-          rows={3}
+        <textarea value={tekst} onChange={e => setTekst(e.target.value)} rows={3}
           placeholder="Typ hier je reactie..."
-          className="w-full bg-white border border-nhl-blauw/20 rounded-xl px-3 py-2 text-sm text-nhl-blauw focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none mb-2"
-        />
+          className="w-full bg-white border border-nhl-blauw/20 rounded-xl px-3 py-2 text-sm text-nhl-blauw focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none mb-2" />
         <div className="flex gap-2 justify-end">
           <button onClick={() => { setOpen(false); setTekst('') }} className="text-xs text-gray-400 hover:text-gray-600 px-3 py-1.5 rounded-lg">Annuleren</button>
-          <button
-            onClick={() => { if (tekst.trim()) { onAntwoord(berichtId, tekst.trim()); setOpen(false) } }}
+          <button onClick={() => { if (tekst.trim()) { onAntwoord(berichtId, tekst.trim()); setOpen(false) } }}
             disabled={!tekst.trim()}
             className={`text-xs px-4 py-1.5 rounded-lg font-semibold transition-colors ${tekst.trim() ? 'bg-nhl-blauw text-white hover:bg-nhl-blauw-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
             Reactie plaatsen ✓
@@ -259,6 +379,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   const [actieveTab, setActieveTab] = useState('initiatieven')
   const [alleInitiatieven, setAlleInitiatieven] = useState(initData)
 
+  // Preview modal state — gedeeld voor cloud én import
+  const [previewData, setPreviewData] = useState(null)
+  const [previewBron, setPreviewBron] = useState(null) // 'cloud' | 'import'
+
   const voerBackupUit = useCallback(async (data) => {
     try {
       setCloudStatus('saving')
@@ -271,6 +395,22 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
       setTimeout(() => setCloudStatus('idle'), 5000)
     }
   }, [])
+
+  // Voer het daadwerkelijke herstel uit op basis van selectie
+  const voerHerstellUit = (geselecteerd) => {
+    if (!previewData) return
+    if (geselecteerd.alleInitiatieven && previewData.alleInitiatieven) setAlleInitiatieven(previewData.alleInitiatieven)
+    if (geselecteerd.berichten && previewData.berichten) setBerichten(previewData.berichten)
+    if (geselecteerd.videos && previewData.videos) setVideos(previewData.videos)
+    if (geselecteerd.pilots && previewData.pilots) setPilots(previewData.pilots)
+    if (geselecteerd.docs && previewData.docs) setDocs(previewData.docs)
+    if (geselecteerd.inspiraties && previewData.inspiraties) setInspiraties(previewData.inspiraties)
+    if (previewBron === 'cloud' && previewData.backupDatum) setCloudTijdstempel(previewData.backupDatum)
+    setPreviewData(null)
+    setPreviewBron(null)
+    setCloudStatus('saved')
+    setTimeout(() => setCloudStatus('idle'), 3000)
+  }
 
   const login = () => {
     if (code === BEHEER_CODE) { setToegang(true); setFout('') }
@@ -285,16 +425,28 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     exportJSON({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties, exportDatum: new Date().toISOString() }, `aihub-export-${Date.now()}.json`)
   }
 
+  // Import: laad bestand en toon preview modal
   const handleImport = async (file) => {
     try {
       const data = await importJSON(file)
-      if (data.alleInitiatieven) setAlleInitiatieven(data.alleInitiatieven)
-      if (data.berichten) setBerichten(data.berichten)
-      if (data.videos) setVideos(data.videos)
-      if (data.pilots) setPilots(data.pilots)
-      if (data.docs) setDocs(data.docs)
-      if (data.inspiraties) setInspiraties(data.inspiraties)
+      setPreviewData(data)
+      setPreviewBron('import')
     } catch { alert('Import mislukt — controleer het bestand.') }
+  }
+
+  // Cloud herstel: laad data en toon preview modal
+  const handleCloudHerstel = async () => {
+    setCloudStatus('saving')
+    try {
+      const data = await laadUitCloud()
+      if (!data) { alert('Geen cloud backup gevonden.'); setCloudStatus('idle'); return }
+      setPreviewData(data)
+      setPreviewBron('cloud')
+      setCloudStatus('idle')
+    } catch {
+      setCloudStatus('error')
+      setTimeout(() => setCloudStatus('idle'), 5000)
+    }
   }
 
   if (!toegang) {
@@ -335,8 +487,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             <h1 className="text-2xl font-bold text-nhl-blauw">AI-HUB Beheer</h1>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
-
-            {/* Cloud backup status */}
             <div className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs border transition-colors ${
               cloudStatus === 'saving' ? 'bg-yellow-50 border-yellow-300' :
               cloudStatus === 'saved' ? 'bg-green-50 border-green-400' :
@@ -367,13 +517,11 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               </div>
             </div>
 
-            {/* Nieuws refresh indicator */}
             {(() => {
               const ts = localStorage.getItem('aihub-laatste-refresh')
               if (!ts) return (
                 <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-400">
-                  <span>🤖</span>
-                  <span>Nog niet ge-refresht</span>
+                  <span>🤖</span><span>Nog niet ge-refresht</span>
                 </div>
               )
               return (
@@ -389,20 +537,14 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               )
             })()}
 
-            <button
-              onClick={() => setActieveTab('data')}
-              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-roze hover:text-nhl-roze transition-colors font-medium"
-            >
+            <button onClick={() => setActieveTab('data')}
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-roze hover:text-nhl-roze transition-colors font-medium">
               🤖 Nieuws ophalen
             </button>
-
-            <button
-              onClick={() => setChangelogOpen(true)}
-              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors font-medium"
-            >
+            <button onClick={() => setChangelogOpen(true)}
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors font-medium">
               📋 Changelog
             </button>
-
             <button onClick={() => setToegang(false)} className="btn-ghost text-xs border border-gray-200">Uitloggen</button>
           </div>
         </div>
@@ -418,21 +560,18 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           ))}
         </div>
 
-        {/* Initiatieven */}
         {actieveTab === 'initiatieven' && (
           <div>
             <p className="text-sm text-gray-500 mb-4">Bewerk of verwijder initiatieven. Wijzigingen zijn direct zichtbaar.</p>
             <div className="space-y-3">
               {alleInitiatieven.map(init => (
-                <InitiatiefRij key={init.id} init={init}
-                  onSave={slaInitiatiefOp}
+                <InitiatiefRij key={init.id} init={init} onSave={slaInitiatiefOp}
                   onDelete={(id) => { if (window.confirm('Verwijderen?')) setAlleInitiatieven(prev => prev.filter(i => i.id !== id)) }} />
               ))}
             </div>
           </div>
         )}
 
-        {/* Berichten */}
         {actieveTab === 'berichten' && (
           <div>
             {berichten.length === 0 ? (
@@ -479,7 +618,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {/* Inspiraties */}
         {actieveTab === 'inspiraties' && (
           <div>
             {(inspiraties || []).length === 0 ? (
@@ -504,7 +642,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {/* Video beheer */}
         {actieveTab === 'video' && (
           <div>
             {(videos || []).filter(v => v.status === 'wachtrij').length > 0 && (
@@ -544,7 +681,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {/* Pilots */}
         {actieveTab === 'pilots' && (
           <div>
             {(pilots || []).length === 0 ? (
@@ -568,7 +704,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {/* Documenten */}
         {actieveTab === 'docs' && (
           <div>
             {(docs || []).length === 0 ? (
@@ -590,114 +725,73 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {/* Data beheer */}
         {actieveTab === 'data' && (
           <div className="space-y-6">
 
-            {/* Cloud backup blok */}
+            {/* Cloud backup */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="nhl-gradient-deep px-6 py-5">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
-                      cloudStatus === 'saving' ? 'bg-yellow-300 animate-pulse' :
-                      cloudStatus === 'saved' ? 'bg-green-400' :
-                      cloudStatus === 'error' ? 'bg-red-400' : 'bg-gray-400'
-                    }`} />
-                    <div>
-                      <div className="text-white font-bold text-sm">☁️ Cloud backup (Netlify)</div>
-                      <div className="text-blue-200 text-xs">
-                        {cloudTijdstempel
-                          ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
-                          : 'Nog geen backup gemaakt — automatisch om 08:00, 12:00 en 18:00'}
-                      </div>
+                <div className="flex items-center gap-3">
+                  <div className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
+                    cloudStatus === 'saving' ? 'bg-yellow-300 animate-pulse' :
+                    cloudStatus === 'saved' ? 'bg-green-400' :
+                    cloudStatus === 'error' ? 'bg-red-400' : 'bg-gray-400'
+                  }`} />
+                  <div>
+                    <div className="text-white font-bold text-sm">☁️ Cloud backup (Netlify)</div>
+                    <div className="text-blue-200 text-xs">
+                      {cloudTijdstempel
+                        ? `Laatste backup: ${new Date(cloudTijdstempel).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`
+                        : 'Nog geen backup gemaakt — automatisch om 08:00, 12:00 en 18:00'}
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
-                {/* Backup knop */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">☁️</span>
                     <h3 className="font-bold text-nhl-blauw">Sla op in de cloud</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">
-                    Sla de huidige staat op in de cloud (Netlify). Automatisch bewaard — maximaal 12 versies, daarna wordt de oudste overschreven.
-                  </p>
-                  <button
-                    onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
+                  <p className="text-gray-500 text-sm mb-4">Sla de huidige staat op in de cloud (Netlify). Maximaal 12 versies bewaard.</p>
+                  <button onClick={() => voerBackupUit({ alleInitiatieven, berichten, videos, pilots, docs, inspiraties })}
                     disabled={cloudStatus === 'saving'}
-                    className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2"
-                  >
-                    {cloudStatus === 'saving' ? (
-                      <><span className="animate-spin">⟳</span> Bezig...</>
-                    ) : cloudStatus === 'saved' ? (
-                      <>✓ Opgeslagen in de cloud</>
-                    ) : (
-                      <>☁️ Sla op in de cloud</>
-                    )}
+                    className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2">
+                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Bezig...</> :
+                     cloudStatus === 'saved' ? <>✓ Opgeslagen in de cloud</> :
+                     <>☁️ Sla op in de cloud</>}
                   </button>
                 </div>
-
-                {/* Restore knop */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">🔄</span>
                     <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">Laad de laatste cloud backup terug. De huidige sessie wordt overschreven.</p>
-                  <button
-                    onClick={async () => {
-                      if (!window.confirm('Huidige data wordt overschreven met de cloud backup. Doorgaan?')) return
-                      setCloudStatus('saving')
-                      try {
-                        const data = await laadUitCloud()
-                        if (!data) { alert('Geen cloud backup gevonden.'); setCloudStatus('idle'); return }
-                        if (data.alleInitiatieven) setAlleInitiatieven(data.alleInitiatieven)
-                        if (data.berichten) setBerichten(data.berichten)
-                        if (data.videos) setVideos(data.videos)
-                        if (data.pilots) setPilots(data.pilots)
-                        if (data.docs) setDocs(data.docs)
-                        if (data.inspiraties) setInspiraties(data.inspiraties)
-                        if (data.backupDatum) setCloudTijdstempel(data.backupDatum)
-                        setCloudStatus('saved')
-                        setTimeout(() => setCloudStatus('idle'), 3000)
-                      } catch (err) {
-                        setCloudStatus('error')
-                        console.error('Cloud backup fout:', err)
-                        setTimeout(() => setCloudStatus('idle'), 5000)
-                      }
-                    }}
-                    disabled={cloudStatus === 'saving'}
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm border-2 border-nhl-blauw text-nhl-blauw hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-                  >
-                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Laden...</> : <>🔄 Herstel uit cloud</>}
+                  <p className="text-gray-500 text-sm mb-4">Bekijk de backup en kies welke onderdelen je wilt terugzetten.</p>
+                  <button onClick={handleCloudHerstel} disabled={cloudStatus === 'saving'}
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm border-2 border-nhl-blauw text-nhl-blauw hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                    {cloudStatus === 'saving' ? <><span className="animate-spin">⟳</span> Laden...</> : <>🔄 Bekijk cloud backup</>}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Nieuws ophalen met AI */}
+            {/* Nieuws */}
             <NieuwsOphalen onNieuwItems={(items) => {
               setInspiraties(prev => {
                 const nieuweIds = new Set(prev.map(i => i.titel))
-                const gefilterd = items.filter(i => !nieuweIds.has(i.titel))
-                return [...gefilterd, ...prev]
+                return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]
               })
             }} />
 
-            {/* JSON export / import — duidelijk lokaal */}
+            {/* JSON export / import */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">💻</span>
                   <h3 className="font-bold text-nhl-blauw">Download naar laptop</h3>
                 </div>
-                <p className="text-gray-500 text-sm mb-4">
-                  Sla alle data op als JSON-bestand op jouw eigen laptop. Handig als extra lokale backup of om te importeren op een andere plek.
-                </p>
+                <p className="text-gray-500 text-sm mb-4">Sla alle data op als JSON-bestand op jouw eigen laptop.</p>
                 <button onClick={handleExport} className="btn-primary w-full">⬇ Download als JSON</button>
               </div>
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
@@ -705,10 +799,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <span className="text-xl">📥</span>
                   <h3 className="font-bold text-nhl-blauw">Importeren vanuit bestand</h3>
                 </div>
-                <p className="text-gray-500 text-sm mb-4">Laad een eerder gedownload JSON-bestand terug in de AI-HUB.</p>
+                <p className="text-gray-500 text-sm mb-4">Laad een JSON-bestand in — je ziet eerst een overzicht en kiest wat je terugzet.</p>
                 <label className="btn-primary w-full text-center cursor-pointer block">
                   Selecteer JSON bestand
-                  <input type="file" accept=".json" className="hidden" onChange={e => handleImport(e.target.files[0])} />
+                  <input type="file" accept=".json" className="hidden" onChange={e => { if (e.target.files[0]) handleImport(e.target.files[0]) }} />
                 </label>
               </div>
             </div>
@@ -717,7 +811,17 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
       </div>
     </div>
 
-    {/* Changelog modal */}
+    {/* Preview / herstel modal */}
+    {previewData && (
+      <HerstellModal
+        data={previewData}
+        bron={previewBron}
+        onHerstel={voerHerstellUit}
+        onSluiten={() => { setPreviewData(null); setPreviewBron(null) }}
+      />
+    )}
+
+    {/* Changelog */}
     {changelogOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
@@ -731,49 +835,32 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           <div className="p-6 space-y-6">
             {[
               {
-                versie: 'v1.4', datum: 'Juni 2026',
+                versie: 'v1.5', datum: 'Juni 2026',
                 label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
                 items: [
-                  'Backup terminologie verduidelijkt: "Sla op in de cloud" (Netlify) vs. "Download naar laptop" (lokale JSON)',
-                  'Video aanmelden: knop alleen nog in de header, niet dubbel op de pagina',
-                  'Videobibliotheek altijd zichtbaar zodra er video\'s zijn (was: pas bij 5+)',
-                  'Vier frames tonen nieuwste video\'s op datum (FIFO), exclusief de actieve video',
-                  'Start.jsx: nieuwste goedgekeurde video correct getoond',
+                  'Hoofdvideo toont altijd de nieuwste goedgekeurde video (niet de best beoordeelde)',
+                  'Terug-naar-nieuwste knop verschijnt als je een andere video selecteert',
+                  'Drie recente frames onder hoofdvideo (was vier)',
+                  'Import en cloud herstel tonen preview-modal: aantallen, datum laatste item, selectievakjes per categorie',
                 ],
               },
               {
-                versie: 'v1.3', datum: 'Juni 2026',
-                label: null, labelKleur: '',
+                versie: 'v1.4', datum: 'Juni 2026', label: null, labelKleur: '',
                 items: [
-                  'Impact dashboard herontworpen: aantallen en namen per ambitie',
-                  'Thema-navigatie gefixed',
-                  'Zippad fix voor bestandsinstallatie',
+                  'Cloud backup terminologie verduidelijkt',
+                  'Video aanmelden alleen in header',
+                  'Videobibliotheek altijd zichtbaar',
+                  'Vier frames op datum (FIFO)',
                 ],
               },
               {
-                versie: 'v1.2', datum: 'Juni 2026', label: null, labelKleur: '',
-                items: [
-                  'Impact dashboard op startpagina',
-                  'Cloud backup met auto-schema, lampje en tijdstempel in beheer',
-                  'Changelog toegevoegd',
-                  'NHL Stenden logo en gradient headers',
-                  'Dropdown navigatiemenu',
-                ],
-              },
+                versie: 'v1.3', datum: 'Juni 2026', label: null, items: ['Impact dashboard herontworpen', 'Thema-navigatie gefixed'] },
               {
-                versie: 'v1.1', datum: 'Juni 2026', label: null, items: [
-                  'Video pagina, Evenementen, Bronnen, Pilots, Inspiratie, Fundament, Over',
-                  'Bestandsupload in documentatie',
-                  'Beheeromgeving met tabs',
-                ],
-              },
+                versie: 'v1.2', datum: 'Juni 2026', label: null, items: ['Impact dashboard', 'Cloud backup', 'Changelog', 'Logo en gradient headers', 'Dropdown nav'] },
               {
-                versie: 'v1.0', datum: 'Mei 2026', label: null, items: [
-                  'Eerste versie AI-HUB gelanceerd',
-                  'Startpagina, Netwerk, Thema\'s, Initiatieven, Vragen & ideeën, Documentatie',
-                  'Netlify deployment en GitHub koppeling',
-                ],
-              },
+                versie: 'v1.1', datum: 'Juni 2026', label: null, items: ['Video, Evenementen, Bronnen, Pilots, Inspiratie, Fundament, Over', 'Bestandsupload', 'Beheer tabs'] },
+              {
+                versie: 'v1.0', datum: 'Mei 2026', label: null, items: ['Eerste versie AI-HUB', 'Startpagina, Netwerk, Thema\'s, Initiatieven', 'Netlify deployment'] },
             ].map(v => (
               <div key={v.versie}>
                 <div className="flex items-center gap-3 mb-3">
