@@ -1,12 +1,12 @@
-// Netlify Function — CommonJS (werkt zonder package.json type:module)
+// Netlify Function v2 — esbuild bundler, export default syntax
 
 const RSS_FEEDS = [
-  { naam: 'The Gradient',       url: 'https://thegradient.pub/rss/',               label: 'The Gradient',    icon: '📊' },
-  { naam: '80,000 Hours',       url: 'https://80000hours.org/feed/',                label: '80,000 Hours',    icon: '💡' },
-  { naam: 'Import AI',          url: 'https://importai.substack.com/feed',          label: 'Import AI',       icon: '🤖' },
-  { naam: 'Future of Life',     url: 'https://futureoflife.org/feed/',              label: 'Future of Life',  icon: '🌍' },
-  { naam: 'VentureBeat AI',     url: 'https://venturebeat.com/category/ai/feed/',  label: 'VentureBeat',     icon: '🚀' },
-  { naam: 'Alignment Forum',    url: 'https://www.alignmentforum.org/feed.xml',    label: 'Alignment Forum', icon: '⚖️' },
+  { naam: 'The Gradient',     url: 'https://thegradient.pub/rss/',              label: 'The Gradient',    icon: '📊' },
+  { naam: '80,000 Hours',     url: 'https://80000hours.org/feed/',               label: '80,000 Hours',    icon: '💡' },
+  { naam: 'Import AI',        url: 'https://importai.substack.com/feed',         label: 'Import AI',       icon: '🤖' },
+  { naam: 'Future of Life',   url: 'https://futureoflife.org/feed/',             label: 'Future of Life',  icon: '🌍' },
+  { naam: 'VentureBeat AI',   url: 'https://venturebeat.com/category/ai/feed/', label: 'VentureBeat',     icon: '🚀' },
+  { naam: 'Alignment Forum',  url: 'https://www.alignmentforum.org/feed.xml',   label: 'Alignment Forum', icon: '⚖️' },
 ]
 
 function parseRSS(xml) {
@@ -35,18 +35,19 @@ function parseRSS(xml) {
   return items.slice(0, 5)
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'POST only' }) }
+export default async (req, context) => {
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'POST only' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Geen Anthropic API key. Voeg ANTHROPIC_API_KEY toe als Netlify environment variable.' })
-    }
+    return new Response(JSON.stringify({
+      error: 'Geen Anthropic API key. Voeg ANTHROPIC_API_KEY toe als Netlify environment variable.'
+    }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 
   const resultaten = []
@@ -113,15 +114,13 @@ exports.handler = async (event) => {
     }
   }
 
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-    body: JSON.stringify({
-      ok: true,
-      aantalNieuw: resultaten.length,
-      items: resultaten,
-      fouten: fouten.length > 0 ? fouten : undefined,
-      tijdstip: new Date().toISOString(),
-    })
-  }
+  return new Response(JSON.stringify({
+    ok: true,
+    aantalNieuw: resultaten.length,
+    items: resultaten,
+    fouten: fouten.length > 0 ? fouten : undefined,
+    tijdstip: new Date().toISOString(),
+  }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
 }
+
+export const config = { path: '/.netlify/functions/nieuws-ophalen' }
