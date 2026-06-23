@@ -69,7 +69,21 @@ function ScrollToTop() {
 }
 
 function AppInner() {
-  const [berichten, setBerichten] = useState([])
+  const [berichten, setBerichten] = useState(() => {
+    try {
+      const opgeslagen = localStorage.getItem('aihub-berichten')
+      return opgeslagen ? JSON.parse(opgeslagen) : []
+    } catch { return [] }
+  })
+
+  // Berichten automatisch opslaan bij wijziging
+  const setBerichten_ = (fn) => {
+    setBerichten(prev => {
+      const nieuw = typeof fn === 'function' ? fn(prev) : fn
+      try { localStorage.setItem('aihub-berichten', JSON.stringify(nieuw)) } catch {}
+      return nieuw
+    })
+  }
   const [videos, setVideos] = useState(INIT_VIDEOS)
   const [actiefVideoId, setActiefVideoId] = useState(null)
   const [pilots, setPilots] = useState(INIT_PILOTS)
@@ -95,14 +109,14 @@ function AppInner() {
           <Route path="/video" element={<Video videos={videos} setVideos={setVideos} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />} />
           <Route path="/evenementen" element={<Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />} />
           <Route path="/linkjes" element={<Linkjes linkjes={linkjes} setLinkjes={setLinkjes} />} />
-          <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten(prev => [b, ...prev])} berichten={berichten} />} />
+          <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten_(prev => [b, ...prev])} berichten={berichten} />} />
           <Route path="/inspiratie" element={<Inspiratie inspiraties={inspiraties} setInspiraties={setInspiraties} />} />
           <Route path="/over" element={<Over />} />
           <Route path="/geletterdheid" element={<Geletterdheid />} />
           <Route path="/beleid" element={<Beleid />} />
           <Route path="/beheer" element={
             <Beheer
-              berichten={berichten} setBerichten={setBerichten}
+              berichten={berichten} setBerichten={setBerichten_}
               videos={videos} setVideos={setVideos}
               actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId}
               pilots={pilots} setPilots={setPilots}
