@@ -59,7 +59,7 @@ function BubbelTijdlijn({ berichten }) {
   }
 
   return (
-    <div className="mt-12">
+    <div className="mt-8">
       <div className="flex items-center gap-2 mb-2">
         <h3 className="font-bold text-nhl-blauw text-lg">Wat leeft er bij collega's?</h3>
       </div>
@@ -386,18 +386,17 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
           </div>
         </div>
 
-        {/* Bubbel tijdlijn */}
-        <BubbelTijdlijn berichten={berichten} />
-
-        {/* Wordcloud */}
-        <div className="mt-10 card p-6">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-bold text-nhl-blauw">Wat speelt er?</h3>
+        {/* Wordcloud — compact signaal bovenaan */}
+        <div className="mt-8 card p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <h3 className="font-semibold text-nhl-blauw text-sm">Wat speelt er bij collega's?</h3>
             <span className="text-xs text-gray-400">— trefwoorden uit ingezonden berichten</span>
           </div>
-          <p className="text-gray-500 text-xs mb-5">Hoe groter het woord, hoe vaker het voorkomt in vragen en ideeën binnen NHL Stenden.</p>
           <WordCloud trefwoorden={wordcloudData} />
         </div>
+
+        {/* Bubbel tijdlijn — het echte gesprek */}
+        <BubbelTijdlijn berichten={berichten} />
       </div>
     </div>
   )

@@ -95,7 +95,7 @@ function AppInner() {
           <Route path="/video" element={<Video videos={videos} setVideos={setVideos} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />} />
           <Route path="/evenementen" element={<Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />} />
           <Route path="/linkjes" element={<Linkjes linkjes={linkjes} setLinkjes={setLinkjes} />} />
-          <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten(prev => [b, ...prev])} />} />
+          <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten(prev => [b, ...prev])} berichten={berichten} />} />
           <Route path="/inspiratie" element={<Inspiratie inspiraties={inspiraties} setInspiraties={setInspiraties} />} />
           <Route path="/over" element={<Over />} />
           <Route path="/geletterdheid" element={<Geletterdheid />} />
