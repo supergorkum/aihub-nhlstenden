@@ -6,7 +6,6 @@ import PageHeader from '../components/PageHeader'
 
 const TOEGESTANE_TYPES = ['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','image/png','image/jpeg']
 
-// Gesuggereerde trefwoorden per categorie
 const TREFWOORD_SUGGESTIES = {
   vraag: ['Toetsing','Integriteit','Privacy','Beleid','Didactiek','Studenten','Docenten','Tools','Wetgeving','AVG'],
   idee: ['Innovatie','Pilot','Tool','Onderwijs','Begeleiding','Automatisering','Data','Geletterdheid','Curriculum'],
@@ -15,7 +14,6 @@ const TREFWOORD_SUGGESTIES = {
   zorg: ['Risico','Privacy','Integriteit','Veiligheid','Afhankelijkheid','Ethiek','Toezicht'],
 }
 
-// Wordcloud data — groeit met insturen
 const INIT_TREFWOORDEN = [
   { woord: 'Toetsing', n: 8 }, { woord: 'Privacy', n: 6 }, { woord: 'Didactiek', n: 5 },
   { woord: 'Geletterdheid', n: 7 }, { woord: 'Studentsucces', n: 4 }, { woord: 'Tools', n: 9 },
@@ -47,7 +45,76 @@ function WordCloud({ trefwoorden }) {
   )
 }
 
-export default function Meld({ onNieuwBericht }) {
+// Speelse tekstbubbels — toont berichten van bezoekers + reacties van het team
+function BubbelTijdlijn({ berichten }) {
+  const zichtbaar = berichten.filter(b => b.titel || b.tekst).slice(0, 8)
+  if (zichtbaar.length === 0) return null
+
+  const catKleur = {
+    vraag: { bg: 'bg-blue-50', border: 'border-blue-200', icon: '💬', label: 'Vraag' },
+    idee: { bg: 'bg-purple-50', border: 'border-purple-200', icon: '💡', label: 'Idee' },
+    initiatief: { bg: 'bg-green-50', border: 'border-green-200', icon: '🚀', label: 'Initiatief' },
+    ondersteuning: { bg: 'bg-yellow-50', border: 'border-yellow-200', icon: '🤝', label: 'Samenwerking' },
+    zorg: { bg: 'bg-red-50', border: 'border-red-200', icon: '⚠️', label: 'Signaal' },
+  }
+
+  return (
+    <div className="mt-12">
+      <div className="flex items-center gap-2 mb-2">
+        <h3 className="font-bold text-nhl-blauw text-lg">Wat leeft er bij collega's?</h3>
+      </div>
+      <p className="text-gray-500 text-sm mb-6">
+        Vragen en ideeën die anderen al deelden. Jouw bijdrage komt er ook bij — anoniem, tenzij je je naam hebt ingevuld.
+      </p>
+      <div className="space-y-4">
+        {zichtbaar.map((b, i) => {
+          const stijl = catKleur[b.categorie] || catKleur.vraag
+          const isLinks = i % 2 === 0
+          return (
+            <div key={b.id} className={`flex flex-col gap-2 ${isLinks ? 'items-start' : 'items-end'}`}>
+              {/* Vraag / idee bubbel */}
+              <div className={`max-w-sm ${isLinks ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}>
+                <div className={`rounded-2xl border px-4 py-3 ${stijl.bg} ${stijl.border} ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-xs">{stijl.icon}</span>
+                    <span className="text-xs font-semibold text-gray-500">{b.categorieDef?.label || stijl.label}</span>
+                    {b.naam && <span className="text-xs text-gray-400">· {b.naam}</span>}
+                  </div>
+                  {b.titel && <div className="font-semibold text-gray-800 text-sm leading-snug mb-1">{b.titel}</div>}
+                  {b.tekst && <p className="text-gray-600 text-xs leading-relaxed">{b.tekst.slice(0, 160)}{b.tekst.length > 160 ? '...' : ''}</p>}
+                </div>
+                {/* Staartje */}
+                <div className={`w-3 h-2 ${isLinks ? 'ml-4' : 'ml-auto mr-4'}`}
+                  style={{
+                    background: 'transparent',
+                    borderLeft: isLinks ? '6px solid transparent' : 'none',
+                    borderRight: isLinks ? 'none' : '6px solid transparent',
+                    borderTop: `8px solid ${stijl.bg.includes('blue') ? '#EFF6FF' : stijl.bg.includes('purple') ? '#FAF5FF' : stijl.bg.includes('green') ? '#F0FDF4' : stijl.bg.includes('yellow') ? '#FEFCE8' : '#FEF2F2'}`,
+                  }}
+                />
+              </div>
+
+              {/* Reactie van het team — alleen als er een antwoord is */}
+              {b.antwoord && (
+                <div className={`max-w-sm ${isLinks ? 'ml-8 mr-auto' : 'ml-auto mr-8'}`}>
+                  <div className={`rounded-2xl border px-4 py-3 bg-nhl-blauw/5 border-nhl-blauw/20 ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-xs">🧭</span>
+                      <span className="text-xs font-semibold text-nhl-blauw">AI-HUB team</span>
+                    </div>
+                    <p className="text-nhl-blauw text-xs leading-relaxed">{b.antwoord}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default function Meld({ onNieuwBericht, berichten = [] }) {
   const [stap, setStap] = useState(0)
   const [form, setForm] = useState({ rol: '', naam: '', categorie: '', spoor: '', titel: '', tekst: '', url: '', trefwoorden: [] })
   const [trefwoordInput, setTrefwoordInput] = useState('')
@@ -83,7 +150,6 @@ export default function Meld({ onNieuwBericht }) {
   }
 
   const verstuur = () => {
-    // Update wordcloud met nieuwe trefwoorden
     setWordcloudData(prev => {
       const updated = [...prev]
       form.trefwoorden.forEach(w => {
@@ -99,6 +165,7 @@ export default function Meld({ onNieuwBericht }) {
       datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
       categorieDef: vraagCategorieen.find(c => c.id === form.categorie),
       sporeDef: sporen.find(s => s.id === parseInt(form.spoor)),
+      antwoord: null,
     }
     onNieuwBericht(nieuw)
     setVerstuurd(true)
@@ -133,11 +200,10 @@ export default function Meld({ onNieuwBericht }) {
       <GradientHeader
         label="Vragen & ideeën"
         title="Heb je een vraag of idee?"
-        subtitle="Stel je vraag, deel een idee, zoek samenwerking of geef een signaal. Het AI-HUB team neemt elk bericht serieus."
+        subtitle="De AI-HUB zijn we samen. Stel je vraag, deel een idee, zoek samenwerking of geef een signaal — en help zo de wegwijzer scherper te maken."
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
-        {/* Tip voor inspiratie */}
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-8 flex gap-3">
           <span className="text-lg flex-shrink-0">💡</span>
           <p className="text-sm text-purple-700">
@@ -162,7 +228,6 @@ export default function Meld({ onNieuwBericht }) {
 
         <div className="card p-8 shadow-sm">
 
-          {/* Stap 0 */}
           {stap === 0 && (
             <div className="animate-fade-in">
               <h3 className="font-bold text-nhl-blauw text-xl mb-6">Wie ben je?</h3>
@@ -183,7 +248,6 @@ export default function Meld({ onNieuwBericht }) {
             </div>
           )}
 
-          {/* Stap 1 */}
           {stap === 1 && (
             <div className="animate-fade-in">
               <h3 className="font-bold text-nhl-blauw text-xl mb-6">Wat wil je delen?</h3>
@@ -210,7 +274,6 @@ export default function Meld({ onNieuwBericht }) {
             </div>
           )}
 
-          {/* Stap 2 */}
           {stap === 2 && (
             <div className="animate-fade-in">
               <h3 className="font-bold text-nhl-blauw text-xl mb-2">Jouw bericht</h3>
@@ -240,8 +303,6 @@ export default function Meld({ onNieuwBericht }) {
                     {form.tekst.length} tekens{form.tekst.trim().length < 5 ? ' — minimaal 5 tekens' : ''}
                   </div>
                 </div>
-
-                {/* Trefwoorden */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Trefwoorden</label>
                   <div className="flex gap-2 mb-2">
@@ -252,8 +313,6 @@ export default function Meld({ onNieuwBericht }) {
                     <button onClick={() => voegTrefwoordToe(trefwoordInput)}
                       className="px-4 py-2 bg-nhl-blauw text-white rounded-xl text-sm font-medium hover:bg-nhl-blauw-dark transition-colors">+</button>
                   </div>
-
-                  {/* Suggesties */}
                   {beschikbareSuggesties.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {beschikbareSuggesties.slice(0, 8).map(s => (
@@ -264,8 +323,6 @@ export default function Meld({ onNieuwBericht }) {
                       ))}
                     </div>
                   )}
-
-                  {/* Gekozen trefwoorden */}
                   {form.trefwoorden.length > 0 && (
                     <div className="flex flex-wrap gap-1.5">
                       {form.trefwoorden.map(w => (
@@ -277,14 +334,12 @@ export default function Meld({ onNieuwBericht }) {
                     </div>
                   )}
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Link of URL (optioneel)</label>
                   <input type="url" value={form.url} onChange={e => upd('url', e.target.value)}
                     placeholder="https://..."
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Bijlage (optioneel)</label>
                   <div onClick={() => document.getElementById('meld-upload').click()}
@@ -330,6 +385,9 @@ export default function Meld({ onNieuwBericht }) {
             )}
           </div>
         </div>
+
+        {/* Bubbel tijdlijn */}
+        <BubbelTijdlijn berichten={berichten} />
 
         {/* Wordcloud */}
         <div className="mt-10 card p-6">

@@ -218,6 +218,47 @@ async function laadUitCloud() {
   return raw ? JSON.parse(raw) : null
 }
 
+function AntwoordVeld({ berichtId, onAntwoord }) {
+  const [open, setOpen] = useState(false)
+  const [tekst, setTekst] = useState('')
+
+  if (!open) {
+    return (
+      <button onClick={() => setOpen(true)}
+        className="ml-6 text-xs text-nhl-blauw hover:underline font-medium">
+        + Reageren als AI-HUB team
+      </button>
+    )
+  }
+
+  return (
+    <div className="ml-6 mt-2">
+      <div className="bg-nhl-blauw/5 border border-nhl-blauw/20 rounded-2xl rounded-tr-sm px-4 py-3 max-w-lg ml-auto">
+        <div className="text-xs font-semibold text-nhl-blauw mb-2">🧭 AI-HUB team — jouw reactie</div>
+        <textarea
+          value={tekst}
+          onChange={e => setTekst(e.target.value)}
+          rows={3}
+          placeholder="Typ hier je reactie..."
+          className="w-full bg-white border border-nhl-blauw/20 rounded-xl px-3 py-2 text-sm text-nhl-blauw focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none mb-2"
+        />
+        <div className="flex gap-2 justify-end">
+          <button onClick={() => { setOpen(false); setTekst('') }}
+            className="text-xs text-gray-400 hover:text-gray-600 px-3 py-1.5 rounded-lg">
+            Annuleren
+          </button>
+          <button
+            onClick={() => { if (tekst.trim()) { onAntwoord(berichtId, tekst.trim()); setOpen(false) } }}
+            disabled={!tekst.trim()}
+            className={`text-xs px-4 py-1.5 rounded-lg font-semibold transition-colors ${tekst.trim() ? 'bg-nhl-blauw text-white hover:bg-nhl-blauw-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
+            Reactie plaatsen ✓
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Beheer({ berichten, setBerichten, videos, setVideos, actiefVideoId, setActiefVideoId, pilots, setPilots, docs, setDocs, inspiraties, setInspiraties }) {
   const [code, setCode] = useState('')
   const [toegang, setToegang] = useState(false)
@@ -409,21 +450,43 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             {berichten.length === 0 ? (
               <div className="text-center py-12 text-gray-400"><div className="text-4xl mb-3">📭</div><div>Nog geen berichten.</div></div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {berichten.map(b => (
-                  <div key={b.id} className="bg-white rounded-xl border border-gray-200 p-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="font-semibold text-nhl-blauw text-sm">{b.titel || 'Zonder titel'}</span>
-                          <span className="text-xs text-gray-400">· {b.rol} · {b.datum}</span>
-                          {b.categorieDef && <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{b.categorieDef.icon} {b.categorieDef.label}</span>}
+                  <div key={b.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                    {/* Vraag / idee bubbel */}
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {b.categorieDef && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">{b.categorieDef.icon} {b.categorieDef.label}</span>}
+                          <span className="text-xs text-gray-400">{b.rol}{b.naam ? ` · ${b.naam}` : ''} · {b.datum}</span>
                         </div>
-                        <p className="text-gray-600 text-sm">{b.tekst}</p>
-                        {b.trefwoorden?.length > 0 && <div className="flex flex-wrap gap-1 mt-2">{b.trefwoorden.map(t => <span key={t} className="text-xs bg-blue-50 text-nhl-blauw px-2 py-0.5 rounded">{t}</span>)}</div>}
-                        {b.url && <a href={b.url} target="_blank" rel="noopener noreferrer" className="text-nhl-roze text-xs underline mt-1 block">🔗 {b.url}</a>}
+                        <button onClick={() => setBerichten(prev => prev.filter(x => x.id !== b.id))} className="text-red-400 hover:text-red-600 text-xs flex-shrink-0">Verwijder</button>
                       </div>
-                      <button onClick={() => setBerichten(prev => prev.filter(x => x.id !== b.id))} className="text-red-400 hover:text-red-600 text-xs flex-shrink-0">Verwijder</button>
+                      {/* Bubbel */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-2xl rounded-tl-sm px-4 py-3 mb-3 max-w-lg">
+                        {b.titel && <div className="font-semibold text-gray-800 text-sm mb-1">{b.titel}</div>}
+                        <p className="text-gray-600 text-sm leading-relaxed">{b.tekst}</p>
+                        {b.trefwoorden?.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {b.trefwoorden.map(tw => <span key={tw} className="text-xs bg-white text-nhl-blauw px-2 py-0.5 rounded border border-blue-200">{tw}</span>)}
+                          </div>
+                        )}
+                        {b.url && <a href={b.url} target="_blank" rel="noopener noreferrer" className="text-nhl-roze text-xs underline mt-2 block">🔗 {b.url}</a>}
+                      </div>
+
+                      {/* Reactie van het team */}
+                      {b.antwoord ? (
+                        <div className="ml-6">
+                          <div className="bg-nhl-blauw/5 border border-nhl-blauw/20 rounded-2xl rounded-tr-sm px-4 py-3 max-w-lg ml-auto">
+                            <div className="text-xs font-semibold text-nhl-blauw mb-1">🧭 AI-HUB team</div>
+                            <p className="text-nhl-blauw text-sm leading-relaxed">{b.antwoord}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <AntwoordVeld berichtId={b.id} onAntwoord={(id, tekst) => {
+                          setBerichten(prev => prev.map(x => x.id === id ? { ...x, antwoord: tekst } : x))
+                        }} />
+                      )}
                     </div>
                   </div>
                 ))}
