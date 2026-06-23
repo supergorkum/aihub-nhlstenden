@@ -26,7 +26,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.0 · Juni 2026
+                In ontwikkeling — versie 1.3 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
