@@ -84,8 +84,21 @@ function AppInner() {
       return nieuw
     })
   }
-  const [videos, setVideos] = useState(INIT_VIDEOS)
+  const [videos, setVideos] = useState(() => {
+    try {
+      const opgeslagen = localStorage.getItem('aihub-videos')
+      return opgeslagen ? JSON.parse(opgeslagen) : INIT_VIDEOS
+    } catch { return INIT_VIDEOS }
+  })
   const [actiefVideoId, setActiefVideoId] = useState(null)
+
+  const setVideos_ = (fn) => {
+    setVideos(prev => {
+      const nieuw = typeof fn === 'function' ? fn(prev) : fn
+      try { localStorage.setItem('aihub-videos', JSON.stringify(nieuw)) } catch {}
+      return nieuw
+    })
+  }
   const [pilots, setPilots] = useState(INIT_PILOTS)
   const [docs, setDocs] = useState(INIT_DOCS)
   const [evenementen, setEvenementen] = useState(INIT_EVENEMENTEN)
@@ -106,7 +119,7 @@ function AppInner() {
           <Route path="/initiatieven" element={<Initiatieven roadmap={roadmap} setRoadmap={setRoadmap} />} />
           <Route path="/pilots" element={<Pilots pilots={pilots} setPilots={setPilots} />} />
           <Route path="/documentatie" element={<Documentatie docs={docs} setDocs={setDocs} />} />
-          <Route path="/video" element={<Video videos={videos} setVideos={setVideos} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />} />
+          <Route path="/video" element={<Video videos={videos} setVideos={setVideos_} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />} />
           <Route path="/evenementen" element={<Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />} />
           <Route path="/linkjes" element={<Linkjes linkjes={linkjes} setLinkjes={setLinkjes} />} />
           <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten_(prev => [b, ...prev])} berichten={berichten} />} />
@@ -117,7 +130,7 @@ function AppInner() {
           <Route path="/beheer" element={
             <Beheer
               berichten={berichten} setBerichten={setBerichten_}
-              videos={videos} setVideos={setVideos}
+              videos={videos} setVideos={setVideos_}
               actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId}
               pilots={pilots} setPilots={setPilots}
               docs={docs} setDocs={setDocs}
