@@ -588,7 +588,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     ) : cloudStatus === 'saved' ? (
                       <>✓ Opgeslagen</>
                     ) : (
-                      <>☁ Sla op in cloud</>
+                      <>💾 Sla op lokaal</>
                     )}
                   </button>
                 </div>
@@ -597,7 +597,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">🔄</span>
-                    <h3 className="font-bold text-nhl-blauw">Herstel uit cloud</h3>
+                    <h3 className="font-bold text-nhl-blauw">Herstel uit browser</h3>
                   </div>
                   <p className="text-gray-500 text-sm mb-4">Laad de laatste opgeslagen backup terug in deze sessie.</p>
                   <button
