@@ -57,11 +57,16 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
   const [toegevoegd, setToegevoegd] = useState(false)
   const [form, setForm] = useState({ titel: '', omschrijving: '', prioriteit: 'hoog', verantwoordelijke: '', datum: '', naam: '' })
   const [actieveAiAct, setActieveAiAct] = useState(null)
+  const [initAddOpen, setInitAddOpen] = useState(false)
+  const [initToegevoegd, setInitToegevoegd] = useState(false)
+  const [extraInitiatieven, setExtraInitiatieven] = useState([])
+  const [initForm, setInitForm] = useState({ naam: '', omschrijving: '', type: 'intern', spoor: '', status: 'in-ontwikkeling', contactNaam: '' })
   const [afgerondIngeklapt, setAfgerondIngeklapt] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
-  const gefilterd = initiatieven.filter(i => {
+  const alleInitiatieven = [...extraInitiatieven, ...initiatieven]
+  const gefilterd = alleInitiatieven.filter(i => {
     if (filterSpoor && i.spoor !== filterSpoor) return false
     if (filterType && i.type !== filterType) return false
     if (zoek && !i.naam.toLowerCase().includes(zoek.toLowerCase()) && !i.omschrijving.toLowerCase().includes(zoek.toLowerCase())) return false
@@ -134,7 +139,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex gap-1 overflow-x-auto">
             {[
-              { id: 'initiatieven', label: '🚀 Initiatieven', n: initiatieven.length },
+              { id: 'initiatieven', label: '🚀 Initiatieven', n: alleInitiatieven.length },
               { id: 'roadmap', label: '🗺️ Roadmap', n: (roadmap || []).length },
               { id: 'aiact', label: '⚖️ AI Act compliance', n: AI_ACT_ITEMS.filter(a => a.status === 'te-starten').length + ' open' },
             ].map(tab => (
@@ -155,6 +160,17 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         {/* TAB: INITIATIEVEN */}
         {actieveTab === 'initiatieven' && (
           <div>
+            {/* Toevoegen knop */}
+            <div className="flex items-center justify-between mb-5">
+              <p className="text-sm text-gray-500">
+                Ken jij een AI-initiatief dat hier nog niet tussen staat? Voeg het toe en maak het zichtbaar.
+              </p>
+              <button
+                onClick={() => { setInitAddOpen(true); setInitToegevoegd(false); setInitForm({ naam: '', omschrijving: '', type: 'intern', spoor: '', status: 'in-ontwikkeling', contactNaam: '' }) }}
+                className="btn-roze text-sm flex-shrink-0 ml-4">
+                + Initiatief aanmelden
+              </button>
+            </div>
             <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
               <input type="text" value={zoek} onChange={e => setZoek(e.target.value)}
                 placeholder="Zoek op naam of omschrijving..."
@@ -191,6 +207,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'surf' ? 'bg-purple-100 text-purple-700' : init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
                           {init.type === 'surf' ? '🌐 SURF' : init.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
                         </span>
+                        {init.nieuw && <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">Nieuw</span>}
                       </div>
                     </div>
                     <div className="font-bold text-nhl-blauw mb-2 leading-snug">{init.naam}</div>
