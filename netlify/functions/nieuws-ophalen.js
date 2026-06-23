@@ -46,7 +46,7 @@ async function beoordeelItem(item, feed, apiKey) {
         max_tokens: 150,
         messages: [{
           role: 'user',
-          content: `Relevant voor NHL Stenden AI-HUB (AI onderwijs, AI Act, digitale soevereiniteit, hoger onderwijs)?\n\nTitel: ${item.titel}\nBeschrijving: ${item.beschrijving.slice(0, 150)}\n\nJSON alleen:\n{"relevant":true/false,"samenvatting":"max 1 zin Nederlands","doelgroep":"docenten/studenten/management/algemeen"}`
+          content: `Relevant voor NHL Stenden AI-HUB (AI onderwijs, AI Act, digitale soevereiniteit, hoger onderwijs)?\n\nTitel: ${item.titel}\nBeschrijving: ${item.beschrijving.slice(0, 150)}\n\nThema's: 1=AI & Leren (onderwijs, didactiek, studenten), 2=AI & Werken (bedrijfsvoering, medewerkers, organisatie), 3=AI & Verantwoordelijkheid (AI Act, governance, ethiek, soevereiniteit), 4=AI-Geletterdheid (vaardigheden, bewustzijn, training)\n\nJSON alleen:\n{"relevant":true/false,"samenvatting":"max 1 zin Nederlands","doelgroep":"docenten/studenten/management/algemeen","spoor":1/2/3/4}`
         }]
       }),
       signal: AbortSignal.timeout(5000),
@@ -62,7 +62,15 @@ async function beoordeelItem(item, feed, apiKey) {
       type: 'ontwikkeling', icon: feed.icon,
       typelabel: 'Interessante ontwikkeling',
       rol: 'Auto-update', naam: feed.label,
-      spoor: null, sporeDef: null, laag: null,
+      spoor: b.spoor || null,
+              sporeDef: b.spoor ? [
+                null,
+                { titel: 'AI & Leren', icon: '🎓' },
+                { titel: 'AI & Werken', icon: '⚙️' },
+                { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' },
+                { titel: 'AI-Geletterdheid', icon: '📖' },
+              ][b.spoor] || null : null,
+              laag: null,
       titel: item.titel, tekst: b.samenvatting,
       url: item.link,
       trefwoorden: ['AI', 'Nieuws', feed.label],
