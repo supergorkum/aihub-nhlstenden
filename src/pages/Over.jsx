@@ -78,11 +78,11 @@ export default function Over() {
               Over de AI-HUB
             </h1>
             <p className="text-blue-100 text-lg leading-relaxed mb-6">
-              De AI-HUB is geen afdeling en geen project. Het is een <strong className="text-white">voertuig</strong> — een levende, 
+              De AI-HUB is geen afdeling en geen project. Het is een <strong className="text-white">wegwijzer</strong> — een levende,
               digitale en organisatorische structuur die mensen, initiatieven en kennis met elkaar verbindt.
             </p>
             <p className="text-blue-200 leading-relaxed">
-              Ontstaan vanuit de overtuiging dat echte digitale verandering begint bij mensen: bij hoe zij werken, 
+              Ontstaan vanuit de overtuiging dat echte digitale verandering begint bij mensen: bij hoe zij werken,
               leren en samenwerken, en bij de mate waarin zij zich digitaal zeker en vaardig voelen.
             </p>
           </div>
@@ -101,18 +101,20 @@ export default function Over() {
             <h2 className="text-2xl font-bold text-nhl-blauw mb-5">Waarom de AI-HUB bestaat</h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                AI overkomt NHL Stenden van alle kanten tegelijk. Studenten gebruiken het voor opdrachten. 
-                Docenten worstelen met vragen over integriteit. Diensten automatiseren processen. 
-                En externe regelgeving zoals de AI Act verplicht ons tot actie.
+                AI is overal tegelijk aanwezig bij NHL Stenden. Studenten verkennen de mogelijkheden voor
+                hun leerproces. Docenten zoeken houvast bij vragen over integriteit en didactiek. Diensten
+                ontdekken wat procesondersteuning kan betekenen. En Europese regelgeving vraagt om concrete
+                stappen.
               </p>
               <p>
-                Dit alles gebeurt gefragmenteerd. Iedereen handelt vanuit goede bedoelingen, maar zonder 
-                gedeeld overzicht, gedeelde taal of gedeeld kompas. De AI-HUB brengt dat samen.
+                Al die bewegingen zijn waardevol. Maar ze hebben een gemeenschappelijk vertrekpunt nodig:
+                gedeeld overzicht, een gedeelde taal en een gedeeld kompas. Dáár is de AI-HUB voor.
               </p>
               <p>
-                Niet door beleid op te leggen. Maar door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat er is, 
-                <strong className="text-nhl-blauw"> te verbinden</strong> wie er bezig zijn, en <strong className="text-nhl-blauw">richting te geven</strong> vanuit 
-                gedeelde waarden.
+                De AI-HUB legt niets op. Maar wijst de weg — door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat
+                er al is, door <strong className="text-nhl-blauw">te verbinden</strong> wie er mee bezig zijn, en door
+                <strong className="text-nhl-blauw"> richting te geven</strong> vanuit gedeelde waarden.
+                Zo wordt de AI-HUB een kompas voor iedereen die bij NHL Stenden met AI werkt, leert of beslist.
               </p>
             </div>
           </div>
