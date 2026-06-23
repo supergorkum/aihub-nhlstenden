@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import GradientHeader from '../components/GradientHeader'
 import { sporen } from '../data'
+import GeletterdheidsNetwerk from './GeletterdheidsNetwerk'
 
 // Doelgroepen met eigen kleur en omschrijving
 const DOELGROEPEN = [
@@ -84,14 +85,13 @@ const TYPE_ICON = { artikel: '📄', video: '🎬', rapport: '📊', cursus: '�
 export default function Geletterdheid() {
   const [actieveDoelgroep, setActieveDoelgroep] = useState(null)
   const [bronnen, setBronnen] = useState(INIT_BRONNEN)
-  const [eigenStemmen, setEigenStemmen] = useState({}) // { id: aantal (1-4) }
+  const [eigenStemmen, setEigenStemmen] = useState({})
   const [addOpen, setAddOpen] = useState(false)
   const [form, setForm] = useState({ titel: '', doelgroep: '', type: 'artikel', url: '', omschrijving: '', naam: '' })
   const [toegevoegd, setToegevoegd] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
-  // Stemmen: max 4 per bron, toggle per extra stem
   const stem = (id) => {
     const huidig = eigenStemmen[id] || 0
     const nieuw = huidig >= 4 ? 0 : huidig + 1
@@ -171,11 +171,8 @@ export default function Geletterdheid() {
             {/* Symbool */}
             <div className="flex flex-col items-center justify-center">
               <div className="relative w-64 h-64">
-                {/* Buitenste ring — samenleving */}
                 <div className="absolute inset-0 rounded-full border-4 border-nhl-blauw/20 flex items-center justify-center">
-                  {/* Middelste ring — instelling */}
                   <div className="w-48 h-48 rounded-full border-4 border-nhl-blauw/40 flex items-center justify-center">
-                    {/* Binnenste cirkel — individu */}
                     <div className="w-32 h-32 rounded-full bg-nhl-blauw flex items-center justify-center shadow-lg">
                       <div className="text-center">
                         <div className="text-3xl mb-0.5">🤝</div>
@@ -184,11 +181,9 @@ export default function Geletterdheid() {
                     </div>
                   </div>
                 </div>
-                {/* Labels op de ringen */}
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-gray-400 whitespace-nowrap">Samenleving & ethiek</div>
                 <div className="absolute top-10 -right-8 text-xs text-gray-400 whitespace-nowrap">Instelling</div>
                 <div className="absolute bottom-10 -left-6 text-xs text-gray-400 whitespace-nowrap">Individu</div>
-                {/* Verbindingslijnen */}
                 {[45, 135, 225, 315].map(deg => (
                   <div key={deg} className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="w-full h-px bg-nhl-blauw/10" style={{ transform: `rotate(${deg}deg)` }} />
@@ -231,7 +226,7 @@ export default function Geletterdheid() {
             })}
           </div>
 
-          {/* Actieve doelgroep uitleg + kernvragen */}
+          {/* Actieve doelgroep uitleg */}
           {actieveGroep && (
             <div className="rounded-2xl p-6 border-2 mb-8 animate-fade-in"
               style={{ borderColor: actieveGroep.kleur, backgroundColor: actieveGroep.licht }}>
@@ -292,7 +287,6 @@ export default function Geletterdheid() {
                   )}
                   <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                     <div className="text-xs text-gray-400">{b.toegevoegdDoor} · {b.datum}</div>
-                    {/* Stemmen: max 4, elke klik voegt 1 toe, bij 4 reset */}
                     <button onClick={() => stem(b.id)}
                       className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all ${eigenStem > 0 ? 'bg-nhl-roze/10 text-nhl-roze' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
                       title="Klik tot 4x om meer waardering te geven">
@@ -312,10 +306,19 @@ export default function Geletterdheid() {
               <button onClick={() => setAddOpen(true)} className="btn-roze mt-4 text-sm">+ Als eerste toevoegen</button>
             </div>
           )}
+
+          {/* ── Netwerkdiagram ── */}
+          <div className="mt-8">
+            <GeletterdheidsNetwerk
+              bronnen={bronnen}
+              actieveDoelgroep={actieveDoelgroep}
+              onDoelgroepKlik={(id) => setActieveDoelgroep(id)}
+            />
+          </div>
         </div>
       </section>
 
-      {/* Top 5 */}
+      {/* Top 5 + gerelateerd */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12">
@@ -379,7 +382,7 @@ export default function Geletterdheid() {
               <div className="p-8 text-center">
                 <div className="text-5xl mb-4">🎉</div>
                 <h3 className="font-bold text-nhl-blauw text-xl mb-2">Toegevoegd!</h3>
-                <p className="text-gray-500 text-sm mb-6">Je bron verschijnt direct in het overzicht.</p>
+                <p className="text-gray-500 text-sm mb-6">Je bron verschijnt direct in het overzicht én in het netwerk.</p>
                 <button onClick={() => setAddOpen(false)} className="btn-primary">Sluiten</button>
               </div>
             ) : (
@@ -422,7 +425,7 @@ export default function Geletterdheid() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">URL (optioneel)</label>
                   <input type="url" value={form.url} onChange={e => upd('url', e.target.value)}
-                    placeholder="https://..."
+                    placeholder="https://... (extern) of leeg laten voor intern"
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
                 <div>
