@@ -91,6 +91,23 @@ function DropdownGroep({ groep }) {
   )
 }
 
+// Aparte component zodat useNavigate werkt en altijd reset naar keuzescherm
+function MeldKnop({ className, children, onClick }) {
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    // Navigeer altijd naar /meld zonder params — forceert reset via searchParams useEffect
+    navigate('/meld', { replace: false })
+    if (onClick) onClick()
+  }
+
+  return (
+    <button onClick={handleClick} className={className}>
+      {children}
+    </button>
+  )
+}
+
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileGroep, setMobileGroep] = useState(null)
@@ -115,7 +132,6 @@ export default function Nav() {
               <DropdownGroep key={groep.label} groep={groep} />
             ))}
 
-            {/* Over — directe link, geen dropdown */}
             <NavLink
               to="/over"
               className={({ isActive }) =>
@@ -129,12 +145,10 @@ export default function Nav() {
 
             <div className="w-px h-5 bg-white/20 mx-2" />
 
-            <NavLink
-              to="/meld"
-              className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap"
-            >
+            {/* Gebruik MeldKnop zodat klik altijd reset naar keuzescherm */}
+            <MeldKnop className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
               + Vraag of idee
-            </NavLink>
+            </MeldKnop>
           </div>
 
           {/* Hamburger */}
@@ -196,13 +210,12 @@ export default function Nav() {
             >
               Over het Netwerk
             </NavLink>
-            <NavLink
-              to="/meld"
+            <MeldKnop
+              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold w-full"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold"
             >
               + Vraag of idee
-            </NavLink>
+            </MeldKnop>
           </div>
         )}
       </div>

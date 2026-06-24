@@ -141,7 +141,7 @@ function HerstellModal({ data, bron, onHerstel, onSluiten }) {
   )
 }
 
-function NieuwsOphalen({ onNieuwItems }) {
+function NieuwsOphalen({ onNieuwItems, inspiraties = [] }) {
   const [status, setStatus] = useState('idle')
   const [resultaat, setResultaat] = useState(null)
   const [tijdstip, setTijdstip] = useState(() => localStorage.getItem(REFRESH_KEY))
@@ -150,7 +150,13 @@ function NieuwsOphalen({ onNieuwItems }) {
     setStatus('bezig')
     setResultaat(null)
     try {
-      const res = await fetch(NIEUWS_URL, { method: 'POST' })
+      // Stuur bestaande titels mee zodat de server duplicates kan overslaan
+      const bekendeTitels = inspiraties.map(i => i.titel).filter(Boolean)
+      const res = await fetch(NIEUWS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bekendeTitels }),
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Fout bij ophalen')
       const ts = new Date().toISOString()
@@ -202,28 +208,41 @@ function NieuwsOphalen({ onNieuwItems }) {
         <div className="px-6 py-4">
           {status === 'klaar' && (
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-semibold text-green-700">
-                <span>✓</span><span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
-              </div>
+              {resultaat.aantalNieuw > 0 ? (
+                <>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-green-700">
+                    <span>✓</span><span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
+                  </div>
+                  {resultaat.items?.slice(0, 3).map((item, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
+                      <span>{item.icon}</span>
+                      <div>
+                        <div className="font-medium text-nhl-blauw">{item.titel}</div>
+                        <div className="text-gray-400">{item.naam} · {item.doelgroep}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {resultaat.items?.length > 3 && (
+                    <div className="text-xs text-gray-400">+{resultaat.items.length - 3} meer toegevoegd</div>
+                  )}
+                </>
+              ) : (
+                <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">ℹ️</span>
+                  <div>
+                    <div className="text-sm font-semibold text-nhl-blauw mb-0.5">Geen nieuw nieuws</div>
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      {resultaat.aantalGefilterd > 0
+                        ? `Alle ${resultaat.aantalGefilterd} opgehaalde items staan al in Inspiratie. Kom later terug voor nieuwe berichten.`
+                        : 'Er zijn geen relevante berichten gevonden voor NHL Stenden. Kom later terug.'}
+                    </p>
+                  </div>
+                </div>
+              )}
               {resultaat.fouten?.length > 0 && (
                 <div className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
                   ⚠️ Niet alle feeds bereikbaar: {resultaat.fouten.join(' · ')}
                 </div>
-              )}
-              {resultaat.aantalNieuw === 0 && (
-                <p className="text-sm text-gray-500">Geen nieuwe relevante items gevonden. Alles is al actueel.</p>
-              )}
-              {resultaat.items?.slice(0, 3).map((item, i) => (
-                <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
-                  <span>{item.icon}</span>
-                  <div>
-                    <div className="font-medium text-nhl-blauw">{item.titel}</div>
-                    <div className="text-gray-400">{item.naam} · {item.doelgroep}</div>
-                  </div>
-                </div>
-              ))}
-              {resultaat.items?.length > 3 && (
-                <div className="text-xs text-gray-400">+{resultaat.items.length - 3} meer toegevoegd</div>
               )}
             </div>
           )}
@@ -760,7 +779,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     </div>
                   </div>
                 </div>
-                <NieuwsOphalen onNieuwItems={(items) => {
+                <NieuwsOphalen inspiraties={inspiraties || []} onNieuwItems={(items) => {
                   setInspiraties(prev => {
                     const nieuweIds = new Set(prev.map(i => i.titel))
                     return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]

@@ -18,7 +18,7 @@ const NODE_LINKS = {
   i5:   { intern: true,  to: '/geletterdheid' },
   i10:  { intern: true,  to: '/initiatieven' },
   i11:  { intern: true,  to: '/initiatieven' },
-  i12:  { intern: true,  to: '/initiatieven' },
+  i12:  { intern: false, url: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-artificial-intelligence' },
   i14:  { intern: true,  to: '/initiatieven' },
   e6:   { intern: false, url: 'https://www.surf.nl/en/themes/artificial-intelligence/projects-and-collaborations/ai-hub' },
   e7:   { intern: false, url: 'https://npuls.nl' },
@@ -96,10 +96,12 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
   const handleHoverUit = () => { setHovered(null) }
 
   const handlePanelMouseEnter = () => {
+    // Vergrendel alleen als er iets gehoverd wordt én nog niets geselecteerd is
     if (hovered && !selected) {
       setSelected(hovered)
       setHovered(null)
     }
+    // Als er al iets geselecteerd is: panel-mouseenter doet niets extra
   }
 
   // Rendert het detailpaneel — zelfde logica als pages/Netwerk.jsx
@@ -213,10 +215,14 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
     <div className={`flex gap-4 h-full ${fullscreen ? 'flex-row' : 'flex-col lg:flex-row'}`}>
       {/* SVG */}
       <div
-        className={`${fullscreen ? 'flex-1' : 'lg:flex-1'} rounded-2xl overflow-hidden`}
+        className={`${fullscreen ? 'flex-1 min-w-0 overflow-auto' : 'lg:flex-1'} rounded-2xl overflow-hidden`}
         style={{ background: fullscreen ? 'rgba(255,255,255,0.05)' : 'transparent' }}
       >
-        <svg viewBox="-14 -14 138 138" className="w-full" style={{ aspectRatio: '1/1' }}>
+        <svg
+          viewBox="-14 -14 138 138"
+          className="w-full"
+          style={{ aspectRatio: '1/1', maxHeight: fullscreen ? 'calc(100vh - 120px)' : undefined }}
+        >
           <defs>
             <radialGradient id="nvCenterGrad" cx="40%" cy="35%">
               <stop offset="0%" stopColor="#3B5FC0"/>
@@ -274,7 +280,7 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
                 <circle cx={node.x} cy={node.y} r={node.r * scale} fill={fillKleur}
                   stroke={isSelected ? '#E91E8C' : isHov ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.06)'}
                   strokeWidth={isSelected ? 0.7 : isHov ? 0.5 : 0.2}
-                  style={{ transition: 'r 0.15s, fill 0.15s' }}/>
+                  style={{ transition: 'r 0.2s ease, fill 0.2s ease' }}/>
                 {node.lines.map((line, li) => {
                   const n = node.lines.length
                   const lh = node.type === 'spoor' ? node.r * scale * 0.42 : node.r * scale * 0.5
@@ -285,7 +291,7 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
                       textAnchor="middle" dominantBaseline="middle"
                       fill={tekstKleur} fontSize={fs} fontWeight="600"
                       fontFamily="Inter, Arial, sans-serif"
-                      style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                      style={{ pointerEvents: 'none', userSelect: 'none', transition: 'font-size 0.2s ease' }}>
                       {line}
                     </text>
                   )
@@ -309,9 +315,9 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
                   stroke={isSelected ? '#E91E8C' : 'none'}
                   strokeWidth={isSelected ? 0.8 : 0}
                   style={{ transition: 'r 0.15s' }}/>
-                <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="3.2" fontWeight="800"
+                <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="2.8" fontWeight="800"
                   fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>AI-</text>
-                <text x={node.x} y={node.y + 2.2} textAnchor="middle" fontSize="3.2" fontWeight="800"
+                <text x={node.x} y={node.y + 2.2} textAnchor="middle" fontSize="2.8" fontWeight="800"
                   fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>Netwerk</text>
               </g>
             )

@@ -18,7 +18,7 @@ const NODE_LINKS = {
   i5:   { intern: true,  to: '/geletterdheid' },
   i10:  { intern: true,  to: '/initiatieven' },
   i11:  { intern: true,  to: '/initiatieven' },
-  i12:  { intern: true,  to: '/initiatieven' },
+  i12:  { intern: false, url: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-artificial-intelligence' },
   i14:  { intern: true,  to: '/initiatieven' },
   e6:   { intern: false, url: 'https://www.surf.nl/en/themes/artificial-intelligence/projects-and-collaborations/ai-hub' },
   e7:   { intern: false, url: 'https://npuls.nl' },
@@ -210,6 +210,7 @@ export default function Netwerk() {
       setSelected(hovered)
       setHovered(null)
     }
+    // Als al iets geselecteerd: niets extra doen
   }
 
   return (
@@ -303,7 +304,7 @@ export default function Netwerk() {
                       <circle cx={node.x} cy={node.y} r={node.r * scale} fill={fillKleur}
                         stroke={isSelected ? '#E91E8C' : isHov ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.06)'}
                         strokeWidth={isSelected ? 0.7 : isHov ? 0.5 : 0.2}
-                        style={{ transition: 'r 0.15s, fill 0.15s' }}/>
+                        style={{ transition: 'r 0.2s ease, fill 0.2s ease' }}/>
                       {node.lines.map((line, li) => {
                         const n = node.lines.length
                         const lh = node.type === 'spoor' ? node.r * scale * 0.42 : node.r * scale * 0.5
@@ -338,9 +339,9 @@ export default function Netwerk() {
                         stroke={isSelected ? '#E91E8C' : 'none'}
                         strokeWidth={isSelected ? 0.8 : 0}
                         style={{ transition: 'r 0.15s' }}/>
-                      <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="3.2" fontWeight="800"
+                      <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="2.8" fontWeight="800"
                         fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>AI-</text>
-                      <text x={node.x} y={node.y + 2.2} textAnchor="middle" fontSize="3.2" fontWeight="800"
+                      <text x={node.x} y={node.y + 2.2} textAnchor="middle" fontSize="2.8" fontWeight="800"
                         fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>Netwerk</text>
                     </g>
                   )

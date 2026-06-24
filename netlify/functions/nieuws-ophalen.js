@@ -1,4 +1,4 @@
-// Netlify Function — snel: max 3 feeds, parallel Anthropic calls, timeout 8s
+// Netlify Function — max 3 feeds, parallel Anthropic calls, duplicate-detectie via bekendeTitels
 
 const RSS_FEEDS = [
   { naam: 'The Gradient',   url: 'https://thegradient.pub/rss/',              label: 'The Gradient',   icon: '📊' },
@@ -29,7 +29,7 @@ function parseRSS(xml) {
     }
     if (items.length > 0) break
   }
-  return items.slice(0, 3) // max 3 per feed
+  return items.slice(0, 3)
 }
 
 async function beoordeelItem(item, feed, apiKey) {
@@ -63,14 +63,14 @@ async function beoordeelItem(item, feed, apiKey) {
       typelabel: 'Interessante ontwikkeling',
       rol: 'Auto-update', naam: feed.label,
       spoor: b.spoor || null,
-              sporeDef: b.spoor ? [
-                null,
-                { titel: 'AI & Leren', icon: '🎓' },
-                { titel: 'AI & Werken', icon: '⚙️' },
-                { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' },
-                { titel: 'AI-Geletterdheid', icon: '📖' },
-              ][b.spoor] || null : null,
-              laag: null,
+      sporeDef: b.spoor ? [
+        null,
+        { titel: 'AI & Leren', icon: '🎓' },
+        { titel: 'AI & Werken', icon: '⚙️' },
+        { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' },
+        { titel: 'AI-Geletterdheid', icon: '📖' },
+      ][b.spoor] || null : null,
+      laag: null,
       titel: item.titel, tekst: b.samenvatting,
       url: item.link,
       trefwoorden: ['AI', 'Nieuws', feed.label],
@@ -95,10 +95,18 @@ export default async (req) => {
     }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 
+  // Lees bekende titels uit request body om duplicates te filteren
+  let bekendeTitels = new Set()
+  try {
+    const body = await req.json()
+    if (Array.isArray(body?.bekendeTitels)) {
+      bekendeTitels = new Set(body.bekendeTitels.map(t => t.toLowerCase().trim()))
+    }
+  } catch { /* geen body of geen bekendeTitels, dat is prima */ }
+
   const fouten = []
   const alleItems = []
 
-  // Feeds parallel ophalen
   const feedResults = await Promise.allSettled(
     RSS_FEEDS.map(async (feed) => {
       const feedUrlMet = feed.url + (feed.url.includes('?') ? '&' : '?') + '_t=' + Date.now()
@@ -123,9 +131,17 @@ export default async (req) => {
     }
   }
 
-  // Alle Anthropic beoordelingen parallel
+  // Filter items waarvan de titel al bekend is — geen Anthropic call voor duplicates
+  const nieuweItems = alleItems.map(({ feed, items }) => ({
+    feed,
+    items: items.filter(item => !bekendeTitels.has(item.titel.toLowerCase().trim()))
+  })).filter(({ items }) => items.length > 0)
+
+  const aantalGefilterd = alleItems.reduce((t, { items }) => t + items.length, 0) - nieuweItems.reduce((t, { items }) => t + items.length, 0)
+
+  // Alleen nieuwe items beoordelen door Anthropic
   const beoordelingen = await Promise.allSettled(
-    alleItems.flatMap(({ feed, items }) =>
+    nieuweItems.flatMap(({ feed, items }) =>
       items.map(item => beoordeelItem(item, feed, apiKey))
     )
   )
@@ -137,6 +153,8 @@ export default async (req) => {
   return new Response(JSON.stringify({
     ok: true,
     aantalNieuw: resultaten.length,
+    aantalGefilterd,          // hoeveel duplicates er uitgefilterd zijn
+    geenNieuwNieuws: resultaten.length === 0 && aantalGefilterd > 0,
     items: resultaten,
     fouten: fouten.length > 0 ? fouten : undefined,
     tijdstip: new Date().toISOString(),
