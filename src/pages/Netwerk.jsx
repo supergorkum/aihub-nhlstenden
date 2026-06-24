@@ -1,6 +1,6 @@
 import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
 const NODE_LINKS = {
@@ -78,6 +78,7 @@ function DetailPanelInhoud({ nodeId }) {
   const spoor = node.spoorId ? sporen.find(s => s.id === node.spoorId) : null
   const link = NODE_LINKS[nodeId]
 
+  // Kern
   if (node.type === 'kern') {
     return (
       <div>
@@ -85,7 +86,9 @@ function DetailPanelInhoud({ nodeId }) {
           <div className="w-10 h-10 rounded-xl bg-nhl-blauw flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AI</div>
           <div className="font-bold text-nhl-blauw text-base leading-snug">AI-Netwerk NHL Stenden</div>
         </div>
-        <p className="text-gray-500 text-xs leading-relaxed mb-5">De centrale verbindingsplek voor alles rond AI bij NHL Stenden. Zes thema's, vijf lagen, één kompas.</p>
+        <p className="text-gray-500 text-xs leading-relaxed mb-5">
+          De centrale verbindingsplek voor alles rond AI bij NHL Stenden. Zes thema's, vijf lagen, één kompas.
+        </p>
         <Link to="/" className="block w-full text-center bg-nhl-blauw hover:bg-blue-900 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
           Naar de startpagina →
         </Link>
@@ -93,6 +96,7 @@ function DetailPanelInhoud({ nodeId }) {
     )
   }
 
+  // Spoor
   if (spoor) {
     return (
       <div>
@@ -119,16 +123,21 @@ function DetailPanelInhoud({ nodeId }) {
     )
   }
 
+  // Initiatief of externe partner
   if (init) {
+    const isExtern = node.type === 'extern'
     const externeUrl = link?.intern === false ? link.url : null
+
     return (
       <div>
         <span className={`text-xs px-2 py-0.5 rounded-full font-medium mb-3 inline-block ${
-          node.type === 'extern' ? 'bg-green-100 text-green-700'
-          : init.type === 'surf' ? 'bg-purple-100 text-purple-700'
-          : 'bg-blue-100 text-nhl-blauw'
+          isExtern
+            ? 'bg-green-100 text-green-700'
+            : init.type === 'surf'
+            ? 'bg-purple-100 text-purple-700'
+            : 'bg-blue-100 text-nhl-blauw'
         }`}>
-          {node.type === 'extern' ? '🤝 Externe partner' : init.type === 'surf' ? '🌐 SURF' : '🏫 Intern initiatief'}
+          {isExtern ? '🤝 Externe partner' : init.type === 'surf' ? '🌐 SURF' : '🏫 Intern initiatief'}
         </span>
         <div className="font-bold text-nhl-blauw mb-2 text-sm leading-snug">{init.naam}</div>
         <p className="text-gray-500 text-xs leading-relaxed mb-3">{init.omschrijving}</p>
@@ -140,14 +149,7 @@ function DetailPanelInhoud({ nodeId }) {
           </div>
         )}
         <div className="space-y-2">
-          {link?.intern && (
-            <Link
-              to={link.to}
-              className="flex items-center justify-center gap-2 w-full bg-nhl-blauw hover:bg-blue-900 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors"
-            >
-              Bekijk in het AI-Netwerk →
-            </Link>
-          )}
+          {/* Externe bollen krijgen altijd de groene knop */}
           {externeUrl && (
             <a
               href={externeUrl}
@@ -157,6 +159,15 @@ function DetailPanelInhoud({ nodeId }) {
             >
               Bezoek externe website ↗
             </a>
+          )}
+          {/* Interne bollen krijgen de blauwe knop */}
+          {!externeUrl && link?.intern && (
+            <Link
+              to={link.to}
+              className="flex items-center justify-center gap-2 w-full bg-nhl-blauw hover:bg-blue-900 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors"
+            >
+              Bekijk in het AI-Netwerk →
+            </Link>
           )}
         </div>
       </div>
@@ -170,10 +181,9 @@ export default function Netwerk() {
   const [selected, setSelected] = useState(null)
   const [hovered, setHovered] = useState(null)
 
-  // Panel toont: selected heeft altijd prioriteit; anders hovered
   const panelNode = selected ?? hovered
-
   const activeForLinks = selected ?? hovered
+
   const verbonden = new Set()
   if (activeForLinks) {
     LINKS.forEach(([a, b]) => {
@@ -188,7 +198,6 @@ export default function Netwerk() {
   }
 
   const handleHoverIn = (nodeId) => {
-    // Hover werkt altijd voor SVG visueel; maar panel verandert alleen als niets geselecteerd
     setHovered(nodeId)
   }
 
@@ -196,7 +205,6 @@ export default function Netwerk() {
     setHovered(null)
   }
 
-  // Als de muis het detail-panel ingaat terwijl iets gehovered is: vergrendel het als selected
   const handlePanelMouseEnter = () => {
     if (hovered && !selected) {
       setSelected(hovered)
@@ -215,7 +223,7 @@ export default function Netwerk() {
           <div className="section-label text-blue-300 mb-3">Netwerkorganisatie</div>
           <h1 className="text-4xl font-extrabold text-white mb-4">Het AI-Netwerk van NHL Stenden</h1>
           <p className="text-blue-100 text-lg leading-relaxed max-w-2xl mb-5">
-            Zes thema's, vijf lagen, één centrum. Hover voor een preview · Klik om vast te zetten · Gebruik de knoppen om te navigeren.
+            Zes thema's, vijf lagen, één centrum. Hover voor een preview, klik om vast te zetten en gebruik de knoppen om te navigeren.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
@@ -343,7 +351,7 @@ export default function Netwerk() {
                 <div className="text-xs text-gray-400">
                   {selected
                     ? '📌 Vastgezet — klik de knop in het paneel om te navigeren'
-                    : 'Hover voor preview · Klik om vast te zetten · Navigeer via de knoppen in het paneel'
+                    : 'Hover voor preview. Klik om vast te zetten. Navigeer via de knoppen in het paneel.'
                   }
                 </div>
                 {selected && (
@@ -355,7 +363,7 @@ export default function Netwerk() {
             </div>
           </div>
 
-          {/* Detail panel — vergrendelt automatisch als muis erin beweegt */}
+          {/* Detail panel */}
           <div>
             <div
               className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-24"
@@ -411,7 +419,7 @@ export default function Netwerk() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { naam: 'SURF AI-Hub', icon: '🤝', kleur: '#065F46', licht: '#D1FAE5', omschrijving: 'Samenwerkingsplatform voor AI in het Nederlandse hoger onderwijs. Veilige toegang tot modellen, kennisdeling en gezamenlijke pilots.', url: 'https://www.surf.nl/en/themes/artificial-intelligence/projects-and-collaborations/ai-hub', tags: ['Samenwerking', 'Modellen', 'Veiligheid'] },
-              { naam: 'AI-Fabriek Groningen', icon: '🏭', kleur: '#7C3AED', licht: '#EDE9FE', omschrijving: 'Regionale soevereine rekenkracht. €200M nationaal groeifonds 2025. Strategisch alternatief voor Big Tech cloud.', url: 'https://www.nijbegun.nl/projecten/ai-fabriek/', url2: 'https://www.rijksoverheid.nl/actueel/nieuws/2025/06/27/nederland-zet-in-op-200-miljoen-euro-voor-aifabriek-in-groningen', tags: ['Infrastructuur', 'Soevereiniteit', 'Noord'] },
+              { naam: 'AI-Fabriek Groningen', icon: '🏭', kleur: '#7C3AED', licht: '#EDE9FE', omschrijving: 'Regionale soevereine rekenkracht. 200 miljoen euro nationaal groeifonds 2025. Strategisch alternatief voor Big Tech cloud.', url: 'https://www.nijbegun.nl/projecten/ai-fabriek/', url2: 'https://www.rijksoverheid.nl/actueel/nieuws/2025/06/27/nederland-zet-in-op-200-miljoen-euro-voor-aifabriek-in-groningen', tags: ['Infrastructuur', 'Soevereiniteit', 'Noord'] },
               { naam: 'GPT-NL', icon: '🇳🇱', kleur: '#1E3A8A', licht: '#DBEAFE', omschrijving: 'Soeverein Nederlands taalmodel. AVG-compliant, transparant, in samenwerking met SURF en kennisinstellingen.', url: 'https://gptnl.nl', tags: ['Taalmodel', 'Soevereiniteit', 'AVG'] },
               { naam: 'NPULS', icon: '📚', kleur: '#D97706', licht: '#FFFBEB', omschrijving: 'Nationaal programma digitale geletterdheid. Kaders en materialen direct bruikbaar voor alle doelgroepen.', url: 'https://npuls.nl', tags: ['Geletterdheid', 'Nationaal', 'Materialen'] },
             ].map(p => (
