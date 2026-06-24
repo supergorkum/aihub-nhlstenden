@@ -68,21 +68,6 @@ function DropdownGroep({ groep }) {
   )
 }
 
-// NHL Stenden logo als SVG — wit op transparant, past perfect in blauwe balk
-function NHLLogo({ className = '' }) {
-  return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Kader */}
-      <rect x="4" y="6" width="30" height="36" rx="1" stroke="white" strokeWidth="2.5" fill="none"/>
-      {/* NHL tekst */}
-      <text x="7" y="22" fontSize="9" fontWeight="800" fill="white" fontFamily="Arial, sans-serif">NHL</text>
-      {/* STENDEN tekst */}
-      <text x="7" y="36" fontSize="7" fontWeight="700" fill="white" fontFamily="Arial, sans-serif">STEN</text>
-      <text x="7" y="36" fontSize="7" fontWeight="700" fill="white" fontFamily="Arial, sans-serif" dx="22">DEN</text>
-    </svg>
-  )
-}
-
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileGroep, setMobileGroep] = useState(null)
@@ -95,13 +80,23 @@ export default function Nav() {
           {/* Links: logo + naam + Start aansluitend */}
           <div className="flex items-center flex-shrink-0">
             <NavLink to="/" className="flex items-center gap-2.5">
-              {/* NHL Stenden logo: witte SVG versie */}
-              <NHLLogo className="h-9 w-9" />
+              {/* NHL Stenden logo als scherpe SVG — wit kader + witte tekst */}
+              <svg viewBox="0 0 44 44" className="h-9 w-9 flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Wit kader */}
+                <rect x="3" y="3" width="28" height="38" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
+                {/* NHL — dikgedrukt */}
+                <text x="6" y="20" fontSize="10.5" fontWeight="900" fill="white" fontFamily="Arial Black, Arial, sans-serif" letterSpacing="-0.3">NHL</text>
+                {/* Horizontale streep tussen NHL en STENDEN */}
+                <line x1="6" y1="23.5" x2="28" y2="23.5" stroke="white" strokeWidth="1.2" opacity="0.6"/>
+                {/* STENDEN — iets kleiner */}
+                <text x="6" y="35" fontSize="7.5" fontWeight="700" fill="white" fontFamily="Arial, sans-serif" letterSpacing="0.2">STENDEN</text>
+              </svg>
               <div className="border-l border-white/25 pl-2.5">
                 <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
                 <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
               </div>
             </NavLink>
+
             {/* Start direct aansluitend */}
             <NavLink to="/"
               className={({ isActive }) =>
