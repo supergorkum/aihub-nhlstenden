@@ -32,6 +32,8 @@ const navGroepen = [
     label: 'Beleid',
     items: [
       { label: 'Beleid & Kaders', to: '/beleid', icon: '📋' },
+      { label: 'Roadmap', to: '/initiatieven?tab=roadmap', icon: '🗺️' },
+      { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },
     ]
   },
 ]
@@ -68,7 +70,7 @@ function DropdownGroep({ groep }) {
 
       {open && (
         <div
-          className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-48 z-50"
+          className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50"
           style={{ marginTop: '-1px' }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -100,17 +102,31 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo: NHL Stenden logo transparant op blauwe balk */}
+          {/* Logo links: NHL Stenden logo + naam AI-Netwerk */}
           <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-8 object-contain brightness-0 invert" />
-            <div className="border-l border-white/30 pl-3">
+            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
+            <div className="hidden sm:block border-l border-white/25 pl-3">
               <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
               <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
             </div>
           </NavLink>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center h-16">
+          <div className="hidden lg:flex items-center h-16 gap-0.5">
+
+            {/* Start knop direct naast het logo-blok */}
+            <NavLink to="/"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors mr-1 ${
+                  isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              🏠 Start
+            </NavLink>
+
+            <div className="w-px h-5 bg-white/20 mx-1" />
+
             {navGroepen.map(groep => (
               <DropdownGroep key={groep.label} groep={groep} />
             ))}
@@ -146,6 +162,13 @@ export default function Nav() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="lg:hidden border-t border-white/20 py-4">
+            <NavLink to="/" onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `block px-3 py-2.5 text-sm font-semibold transition-colors mb-1 ${isActive ? 'text-white' : 'text-blue-100 hover:text-white'}`
+              }
+            >
+              🏠 Start
+            </NavLink>
             {navGroepen.map(groep => (
               <div key={groep.label} className="mb-1">
                 <button
