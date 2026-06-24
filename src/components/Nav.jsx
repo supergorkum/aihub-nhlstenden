@@ -5,35 +5,35 @@ const navGroepen = [
   {
     label: 'Verkennen',
     items: [
-      { label: "Thema's", to: '/themas', icon: '🎯' },
       { label: 'Fundament', to: '/fundament', icon: '🏛️' },
       { label: 'Netwerk', to: '/netwerk', icon: '🕸️' },
+      { label: "Thema's", to: '/themas', icon: '🎯' },
     ]
   },
   {
     label: 'Aan de slag',
     items: [
+      { label: 'Evenementen', to: '/evenementen', icon: '📅' },
       { label: 'Initiatieven', to: '/initiatieven', icon: '🚀' },
       { label: 'Pilots', to: '/pilots', icon: '🧪' },
-      { label: 'Evenementen', to: '/evenementen', icon: '📅' },
     ]
   },
   {
     label: 'Kennis',
     items: [
-      { label: "Video's", to: '/video', icon: '🎬' },
       { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
+      { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
-      { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
+      { label: "Video's", to: '/video', icon: '🎬' },
     ]
   },
   {
     label: 'Beleid',
     items: [
+      { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },
       { label: 'Beleid & Kaders', to: '/beleid', icon: '📋' },
       { label: 'Roadmap', to: '/initiatieven?tab=roadmap', icon: '🗺️' },
-      { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },
     ]
   },
 ]
@@ -51,16 +51,11 @@ function DropdownGroep({ groep }) {
   }
 
   return (
-    <div
-      className="relative h-16 flex items-center"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <button
-        className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-          open ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
-        }`}
-      >
+    <div className="relative h-16 flex items-center"
+      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <button className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+        open ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
+      }`}>
         {groep.label}
         <svg className={`w-3 h-3 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
           fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,20 +64,16 @@ function DropdownGroep({ groep }) {
       </button>
 
       {open && (
-        <div
-          className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50"
+        <div className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50"
           style={{ marginTop: '-1px' }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+          onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {groep.items.map(item => (
             <NavLink key={item.to} to={item.to} onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                   isActive ? 'text-nhl-blauw font-semibold bg-blue-50' : 'text-gray-700 hover:bg-gray-50 hover:text-nhl-blauw'
                 }`
-              }
-            >
+              }>
               <span className="w-5 text-center">{item.icon}</span>
               <span>{item.label}</span>
             </NavLink>
@@ -102,7 +93,7 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo links: NHL Stenden logo + naam AI-Netwerk */}
+          {/* Logo */}
           <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
             <div className="hidden sm:block border-l border-white/25 pl-3">
@@ -114,14 +105,13 @@ export default function Nav() {
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center h-16 gap-0.5">
 
-            {/* Start knop direct naast het logo-blok */}
+            {/* Start */}
             <NavLink to="/"
               className={({ isActive }) =>
                 `flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors mr-1 ${
                   isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
                 }`
-              }
-            >
+              }>
               🏠 Start
             </NavLink>
 
@@ -136,16 +126,14 @@ export default function Nav() {
                 `flex items-center px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                   isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
                 }`
-              }
-            >
+              }>
               Over
             </NavLink>
 
             <div className="w-px h-5 bg-white/20 mx-2" />
 
             <NavLink to="/meld"
-              className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap"
-            >
+              className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
               + Vraag of idee
             </NavLink>
           </div>
@@ -164,17 +152,15 @@ export default function Nav() {
           <div className="lg:hidden border-t border-white/20 py-4">
             <NavLink to="/" onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `block px-3 py-2.5 text-sm font-semibold transition-colors mb-1 ${isActive ? 'text-white' : 'text-blue-100 hover:text-white'}`
-              }
-            >
+                `block px-3 py-2.5 text-sm font-semibold mb-1 transition-colors ${isActive ? 'text-white' : 'text-blue-100 hover:text-white'}`
+              }>
               🏠 Start
             </NavLink>
             {navGroepen.map(groep => (
               <div key={groep.label} className="mb-1">
                 <button
                   onClick={() => setMobileGroep(mobileGroep === groep.label ? null : groep.label)}
-                  className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-blue-300 uppercase tracking-widest hover:text-white transition-colors"
-                >
+                  className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-blue-300 uppercase tracking-widest hover:text-white transition-colors">
                   {groep.label}
                   <svg className={`w-3.5 h-3.5 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -190,8 +176,7 @@ export default function Nav() {
                           `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                             isActive ? 'bg-white/20 text-white font-medium' : 'text-blue-100 hover:text-white hover:bg-white/10'
                           }`
-                        }
-                      >
+                        }>
                         <span>{item.icon}</span>
                         <span>{item.label}</span>
                       </NavLink>
@@ -203,13 +188,11 @@ export default function Nav() {
             <NavLink to="/over" onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `block px-3 py-2.5 text-sm transition-colors ${isActive ? 'text-white font-medium' : 'text-blue-100 hover:text-white'}`
-              }
-            >
+              }>
               Over het Netwerk
             </NavLink>
             <NavLink to="/meld" onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold"
-            >
+              className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold">
               + Vraag of idee
             </NavLink>
           </div>
