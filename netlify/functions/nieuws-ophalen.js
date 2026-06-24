@@ -101,7 +101,8 @@ export default async (req) => {
   // Feeds parallel ophalen
   const feedResults = await Promise.allSettled(
     RSS_FEEDS.map(async (feed) => {
-      const res = await fetch(feed.url, {
+      const feedUrlMet = feed.url + (feed.url.includes('?') ? '&' : '?') + '_t=' + Date.now()
+      const res = await fetch(feedUrlMet, {
         headers: { 'User-Agent': 'Mozilla/5.0 (compatible; NHLStendenAIHUB/1.3)', Accept: 'application/rss+xml, */*' },
         signal: AbortSignal.timeout(6000),
       })

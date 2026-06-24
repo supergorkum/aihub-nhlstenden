@@ -272,7 +272,7 @@ export default function Over() {
           <h2 className="text-2xl font-bold text-white mb-3">Doe mee aan het AI-Netwerk</h2>
           <p className="text-blue-200 mb-6 max-w-md mx-auto">Het AI-Netwerk groeit vanuit de organisatie zelf. Jouw kennis, initiatief of vraag maakt het netwerk rijker.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link to="/meld" className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">+ Meld een initiatief</Link>
+            <Link to="/meld?categorie=initiatief" className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">+ Meld een initiatief</Link>
             <Link to="/netwerk" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">Bekijk het netwerk</Link>
             <Link to="/themas" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">Ontdek de thema's</Link>
           </div>

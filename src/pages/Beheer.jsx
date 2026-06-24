@@ -537,7 +537,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               )
             })()}
 
-            <button onClick={() => setActieveTab('data')}
+            <button onClick={() => setActieveTab('backup')}
               className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-roze hover:text-nhl-roze transition-colors font-medium">
               🤖 Nieuws ophalen
             </button>
@@ -725,7 +725,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {actieveTab === 'data' && (
+        {actieveTab === 'backup' && (
           <div className="space-y-6">
 
             {/* Cloud backup */}
@@ -776,13 +776,23 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               </div>
             </div>
 
-            {/* Nieuws */}
-            <NieuwsOphalen onNieuwItems={(items) => {
-              setInspiraties(prev => {
-                const nieuweIds = new Set(prev.map(i => i.titel))
-                return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]
-              })
-            }} />
+            {/* Nieuws ophalen — aparte sectie bovenaan */}
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-nhl-blauw flex items-center gap-2">📰 Nieuws ophalen</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Haal relevante AI-berichten op via de Rijksoverheid, SURF, NPULS en andere bronnen. Voeg ze toe als inspiratie.</div>
+                </div>
+              </div>
+              <div className="p-6">
+                <NieuwsOphalen onNieuwItems={(items) => {
+                  setInspiraties(prev => {
+                    const nieuweIds = new Set(prev.map(i => i.titel))
+                    return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]
+                  })
+                }} />
+              </div>
+            </div>
 
             {/* JSON export / import */}
             <div className="grid sm:grid-cols-2 gap-4">

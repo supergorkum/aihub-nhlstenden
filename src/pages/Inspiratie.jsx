@@ -1,5 +1,6 @@
 import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { sporen, lagen } from '../data'
 import PageHeader from '../components/PageHeader'
 
@@ -28,6 +29,7 @@ const catKleur = {
 const TREFWOORD_SUGGESTIES = ['AI', 'Onderwijs', 'Didactiek', 'Geletterdheid', 'Studiesucces', 'Privacy', 'SURF', 'Governance', 'Innovatie', 'Data', 'Curriculum', 'Samenwerking', 'Toetsing', 'Ethiek', 'Soevereiniteit']
 
 export default function Inspiratie({ inspiraties, setInspiraties }) {
+  const navigate = useNavigate()
   const [filterType, setFilterType] = useState(null)
   const [addOpen, setAddOpen] = useState(false)
   const [stap, setStap] = useState(0)
@@ -93,6 +95,11 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
     }
     setInspiraties(prev => [nieuw, ...prev])
     setVerstuurd(true)
+    // AI Act gerelateerd? Navigeer naar de juiste tab na korte vertraging
+    const isAiAct = (parseInt(form.spoor) === 3) || form.trefwoorden.some(t => t.toLowerCase().includes('ai act') || t.toLowerCase().includes('compliance'))
+    if (isAiAct) {
+      setTimeout(() => navigate('/initiatieven?tab=aiact'), 1800)
+    }
   }
 
   const alle = inspiraties
@@ -259,7 +266,13 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
               <div className="p-8 text-center">
                 <div className="text-5xl mb-4">🎉</div>
                 <h3 className="font-bold text-nhl-blauw text-xl mb-2">Gedeeld!</h3>
-                <p className="text-gray-600 text-sm mb-6">Je bijdrage verschijnt direct in het inspiratieoverzicht.</p>
+                <p className="text-gray-600 text-sm mb-4">Je bijdrage verschijnt direct in het inspiratieoverzicht.</p>
+                {(parseInt(form.spoor) === 3 || form.trefwoorden.some(t => t.toLowerCase().includes('ai act'))) && (
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 text-left">
+                    <div className="text-xs font-semibold text-nhl-blauw mb-1">⚖️ AI Act gerelateerd</div>
+                    <p className="text-xs text-gray-600">Je bijdrage is gelinkt aan AI & Verantwoordelijkheid. Je wordt doorgestuurd naar de AI Act compliance pagina...</p>
+                  </div>
+                )}
                 <button onClick={() => setAddOpen(false)} className="btn-primary">Sluiten</button>
               </div>
             ) : (
@@ -312,6 +325,31 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
                       <input type="url" value={form.url} onChange={e => upd('url', e.target.value)}
                         placeholder="https://..."
                         className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    </div>
+
+                    {/* Inspiratiebronnen tip */}
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-2">
+                      <div className="text-xs font-semibold text-nhl-blauw mb-2">💡 Goede inspiratiebronnen om te volgen</div>
+                      <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                        Niet zeker wat je wilt delen? Dit zijn de bronnen waar het AI-Netwerk zelf naar kijkt voor relevante ontwikkelingen:
+                      </p>
+                      <div className="space-y-2">
+                        {[
+                          { naam: 'Rijksoverheid', omschrijving: 'Officiële berichten over AI-beleid, de AI-Fabriek, digitalisering in het onderwijs en nationale AI-strategie.', url: 'https://www.rijksoverheid.nl', icon: '🏛️' },
+                          { naam: 'EU AI Act (EUR-Lex)', omschrijving: 'De officiële tekst en updates van de Europese AI-verordening. Essentieel voor alles rond compliance en risicoclassificatie.', url: 'https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32024R1689', icon: '⚖️' },
+                          { naam: 'NPULS', omschrijving: 'Nationaal programma voor digitalisering in het hoger onderwijs. Directe kaders, tools en materialen voor AI-geletterdheid en onderwijsvernieuwing.', url: 'https://npuls.nl', icon: '📚' },
+                          { naam: 'SURF', omschrijving: 'De ICT-samenwerkingsorganisatie voor onderwijs en onderzoek. Volg de AI-Hub, GPT-NL en AI-Fabriek-ontwikkelingen voor veilige AI-inzet.', url: 'https://surf.nl', icon: '🤝' },
+                        ].map(b => (
+                          <a key={b.naam} href={b.url} target="_blank" rel="noopener noreferrer"
+                            className="flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-blue-100 hover:border-nhl-blauw transition-colors group">
+                            <span className="text-base flex-shrink-0 mt-0.5">{b.icon}</span>
+                            <div>
+                              <div className="text-xs font-semibold text-nhl-blauw group-hover:text-nhl-roze transition-colors">{b.naam} ↗</div>
+                              <div className="text-xs text-gray-500 leading-relaxed">{b.omschrijving}</div>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Rubricering */}

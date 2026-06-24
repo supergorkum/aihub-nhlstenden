@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import GradientHeader from '../components/GradientHeader'
 import { sporen } from '../data'
 
 const vraagCategorieen = [
-  { id: 'vraag',       label: 'Een vraag stellen',         icon: '💬', uitleg: 'Je hebt een concrete vraag over AI bij NHL Stenden en wil een antwoord of richting.' },
-  { id: 'idee',        label: 'Een idee delen',             icon: '💡', uitleg: 'Je hebt een idee over hoe AI ingezet kan worden en wil dat kenbaar maken.' },
-  { id: 'initiatief',  label: 'Een initiatief aanmelden',  icon: '🚀', uitleg: 'Je bent al bezig met iets en wil dat zichtbaar maken in het AI-Netwerk.' },
-  { id: 'ondersteuning', label: 'Samenwerking zoeken',    icon: '🤝', uitleg: 'Je zoekt collega\'s, expertise of partners voor een AI-project of vraagstuk.' },
-  { id: 'zorg',        label: 'Een zorg of signaal',       icon: '⚠️', uitleg: 'Je hebt een zorg of signaal over AI-gebruik dat aandacht verdient.' },
+  { id: 'vraag',         label: 'Een vraag stellen',        icon: '💬', uitleg: 'Je hebt een concrete vraag over AI bij NHL Stenden en wil een antwoord of richting.' },
+  { id: 'idee',          label: 'Een idee delen',            icon: '💡', uitleg: 'Je hebt een idee over hoe AI ingezet kan worden en wil dat kenbaar maken.' },
+  { id: 'initiatief',    label: 'Een initiatief aanmelden',  icon: '🚀', uitleg: 'Je bent al bezig met iets en wil dat zichtbaar maken in het AI-Netwerk.' },
+  { id: 'ondersteuning', label: 'Samenwerking zoeken',       icon: '🤝', uitleg: 'Je zoekt collega\'s, expertise of partners voor een AI-project of vraagstuk.' },
+  { id: 'zorg',          label: 'Een zorg of signaal',       icon: '⚠️', uitleg: 'Je hebt een zorg of signaal over AI-gebruik dat aandacht verdient.' },
 ]
 
 const rolOpties = [
@@ -16,22 +16,75 @@ const rolOpties = [
   'Management / Leidinggevende', 'Bestuurder', 'Externe partner', 'Anders',
 ]
 
-const bubbels = [
-  "Ik zou graag weten welke AI-tools goedgekeurd zijn voor gebruik.",
-  "We zijn bezig met een pilot voor AI-feedback op studentwerk. Kan ik dit aanmelden?",
-  "Hoe zit het met de AVG bij het gebruik van ChatGPT voor werktaken?",
-  "Ik heb een idee voor een AI-toepassing in ons curriculum.",
-  "Zijn er collega\'s die ook bezig zijn met AI in toetsing?",
-  "Wat doet NHL Stenden met de AI Act? Waar kan ik dat volgen?",
-  "Ik wil graag meedoen aan het AI-Netwerk. Hoe doe ik dat?",
-  "Wij werken samen met een regionaal bedrijf aan een Computer Vision project.",
+const BUBBELS_STATISCH = [
+  { tekst: 'Ik zou graag weten welke AI-tools goedgekeurd zijn voor gebruik.', antwoord: 'Het AI-Netwerk team heeft een overzicht van goedgekeurde tools klaar. Stuur een bericht voor de actuele lijst.' },
+  { tekst: 'We zijn bezig met een pilot voor AI-feedback op studentwerk. Kan ik dit aanmelden?', antwoord: 'Ja, meld je pilot aan via het formulier hieronder. We voegen het toe aan het netwerkoverzicht.' },
+  { tekst: 'Hoe zit het met de AVG bij het gebruik van ChatGPT voor werktaken?', antwoord: 'Gebruik ChatGPT niet voor persoonsgegevens van studenten of medewerkers. Gebruik bij voorkeur SURF-aangeboden alternatieven.' },
+  { tekst: 'Ik heb een idee voor een AI-toepassing in ons curriculum.', antwoord: 'Geweldig! Deel je idee via het formulier. We koppelen je aan de juiste thematrekker.' },
+  { tekst: 'Zijn er collega\'s die ook bezig zijn met AI in toetsing?', antwoord: 'Ja, er lopen meerdere initiatieven rondom AI en toetsing. Neem contact op zodat we je kunt verbinden.' },
+  { tekst: 'Wat doet NHL Stenden met de AI Act? Waar kan ik dat volgen?', antwoord: 'Bekijk de AI Act & Compliance tab bij Initiatieven voor de actuele status per toepassing.' },
+  { tekst: 'Ik wil graag meedoen aan het AI-Netwerk. Hoe doe ik dat?', antwoord: 'Stuur een bericht via dit formulier of spreek de Kwartiermaker aan. Iedereen is welkom.' },
+  { tekst: 'Wij werken samen met een regionaal bedrijf aan een Computer Vision project.', antwoord: 'Prachtig initiatief. Meld het aan als initiatief zodat het zichtbaar wordt voor anderen in het netwerk.' },
 ]
 
+function BubbelTijdlijn({ berichten }) {
+  const weergave = [...BUBBELS_STATISCH, ...berichten.slice(0, 4)]
+  return (
+    <div className="mb-10">
+      <div className="section-label mb-3">Wat speelt er</div>
+      <p className="text-gray-500 text-sm mb-5">Vragen en opmerkingen die leven bij NHL Stenden, met een eerste reactie van het AI-Netwerk team.</p>
+      <div className="space-y-4">
+        {weergave.map((b, i) => (
+          <div key={i} className={`flex flex-col gap-2 ${i % 2 === 0 ? 'items-start' : 'items-end'}`}>
+            {/* Vraag/bericht bubbel */}
+            <div className={`max-w-[80%] ${i % 2 === 0 ? '' : 'text-right'}`}>
+              <div className={`inline-block px-4 py-3 rounded-2xl text-sm leading-snug shadow-sm ${
+                i % 2 === 0
+                  ? 'bg-white border border-gray-200 text-gray-700 rounded-tl-sm'
+                  : 'bg-nhl-blauw/10 border border-nhl-blauw/20 text-nhl-blauw rounded-tr-sm'
+              }`}>
+                "{b.tekst || b.vraag || b.categorieLabel}"
+              </div>
+            </div>
+            {/* Antwoord bubbel als aanwezig */}
+            {b.antwoord && (
+              <div className={`max-w-[75%] ml-6 ${i % 2 === 0 ? '' : 'mr-6 ml-0'}`}>
+                <div className="flex items-start gap-2">
+                  <div className="w-5 h-5 rounded-full bg-nhl-roze flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs font-bold">A</span>
+                  </div>
+                  <div className="bg-pink-50 border border-pink-100 text-gray-600 text-xs px-3 py-2 rounded-xl rounded-tl-sm leading-relaxed">
+                    <span className="font-semibold text-nhl-roze text-xs block mb-0.5">AI-Netwerk team</span>
+                    {b.antwoord}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Meld({ onNieuwBericht, berichten = [] }) {
+  const [searchParams] = useSearchParams()
   const [stap, setStap] = useState('categorie')
   const [categorie, setCategorie] = useState(null)
   const [form, setForm] = useState({ naam: '', rol: '', thema: '', vraag: '', email: '' })
   const [ingediend, setIngediend] = useState(false)
+
+  // Pre-select categorie via URL parameter (?categorie=initiatief)
+  useEffect(() => {
+    const catParam = searchParams.get('categorie')
+    if (catParam) {
+      const gevonden = vraagCategorieen.find(c => c.id === catParam)
+      if (gevonden) {
+        setCategorie(gevonden)
+        setStap('form')
+      }
+    }
+  }, [])
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -78,18 +131,6 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
 
-        {/* Bubbels */}
-        <div className="mb-10">
-          <div className="section-label mb-4">Wat speelt er</div>
-          <div className="flex flex-wrap gap-2">
-            {bubbels.map((b, i) => (
-              <div key={i} className="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 text-sm text-gray-600 shadow-sm leading-snug max-w-xs">
-                "{b}"
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="card overflow-hidden">
           {/* Stap 1: Categorie */}
           {stap === 'categorie' && (
@@ -131,11 +172,9 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
                     {categorie.id === 'initiatief' ? 'Naam van het initiatief' : 'Jouw vraag of bericht'} <span className="text-red-400">*</span>
                   </label>
                   {categorie.id === 'initiatief' ? (
-                    <>
-                      <input type="text" value={form.vraag} onChange={e => upd('vraag', e.target.value)}
-                        placeholder="Bijv. AI-feedback tool voor schrijfonderwijs PABO"
-                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
-                    </>
+                    <input type="text" value={form.vraag} onChange={e => upd('vraag', e.target.value)}
+                      placeholder="Bijv. AI-feedback tool voor schrijfonderwijs PABO"
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                   ) : (
                     <textarea value={form.vraag} onChange={e => upd('vraag', e.target.value)}
                       placeholder={categorie.id === 'vraag' ? 'Stel je vraag hier...' : categorie.id === 'zorg' ? 'Beschrijf je zorg of signaal...' : 'Beschrijf je idee of verzoek...'}
@@ -206,6 +245,11 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
               </div>
             </div>
           )}
+        </div>
+
+        {/* BubbelTijdlijn ONDER het formulier-blok */}
+        <div className="mt-10">
+          <BubbelTijdlijn berichten={berichten} />
         </div>
       </div>
     </div>
