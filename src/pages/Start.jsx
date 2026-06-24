@@ -1,19 +1,191 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { initiatieven, sporen } from '../data'
 import ImpactDashboard from '../components/ImpactDashboard'
-
-const functies = [
-  { icon: '👁️', titel: 'Zichtbaarheid', tekst: 'Wat is er al? Wie doet wat? Het AI-Netwerk maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.', to: '/initiatieven' },
-  { icon: '🔗', titel: 'Verbinding', tekst: 'Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.', to: '/netwerk' },
-  { icon: '🧭', titel: 'Richting', tekst: 'Het AI Kompas als gedeeld kompas voor verantwoord AI-gebruik, gebaseerd op onze eigen waarden.', to: '/over' },
-]
+import NetwerkVisualisatie from '../components/NetwerkVisualisatie'
 
 const actieven = initiatieven.filter(i => i.status === 'actief').slice(0, 4)
 
+// Inline initiatieven aanmeld modal
+function InitiatiefModal({ onClose, onVerstuurd }) {
+  const [form, setForm] = useState({
+    naam: '', omschrijving: '', type: 'intern', spoor: '',
+    status: 'in-ontwikkeling', contactNaam: '', ambities: [], impactInschatting: ''
+  })
+  const [verstuurd, setVerstuurd] = useState(false)
+  const [extraInitiatieven, setExtraInitiatieven] = useState([])
+
+  const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const voegToe = () => {
+    if (!form.naam || !form.omschrijving) return
+    setVerstuurd(true)
+    if (onVerstuurd) onVerstuurd(form)
+  }
+
+  if (verstuurd) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 text-center animate-slide-up">
+          <div className="text-5xl mb-4">🚀</div>
+          <h3 className="font-bold text-nhl-blauw text-xl mb-2">Initiatief aangemeld!</h3>
+          <p className="text-gray-500 text-sm mb-6">Je initiatief is zichtbaar in het overzicht bij Initiatieven.</p>
+          <div className="flex gap-3 justify-center">
+            <Link to="/initiatieven" onClick={onClose} className="btn-primary">Bekijk alle initiatieven →</Link>
+            <button onClick={onClose} className="btn-ghost border border-gray-200">Sluiten</button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
+          <h2 className="font-bold text-nhl-blauw text-lg">Initiatief aanmelden</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">✕</button>
+        </div>
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Naam van het initiatief <span className="text-red-400">*</span></label>
+            <input type="text" value={form.naam} onChange={e => upd('naam', e.target.value)}
+              placeholder="Bijv. AI-feedback in schrijfonderwijs PABO"
+              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Omschrijving <span className="text-red-400">*</span></label>
+            <textarea value={form.omschrijving} onChange={e => upd('omschrijving', e.target.value)} rows={3}
+              placeholder="Wat houdt het initiatief in? Wat is het doel?"
+              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Type</label>
+              <div className="space-y-1.5">
+                {[{ id: 'intern', label: '🏫 Intern' }, { id: 'extern', label: '🤝 Extern' }, { id: 'surf', label: '🌐 SURF' }].map(t => (
+                  <button key={t.id} onClick={() => upd('type', t.id)}
+                    className={`w-full px-3 py-2 rounded-xl text-xs border-2 text-left font-medium transition-colors ${form.type === t.id ? 'border-nhl-blauw bg-blue-50 text-nhl-blauw' : 'border-gray-200 text-gray-600'}`}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Thema</label>
+              <select value={form.spoor} onChange={e => upd('spoor', e.target.value)}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
+                <option value="">Kies...</option>
+                {sporen.map(s => <option key={s.id} value={s.id}>{s.icon} {s.titel}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* Ambitiekoppeling */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <div className="font-semibold text-nhl-blauw text-sm mb-2">Koppel aan een bestuurlijke ambitie</div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {[{ id: 'studiesucces', label: '🎓 Studiesucces' }, { id: 'uitval', label: '📉 Minder uitval' }, { id: 'vertrek', label: '🔄 Voortijdig vertrek' }].map(a => {
+                const actief = (form.ambities || []).includes(a.id)
+                return (
+                  <button key={a.id} onClick={() => {
+                    const huidig = form.ambities || []
+                    upd('ambities', actief ? huidig.filter(x => x !== a.id) : [...huidig, a.id])
+                  }}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border-2 transition-colors ${actief ? 'border-nhl-blauw bg-nhl-blauw text-white' : 'border-gray-200 text-gray-600'}`}>
+                    {a.label}
+                  </button>
+                )
+              })}
+            </div>
+            {(form.ambities || []).length > 0 && (
+              <div className="flex gap-2">
+                {['laag', 'gemiddeld', 'hoog'].map(n => (
+                  <button key={n} onClick={() => upd('impactInschatting', n)}
+                    className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border-2 capitalize transition-colors ${form.impactInschatting === n ? 'border-nhl-roze bg-nhl-roze text-white' : 'border-gray-200 text-gray-600'}`}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Contactnaam (optioneel)</label>
+            <input type="text" value={form.contactNaam} onChange={e => upd('contactNaam', e.target.value)}
+              placeholder="Bijv. Jan de Vries of Projectteam"
+              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+          </div>
+
+          <button onClick={voegToe} disabled={!form.naam || !form.omschrijving}
+            className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${form.naam && form.omschrijving ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
+            Initiatief aanmelden →
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Start({ videos = [], pilots = [], evenementen = [] }) {
   const alleInitiatieven = initiatieven
+  const [initiatiefModalOpen, setInitiatiefModalOpen] = useState(false)
+  const [netwerkFullscreen, setNetwerkFullscreen] = useState(false)
+
+  const functies = [
+    {
+      icon: '👁️',
+      titel: 'Zichtbaarheid',
+      tekst: 'Wat is er al? Wie doet wat? Het AI-Netwerk maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.',
+      to: '/initiatieven',
+      onClick: null,
+    },
+    {
+      icon: '🔗',
+      titel: 'Verbinding',
+      tekst: 'Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.',
+      to: null,
+      onClick: () => setNetwerkFullscreen(true),
+    },
+    {
+      icon: '🧭',
+      titel: 'Richting',
+      tekst: 'Het AI Kompas als gedeeld kompas voor verantwoord AI-gebruik, gebaseerd op onze eigen waarden.',
+      to: '/over',
+      onClick: null,
+    },
+  ]
+
   return (
     <div className="min-h-screen pt-16">
+
+      {/* Initiatieven modal */}
+      {initiatiefModalOpen && (
+        <InitiatiefModal
+          onClose={() => setInitiatiefModalOpen(false)}
+          onVerstuurd={() => {}}
+        />
+      )}
+
+      {/* Netwerk fullscreen overlay */}
+      {netwerkFullscreen && (
+        <div className="fixed inset-0 z-50 bg-nhl-blauw flex flex-col">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/20">
+            <div>
+              <div className="text-white font-bold text-lg">Het AI-Netwerk van NHL Stenden</div>
+              <div className="text-blue-200 text-xs">Hover over een knoop om te verkennen · Klik om naar binnen te navigeren</div>
+            </div>
+            <button onClick={() => setNetwerkFullscreen(false)}
+              className="text-white/60 hover:text-white bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 text-sm font-medium transition-colors">
+              ✕ Sluiten
+            </button>
+          </div>
+          <div className="flex-1 overflow-hidden p-4">
+            <NetwerkVisualisatie fullscreen />
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
@@ -26,11 +198,15 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.6 · Juni 2026
+                In ontwikkeling — versie 1.7 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
-                <img src="/nhl-logo.png" alt="NHL Stenden" className="h-12 object-contain" />
-                <div className="border-l border-white/20 pl-4">
+                <svg viewBox="0 0 48 48" className="h-14 w-14" fill="none">
+                  <rect x="3" y="4" width="32" height="40" rx="1.5" stroke="white" strokeWidth="2.5" fill="none"/>
+                  <text x="6" y="22" fontSize="10" fontWeight="800" fill="white" fontFamily="Arial,sans-serif">NHL</text>
+                  <text x="6" y="36" fontSize="7.5" fontWeight="700" fill="white" fontFamily="Arial,sans-serif">STENDEN</text>
+                </svg>
+                <div>
                   <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">AI-Netwerk</h1>
                   <div className="text-nhl-roze-light font-semibold text-lg">NHL Stenden</div>
                 </div>
@@ -48,24 +224,45 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 <Link to="/netwerk" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
                   Bekijk het netwerk
                 </Link>
-                <Link to="/meld" className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
+                {/* Meld initiatief opent nu de modal */}
+                <button
+                  onClick={() => setInitiatiefModalOpen(true)}
+                  className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
                   + Meld initiatief
-                </Link>
+                </button>
               </div>
             </div>
             <div className="grid gap-3">
-              {functies.map(f => (
-                <Link key={f.titel} to={f.to} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex gap-4 hover:bg-white/20 hover:border-white/40 transition-all group">
-                  <div className="text-2xl flex-shrink-0">{f.icon}</div>
-                  <div className="flex-1">
-                    <div className="text-white font-bold mb-1 flex items-center justify-between">
-                      {f.titel}
-                      <span className="text-white/40 group-hover:text-white/80 transition-colors text-sm">→</span>
+              {functies.map(f => {
+                const inner = (
+                  <>
+                    <div className="text-2xl flex-shrink-0">{f.icon}</div>
+                    <div className="flex-1">
+                      <div className="text-white font-bold mb-1 flex items-center justify-between">
+                        {f.titel}
+                        <span className="text-white/40 group-hover:text-white/80 transition-colors text-sm">
+                          {f.onClick ? '⊕' : '→'}
+                        </span>
+                      </div>
+                      <div className="text-blue-100 text-sm leading-relaxed">{f.tekst}</div>
                     </div>
-                    <div className="text-blue-100 text-sm leading-relaxed">{f.tekst}</div>
-                  </div>
-                </Link>
-              ))}
+                  </>
+                )
+                if (f.onClick) {
+                  return (
+                    <button key={f.titel} onClick={f.onClick}
+                      className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex gap-4 hover:bg-white/20 hover:border-white/40 transition-all group text-left w-full">
+                      {inner}
+                    </button>
+                  )
+                }
+                return (
+                  <Link key={f.titel} to={f.to}
+                    className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex gap-4 hover:bg-white/20 hover:border-white/40 transition-all group">
+                    {inner}
+                  </Link>
+                )
+              })}
               <div className="bg-nhl-roze/20 border border-nhl-roze/40 rounded-xl p-3 mt-1">
                 <p className="text-white text-sm italic text-center">"NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."</p>
               </div>
@@ -83,9 +280,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
       {/* Eerstvolgende evenement */}
       {(() => {
         const nu = new Date()
-        const ev = evenementen
-          .filter(e => new Date(`${e.datum}T${e.startTijd || '00:00'}`) >= nu)
-          .sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
+        const ev = evenementen.filter(e => new Date(`${e.datum}T${e.startTijd || '00:00'}`) >= nu).sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
         if (!ev) return null
         const d = new Date(ev.datum)
         const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
@@ -95,9 +290,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
               <span className="text-sm">📅</span>
               <span className="text-xs text-nhl-blauw font-semibold uppercase tracking-wide flex-shrink-0">Volgend evenement</span>
               <span className="text-gray-300">·</span>
-              <span className="text-sm font-medium text-nhl-blauw">
-                {d.getDate()} {MAANDEN[d.getMonth()]} — {ev.naam}
-              </span>
+              <span className="text-sm font-medium text-nhl-blauw">{d.getDate()} {MAANDEN[d.getMonth()]} — {ev.naam}</span>
               {ev.startTijd && <span className="text-xs text-gray-500 hidden sm:inline">🕐 {ev.startTijd}</span>}
               {ev.locatie && <span className="text-xs text-gray-500 hidden md:inline">📍 {ev.locatie.split(',')[0]}</span>}
               <span className="ml-auto text-xs text-nhl-roze font-medium flex-shrink-0">Bekijken →</span>
@@ -152,7 +345,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         </div>
       </section>
 
-      {/* Thematisch impact dashboard — met evenementen */}
+      {/* Impact dashboard */}
       <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} evenementen={evenementen} />
 
       {/* CTA strip */}
@@ -160,17 +353,23 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-3 gap-6 text-center">
             {[
-              { icon: '🚀', titel: 'Initiatief aanmelden', tekst: 'Werk jij aan iets rond AI?', to: '/meld', label: 'Aanmelden' },
-              { icon: '📁', titel: 'Documentatie', tekst: 'Presentaties, rapporten en materiaal.', to: '/documentatie', label: 'Bekijken' },
-              { icon: '💡', titel: 'Inspiratie', tekst: 'Vragen en ideeën van collega\'s.', to: '/inspiratie', label: 'Ontdekken' },
+              { icon: '🚀', titel: 'Initiatief aanmelden', tekst: 'Werk jij aan iets rond AI?', label: 'Aanmelden', onClick: () => setInitiatiefModalOpen(true), to: null },
+              { icon: '📁', titel: 'Documentatie', tekst: 'Presentaties, rapporten en materiaal.', label: 'Bekijken', to: '/documentatie', onClick: null },
+              { icon: '💡', titel: 'Inspiratie', tekst: 'Vragen en ideeën van collega\'s.', label: 'Ontdekken', to: '/inspiratie', onClick: null },
             ].map(item => (
               <div key={item.titel} className="bg-white/10 border border-white/20 rounded-2xl p-6">
                 <div className="text-3xl mb-2">{item.icon}</div>
                 <div className="text-white font-bold mb-1">{item.titel}</div>
                 <div className="text-blue-200 text-sm mb-4">{item.tekst}</div>
-                <Link to={item.to} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-                  {item.label} →
-                </Link>
+                {item.onClick ? (
+                  <button onClick={item.onClick} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                    {item.label} →
+                  </button>
+                ) : (
+                  <Link to={item.to} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                    {item.label} →
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -184,21 +383,15 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div className="section-label mb-2">Vers van de pers</div>
             <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit het AI-Netwerk</h2>
             <div className="grid sm:grid-cols-3 gap-6">
-
               {(() => {
-                const goedgekeurd = videos.filter(x => x.status === 'goedgekeurd')
-                const v = [...goedgekeurd].sort((a, b) => b.id - a.id)[0]
+                const v = [...videos.filter(x => x.status === 'goedgekeurd')].sort((a, b) => b.id - a.id)[0]
                 if (!v) return null
                 return (
                   <Link to="/video" className="card card-hover overflow-hidden group">
                     <div className="relative">
-                      <img src={`https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg`} alt={v.titel}
-                        className="w-full aspect-video object-cover"
-                        onError={e => { e.target.style.background='#e5e7eb' }} />
+                      <img src={`https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg`} alt={v.titel} className="w-full aspect-video object-cover" onError={e => { e.target.style.background='#e5e7eb' }} />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
-                          <span className="text-nhl-blauw ml-0.5">▶</span>
-                        </div>
+                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center"><span className="text-nhl-blauw ml-0.5">▶</span></div>
                       </div>
                       <div className="absolute top-2 left-2 bg-nhl-roze text-white text-xs px-2 py-0.5 rounded-full font-medium">🎬 Laatste video</div>
                     </div>
@@ -209,34 +402,22 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                   </Link>
                 )
               })()}
-
               {(() => {
                 const p = [...pilots].reverse()[0]
                 if (!p) return null
-                const heeftUpdate = p.updates?.length > 0
                 return (
                   <Link to="/pilots" className="card card-hover p-5 flex flex-col">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">🧪 {heeftUpdate ? 'Pilot update' : 'Nieuwe pilot'}</span>
+                      <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">🧪 {p.updates?.length > 0 ? 'Pilot update' : 'Nieuwe pilot'}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.status === 'Lopend' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{p.status}</span>
                     </div>
                     <div className="font-bold text-nhl-blauw mb-2 leading-snug">{p.naam}</div>
                     <div className="text-xs text-gray-500 mb-2">{p.academie} · {p.platform}</div>
-                    {heeftUpdate && (
-                      <div className="bg-blue-50 rounded-lg p-3 mt-auto">
-                        <div className="text-xs font-medium text-nhl-blauw mb-1">Laatste update · {p.updates[p.updates.length-1].datum}</div>
-                        <p className="text-xs text-gray-600 line-clamp-2">{p.updates[p.updates.length-1].tekst}</p>
-                      </div>
-                    )}
                   </Link>
                 )
               })()}
-
               {(() => {
-                const nu = new Date()
-                const ev = evenementen
-                  .filter(e => new Date(`${e.datum}T${e.startTijd}`) >= nu)
-                  .sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
+                const ev = evenementen.filter(e => new Date(`${e.datum}T${e.startTijd}`) >= new Date()).sort((a, b) => new Date(a.datum) - new Date(b.datum))[0]
                 if (!ev) return null
                 const d = new Date(ev.datum)
                 const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
