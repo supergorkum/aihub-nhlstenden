@@ -1,6 +1,6 @@
 import GradientHeader from '../components/GradientHeader'
-import { useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
 const NODE_LINKS = {
@@ -26,17 +26,14 @@ const NODE_LINKS = {
   e9:   { intern: false, url: 'https://www.nijbegun.nl/projecten/ai-fabriek/' },
 }
 
-// Zes sporen rondom de kern, evenwichtig verdeeld (60° tussenruimte)
 const NODES = [
   { id: 'hub', lines: ['AI-','Netwerk'],         x: 55, y: 55, r: 6.5, kleur: '#1E3A8A', type: 'kern' },
-  // Zes sporen — centrum 55,55 — radius 35 — 60° tussenruimte
   { id: 's1',  lines: ['AI &','Leren'],          x: 55, y: 20, r: 5.5, kleur: '#1E3A8A', type: 'spoor', spoorId: 1 },
   { id: 's2',  lines: ['AI &','Werken'],         x: 85, y: 37, r: 5.5, kleur: '#0F766E', type: 'spoor', spoorId: 2 },
   { id: 's3',  lines: ['AI &','Verantw.'],       x: 85, y: 73, r: 5.5, kleur: '#E91E8C', type: 'spoor', spoorId: 3 },
   { id: 's4',  lines: ['AI &','Geletterd.'],     x: 55, y: 90, r: 5.5, kleur: '#7C3AED', type: 'spoor', spoorId: 4 },
   { id: 's5',  lines: ['AI &','Werkveld'],       x: 25, y: 73, r: 5.5, kleur: '#B45309', type: 'spoor', spoorId: 5 },
   { id: 's6',  lines: ['AI &','Onderzoek'],      x: 25, y: 37, r: 5.5, kleur: '#0E7490', type: 'spoor', spoorId: 6 },
-  // Initiatieven — goed gespreid zodat geen overlapping
   { id: 'i1',  lines: ['AI','Compliance'],  x: 103, y: 55, r: 3,   kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 1 },
   { id: 'i2',  lines: ['AI','Coalitie'],    x: 68,  y: 6,  r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 2 },
   { id: 'i3',  lines: ['Academie','Edu.'],  x: 90,  y: 13, r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 3 },
@@ -46,7 +43,6 @@ const NODES = [
   { id: 'i11', lines: ['AI-Desk'],          x: 103, y: 77, r: 3,   kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 11 },
   { id: 'i12', lines: ['Computer','Vision'],x: 6,   y: 73, r: 3,   kleur: '#FEF3C7', tekstKleur: '#B45309', type: 'init', initId: 12 },
   { id: 'i14', lines: ['Applied','Res.AI'], x: 6,   y: 25, r: 3,   kleur: '#ECFEFF', tekstKleur: '#0E7490', type: 'init', initId: 14 },
-  // Externe partners — ruim buiten de sporen
   { id: 'e6',  lines: ['SURF','AI-Hub'],    x: 42,  y: 5,  r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 6 },
   { id: 'e8',  lines: ['GPT-NL'],           x: 20,  y: 7,  r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 8 },
   { id: 'e9',  lines: ['AI-Fabriek'],       x: 5,   y: 46, r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 9 },
@@ -63,41 +59,153 @@ const LINKS = [
   ['s6','i14'],['s6','e8'],['s6','e9'],
 ]
 
+const KERNAMBITIES_KORT = {
+  1: 'Meer studiesucces, minder uitval en minder voortijdig vertrek door AI.',
+  2: 'Hogere efficiency in werkprocessen zodat medewerkers zich richten op hun expertise.',
+  3: 'AI alleen inzetten op een manier die transparant, controleerbaar en eerlijk is.',
+  4: 'AI-geletterdheid als basisvaardigheid voor alle studenten en medewerkers.',
+  5: 'AI verbindt NHL Stenden met het werkveld voor regionale innovatie.',
+  6: 'Sterke onderzoekscultuur rond AI via lectoraten, docenten en studenten.',
+}
+
 function getNode(id) { return NODES.find(n => n.id === id) }
+
+function DetailPanelInhoud({ nodeId }) {
+  const node = NODES.find(n => n.id === nodeId)
+  if (!node) return null
+
+  const init = node.initId ? initiatieven.find(i => i.id === node.initId) : null
+  const spoor = node.spoorId ? sporen.find(s => s.id === node.spoorId) : null
+  const link = NODE_LINKS[nodeId]
+
+  if (node.type === 'kern') {
+    return (
+      <div>
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-nhl-blauw flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AI</div>
+          <div className="font-bold text-nhl-blauw text-base leading-snug">AI-Netwerk NHL Stenden</div>
+        </div>
+        <p className="text-gray-500 text-xs leading-relaxed mb-5">De centrale verbindingsplek voor alles rond AI bij NHL Stenden. Zes thema's, vijf lagen, één kompas.</p>
+        <Link to="/" className="block w-full text-center bg-nhl-blauw hover:bg-blue-900 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+          Naar de startpagina →
+        </Link>
+      </div>
+    )
+  }
+
+  if (spoor) {
+    return (
+      <div>
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Thema</div>
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ backgroundColor: spoor.kleur + '20' }}>
+            {spoor.icon}
+          </div>
+          <div className="font-bold text-nhl-blauw text-base leading-snug">{spoor.titel}</div>
+        </div>
+        {spoor.waarom && <p className="text-gray-600 text-xs leading-relaxed mb-3">{spoor.waarom}</p>}
+        <div className="rounded-xl p-3 mb-4 border-l-2" style={{ borderColor: spoor.kleur, backgroundColor: spoor.kleur + '10' }}>
+          <div className="text-xs font-semibold text-gray-400 mb-1">Kernambitie</div>
+          <p className="text-xs text-gray-600 italic leading-relaxed">{KERNAMBITIES_KORT[spoor.id]}</p>
+        </div>
+        <Link
+          to={link?.to || '/themas'}
+          className="block w-full text-center text-white text-xs font-semibold py-2.5 rounded-xl transition-colors hover:opacity-90"
+          style={{ backgroundColor: spoor.kleur }}
+        >
+          Naar {spoor.titel} →
+        </Link>
+      </div>
+    )
+  }
+
+  if (init) {
+    const externeUrl = link?.intern === false ? link.url : null
+    return (
+      <div>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium mb-3 inline-block ${
+          node.type === 'extern' ? 'bg-green-100 text-green-700'
+          : init.type === 'surf' ? 'bg-purple-100 text-purple-700'
+          : 'bg-blue-100 text-nhl-blauw'
+        }`}>
+          {node.type === 'extern' ? '🤝 Externe partner' : init.type === 'surf' ? '🌐 SURF' : '🏫 Intern initiatief'}
+        </span>
+        <div className="font-bold text-nhl-blauw mb-2 text-sm leading-snug">{init.naam}</div>
+        <p className="text-gray-500 text-xs leading-relaxed mb-3">{init.omschrijving}</p>
+        {init.tags?.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-4">
+            {init.tags.map(t => (
+              <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>
+            ))}
+          </div>
+        )}
+        <div className="space-y-2">
+          {link?.intern && (
+            <Link
+              to={link.to}
+              className="flex items-center justify-center gap-2 w-full bg-nhl-blauw hover:bg-blue-900 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors"
+            >
+              Bekijk in het AI-Netwerk →
+            </Link>
+          )}
+          {externeUrl && (
+            <a
+              href={externeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-800 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors"
+            >
+              Bezoek externe website ↗
+            </a>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}
 
 export default function Netwerk() {
   const [selected, setSelected] = useState(null)
   const [hovered, setHovered] = useState(null)
-  const navigate = useNavigate()
 
-  const navigeerNaar = (id) => {
-    const link = NODE_LINKS[id]
-    if (!link) return
-    if (link.intern) navigate(link.to)
-    else window.open(link.url, '_blank', 'noopener noreferrer')
+  // Panel toont: selected heeft altijd prioriteit; anders hovered
+  const panelNode = selected ?? hovered
+
+  const activeForLinks = selected ?? hovered
+  const verbonden = new Set()
+  if (activeForLinks) {
+    LINKS.forEach(([a, b]) => {
+      if (a === activeForLinks) verbonden.add(b)
+      if (b === activeForLinks) verbonden.add(a)
+    })
   }
 
-  const sel = selected ? NODES.find(n => n.id === selected) : null
-  const hovNode = hovered ? NODES.find(n => n.id === hovered) : null
-  const selInit = sel?.initId ? initiatieven.find(i => i.id === sel.initId) : null
-  const selSpoor = sel?.spoorId ? sporen.find(s => s.id === sel.spoorId) : null
-  const hovInit = hovNode?.initId ? initiatieven.find(i => i.id === hovNode.initId) : null
-  const hovSpoor = hovNode?.spoorId ? sporen.find(s => s.id === hovNode.spoorId) : null
-  const selLink = selected ? NODE_LINKS[selected] : null
+  const handleKlik = (nodeId) => {
+    setSelected(prev => prev === nodeId ? null : nodeId)
+    setHovered(null)
+  }
 
-  const verbonden = new Set()
-  if (selected) LINKS.forEach(([a, b]) => { if (a === selected) verbonden.add(b); if (b === selected) verbonden.add(a) })
-  const hovVerbonden = new Set()
-  if (hovered && !selected) LINKS.forEach(([a, b]) => { if (a === hovered) hovVerbonden.add(b); if (b === hovered) hovVerbonden.add(a) })
+  const handleHoverIn = (nodeId) => {
+    // Hover werkt altijd voor SVG visueel; maar panel verandert alleen als niets geselecteerd
+    setHovered(nodeId)
+  }
 
-  const activeNode = selected || hovered
-  const activeInit = selInit || hovInit
-  const activeSpoor = selSpoor || hovSpoor
-  const activeNodeObj = sel || hovNode
+  const handleHoverUit = () => {
+    setHovered(null)
+  }
+
+  // Als de muis het detail-panel ingaat terwijl iets gehovered is: vergrendel het als selected
+  const handlePanelMouseEnter = () => {
+    if (hovered && !selected) {
+      setSelected(hovered)
+      setHovered(null)
+    }
+  }
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      {/* Hero */}
       <div className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 w-80 h-80 border border-white rounded-full"/>
@@ -107,13 +215,13 @@ export default function Netwerk() {
           <div className="section-label text-blue-300 mb-3">Netwerkorganisatie</div>
           <h1 className="text-4xl font-extrabold text-white mb-4">Het AI-Netwerk van NHL Stenden</h1>
           <p className="text-blue-100 text-lg leading-relaxed max-w-2xl mb-5">
-            Zes thema's, vijf lagen, één centrum. Klik op een knoop om details te zien en direct te navigeren.
+            Zes thema's, vijf lagen, één centrum. Hover voor een preview · Klik om vast te zetten · Gebruik de knoppen om te navigeren.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
-              { label: "Thema's", kleur: '#1E3A8A', bg: 'bg-blue-900/30' },
-              { label: 'Initiatieven', kleur: '#DBEAFE', bg: 'bg-blue-100/20', tekst: '#1E3A8A' },
-              { label: 'Externe partners', kleur: '#D1FAE5', bg: 'bg-green-100/20', tekst: '#065F46' },
+              { label: "Thema's", kleur: '#1E3A8A' },
+              { label: 'Initiatieven', kleur: '#DBEAFE' },
+              { label: 'Externe partners', kleur: '#D1FAE5' },
             ].map(l => (
               <div key={l.label} className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-xs text-blue-100">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: l.kleur }}/>
@@ -131,7 +239,7 @@ export default function Netwerk() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid xl:grid-cols-4 gap-6">
-          {/* SVG — ruimer viewBox zodat bollen niet buiten het frame vallen */}
+
           <div className="xl:col-span-3">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
               <svg viewBox="-14 -14 138 138" className="w-full" style={{ aspectRatio: '1/1' }}>
@@ -141,57 +249,64 @@ export default function Netwerk() {
                     <stop offset="100%" stopColor="#1E3A8A"/>
                   </radialGradient>
                 </defs>
-                {/* Decoratieve ringen */}
                 <circle cx="55" cy="55" r="24" fill="none" stroke="#E5E7EB" strokeWidth="0.4" strokeDasharray="3 3"/>
                 <circle cx="55" cy="55" r="42" fill="none" stroke="#F3F4F6" strokeWidth="0.4"/>
 
-                {/* Links */}
                 {LINKS.map(([vanId, naarId], i) => {
                   const van = getNode(vanId); const naar = getNode(naarId)
                   if (!van || !naar) return null
-                  const isActief = activeNode ? (vanId === activeNode || naarId === activeNode) : false
+                  const isActief = activeForLinks && (vanId === activeForLinks || naarId === activeForLinks)
                   return (
                     <line key={i} x1={van.x} y1={van.y} x2={naar.x} y2={naar.y}
                       stroke={isActief ? '#E91E8C' : '#CBD5E1'}
                       strokeWidth={isActief ? 0.7 : 0.3}
                       strokeDasharray={isActief ? '' : '2,1.5'}
-                      style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}/>
+                      style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
+                    />
                   )
                 })}
 
-                {/* Niet-kern nodes */}
                 {NODES.filter(n => n.type !== 'kern').map(node => {
                   const isSelected = selected === node.id
                   const isHov = hovered === node.id
-                  const isDimmed = activeNode && !isSelected && !isHov
-                    ? !verbonden.has(node.id) && !hovVerbonden.has(node.id) && node.id !== activeNode
+                  const isActief = isSelected || isHov
+
+                  const isDimmed = activeForLinks
+                    ? !verbonden.has(node.id) && node.id !== activeForLinks
                     : false
+
                   const isLight = ['#DBEAFE','#D1FAE5','#EDE9FE','#CCFBF1','#FCE7F3','#FEF3C7','#ECFEFF'].includes(node.kleur)
                   const fillKleur = isSelected ? (isLight ? '#E91E8C' : node.kleur) : node.kleur
                   const tekstKleur = isSelected ? 'white' : (node.tekstKleur || 'white')
                   const scale = isHov && !isSelected ? 1.2 : isSelected ? 1.1 : 1
 
                   return (
-                    <g key={node.id} style={{ cursor: 'pointer', opacity: isDimmed ? 0.15 : 1, transition: 'opacity 0.2s' }}
-                      onClick={() => { setSelected(prev => prev === node.id ? null : node.id); setHovered(null) }}
-                      onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)}>
-                      {(isHov || isSelected) && (
+                    <g key={node.id}
+                      style={{ cursor: 'pointer', opacity: isDimmed ? 0.15 : 1, transition: 'opacity 0.2s' }}
+                      onClick={() => handleKlik(node.id)}
+                      onMouseEnter={() => handleHoverIn(node.id)}
+                      onMouseLeave={handleHoverUit}
+                    >
+                      {isActief && (
                         <circle cx={node.x} cy={node.y} r={node.r * scale + 1.5}
-                          fill="none" stroke={isSelected ? '#E91E8C' : node.kleur} strokeWidth="0.5" opacity="0.4"/>
+                          fill="none" stroke={isSelected ? '#E91E8C' : node.kleur}
+                          strokeWidth="0.5" opacity="0.4"/>
                       )}
                       <circle cx={node.x} cy={node.y} r={node.r * scale} fill={fillKleur}
                         stroke={isSelected ? '#E91E8C' : isHov ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.06)'}
                         strokeWidth={isSelected ? 0.7 : isHov ? 0.5 : 0.2}
                         style={{ transition: 'r 0.15s, fill 0.15s' }}/>
-                      {node.lines.map((line, i) => {
+                      {node.lines.map((line, li) => {
                         const n = node.lines.length
                         const lh = node.type === 'spoor' ? node.r * scale * 0.42 : node.r * scale * 0.5
-                        const oy = (i - (n - 1) / 2) * lh
+                        const oy = (li - (n - 1) / 2) * lh
                         const fs = node.type === 'spoor' ? node.r * scale * 0.24 : node.r * scale * 0.27
                         return (
-                          <text key={i} x={node.x} y={node.y + oy} textAnchor="middle" dominantBaseline="middle"
+                          <text key={li} x={node.x} y={node.y + oy}
+                            textAnchor="middle" dominantBaseline="middle"
                             fill={tekstKleur} fontSize={fs} fontWeight="600"
-                            fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                            fontFamily="Inter, Arial, sans-serif"
+                            style={{ pointerEvents: 'none', userSelect: 'none' }}>
                             {line}
                           </text>
                         )
@@ -200,15 +315,20 @@ export default function Netwerk() {
                   )
                 })}
 
-                {/* Kern */}
                 {NODES.filter(n => n.type === 'kern').map(node => {
                   const isHov = hovered === node.id
-                  const scale = isHov ? 1.08 : 1
+                  const isSelected = selected === node.id
+                  const scale = (isHov || isSelected) ? 1.08 : 1
                   return (
                     <g key={node.id} style={{ cursor: 'pointer' }}
-                      onClick={() => { setSelected(prev => prev === node.id ? null : node.id); setHovered(null) }}
-                      onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)}>
-                      <circle cx={node.x} cy={node.y} r={node.r * scale} fill="url(#netCenterGrad)"
+                      onClick={() => handleKlik(node.id)}
+                      onMouseEnter={() => handleHoverIn(node.id)}
+                      onMouseLeave={handleHoverUit}
+                    >
+                      <circle cx={node.x} cy={node.y} r={node.r * scale}
+                        fill="url(#netCenterGrad)"
+                        stroke={isSelected ? '#E91E8C' : 'none'}
+                        strokeWidth={isSelected ? 0.8 : 0}
                         style={{ transition: 'r 0.15s' }}/>
                       <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="3.2" fontWeight="800"
                         fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>AI-</text>
@@ -218,21 +338,36 @@ export default function Netwerk() {
                   )
                 })}
               </svg>
+
               <div className="flex items-center justify-between mt-2 pt-3 border-t border-gray-100">
-                <div className="text-xs text-gray-400">Klik voor details · Hover om verbindingen te zien</div>
-                {selected && <button onClick={() => setSelected(null)} className="text-xs text-gray-400 hover:text-gray-600">✕ Deselecteer</button>}
+                <div className="text-xs text-gray-400">
+                  {selected
+                    ? '📌 Vastgezet — klik de knop in het paneel om te navigeren'
+                    : 'Hover voor preview · Klik om vast te zetten · Navigeer via de knoppen in het paneel'
+                  }
+                </div>
+                {selected && (
+                  <button onClick={() => setSelected(null)} className="text-xs text-gray-400 hover:text-gray-700 transition-colors">
+                    ✕ Sluiten
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Detail panel */}
+          {/* Detail panel — vergrendelt automatisch als muis erin beweegt */}
           <div>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-24">
-              {!activeNodeObj ? (
+            <div
+              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-24"
+              onMouseEnter={handlePanelMouseEnter}
+            >
+              {!panelNode ? (
                 <div className="text-center py-4">
                   <div className="text-3xl mb-3">🕸️</div>
-                  <div className="font-semibold text-nhl-blauw mb-2 text-sm">Klik op een knoop</div>
-                  <p className="text-gray-400 text-xs leading-relaxed mb-4">Selecteer een thema, initiatief of partner voor details en een directe link.</p>
+                  <div className="font-semibold text-nhl-blauw mb-2 text-sm">Hover of klik op een knoop</div>
+                  <p className="text-gray-400 text-xs leading-relaxed mb-4">
+                    Hover voor een snelle preview. Klik om vast te zetten. Gebruik daarna de knoppen in dit paneel om te navigeren.
+                  </p>
                   <div className="space-y-2 pt-4 border-t border-gray-100 text-left">
                     <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Externe partners</div>
                     {[
@@ -249,56 +384,27 @@ export default function Netwerk() {
                     ))}
                   </div>
                 </div>
-              ) : activeNodeObj.type === 'kern' ? (
+              ) : (
                 <div>
-                  <div className="font-bold text-nhl-blauw text-base mb-2">AI-Netwerk NHL Stenden</div>
-                  <p className="text-gray-500 text-xs leading-relaxed mb-4">De centrale verbindingsplek voor alles rond AI bij NHL Stenden. Zes thema's, vijf lagen, één kompas.</p>
-                  <button onClick={() => navigeerNaar(activeNodeObj.id)} className="w-full bg-nhl-blauw text-white text-xs font-semibold py-2.5 rounded-xl">Naar de startpagina →</button>
-                </div>
-              ) : activeSpoor ? (
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-2xl">{activeSpoor.icon}</span>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Thema</div>
-                      <div className="font-bold text-nhl-blauw">{activeSpoor.titel}</div>
-                    </div>
+                  <div className="flex items-center gap-1.5 mb-3 text-xs font-medium">
+                    {selected
+                      ? <span className="text-nhl-roze">📌 Vastgezet</span>
+                      : <span className="text-gray-400">👁 Preview — klik de bol om vast te zetten</span>
+                    }
                   </div>
-                  <p className="text-gray-600 text-xs leading-relaxed mb-3">{activeSpoor.waarom}</p>
-                  <div className="mb-4">
-                    <div className="text-xs font-semibold text-gray-400 mb-1">Kernambitie</div>
-                    <p className="text-xs text-gray-600 italic">{KERNAMBITIES_KORT[activeSpoor.id]}</p>
-                  </div>
-                  <button onClick={() => navigeerNaar(activeNodeObj.id)}
-                    className="w-full text-white text-xs font-semibold py-2.5 rounded-xl"
-                    style={{ backgroundColor: activeSpoor.kleur }}>
-                    Naar {activeSpoor.titel} →
+                  <DetailPanelInhoud nodeId={panelNode} />
+                  <button
+                    onClick={() => { setSelected(null); setHovered(null) }}
+                    className="mt-4 text-xs text-gray-400 hover:text-gray-700 transition-colors block"
+                  >
+                    ✕ Sluiten
                   </button>
                 </div>
-              ) : activeInit ? (
-                <div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium mb-2 inline-block ${activeInit.type === 'surf' ? 'bg-purple-100 text-purple-700' : activeInit.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-nhl-blauw'}`}>
-                    {activeInit.type === 'surf' ? '🌐 SURF' : activeInit.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
-                  </span>
-                  <div className="font-bold text-nhl-blauw mb-2 text-sm leading-snug">{activeInit.naam}</div>
-                  <p className="text-gray-500 text-xs leading-relaxed mb-3">{activeInit.omschrijving}</p>
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {activeInit.tags?.map(t => <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>)}
-                  </div>
-                  <button onClick={() => navigeerNaar(activeNodeObj.id)}
-                    className={`w-full text-white text-xs font-semibold py-2.5 rounded-xl ${selLink?.intern ? 'bg-nhl-blauw hover:bg-nhl-blauw-dark' : 'bg-green-700 hover:bg-green-800'}`}>
-                    {selLink?.intern ? 'Bekijk in het AI-Netwerk →' : 'Bezoek externe website ↗'}
-                  </button>
-                </div>
-              ) : null}
-              {activeNodeObj && (
-                <button onClick={() => { setSelected(null); setHovered(null) }} className="mt-3 text-xs text-gray-400 hover:text-gray-600 block">✕ Sluiten</button>
               )}
             </div>
           </div>
         </div>
 
-        {/* Externe partners */}
         <div className="mt-10">
           <div className="section-label mb-2">Externe partners</div>
           <h2 className="text-2xl font-bold text-nhl-blauw mb-6">NHL Stenden in het nationale AI-netwerk</h2>
@@ -327,14 +433,4 @@ export default function Netwerk() {
       </div>
     </div>
   )
-}
-
-// Korte versie kernambities voor het detail panel
-const KERNAMBITIES_KORT = {
-  1: 'Meer studiesucces, minder uitval en minder voortijdig vertrek door AI.',
-  2: 'Hogere efficiency in werkprocessen zodat medewerkers zich richten op hun expertise.',
-  3: 'AI alleen inzetten op een manier die transparant, controleerbaar en eerlijk is.',
-  4: 'AI-geletterdheid als basisvaardigheid voor alle studenten en medewerkers.',
-  5: 'AI verbindt NHL Stenden met het werkveld voor regionale innovatie.',
-  6: 'Sterke onderzoekscultuur rond AI via lectoraten, docenten en studenten.',
 }
