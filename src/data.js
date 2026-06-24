@@ -7,7 +7,7 @@ export const sporen = [
     kleur: '#1E3A8A',
     kort: 'Onderwijs, didactiek, studiesucces en voorbereiding op de arbeidsmarkt.',
     waarom: 'AI verandert hoe studenten leren en hoe docenten lesgeven. Van toetsing en integriteit tot curriculumontwikkeling en studiesucces — dit thema raakt de kern van wat NHL Stenden doet. Hier is de urgentie het meest voelbaar in de dagelijkse praktijk.',
-    uitleg: 'Onder dit thema vallen alle vraagstukken rond AI in het onderwijs én in de begeleiding van studenten. Hoe gebruik je AI integer in opdrachten en toetsen? Hoe integreer je AI-vaardigheden in het curriculum? Hoe helpt AI om studenten beter te begeleiden en uitval te verminderen? AI is hier zowel onderwerp van onderwijs als middel om het onderwijs te verbeteren.',
+    uitleg: 'Onder dit thema vallen alle vraagstukken rond AI in het onderwijs én in de begeleiding van studenten. Hoe gebruik je AI integer in opdrachten en toetsen? Hoe integreer je AI-vaardigheden in het curriculum? Hoe helpt AI om studenten beter te begeleiden en uitval te verminderen?',
     themas: ['Toetsing & integriteit', 'Didactische inbedding', 'Curriculumontwikkeling', 'Studiesucces & uitval', 'Arbeidsmarktvoorbereiding', 'Studentbegeleiding met AI'],
   },
   {
@@ -43,6 +43,28 @@ export const sporen = [
     uitleg: 'Onder dit thema vallen alle activiteiten gericht op het begrijpen en verantwoord kunnen inzetten van AI. Voor bestuurders betekent dat strategisch inzicht. Voor docenten praktische vaardigheden. Voor studenten een competentie die hen voorbereidt op de arbeidsmarkt. En voor medewerkers de zelfredzaamheid om AI in hun eigen werk te gebruiken.',
     themas: ['Bestuur & strategisch inzicht', 'Docenten & AI in de les', 'Studenten & AI-competenties', 'Medewerkers & zelfredzaamheid', 'Organisatiebrede leertrajecten', 'Aansluiting NPULS & nationaal beleid'],
   },
+  {
+    id: 5,
+    titel: 'AI & Werkveld',
+    bolLabel: 'AI &\nWerkveld',
+    icon: '🏭',
+    kleur: '#B45309',
+    kort: 'Lectoraten, werkveldverbindingen, Computer Vision en regionale innovatie.',
+    waarom: 'NHL Stenden staat midden in de samenleving. Lectoraten verbinden onderzoek met beroepspraktijk. Computer Vision, procesautomatisering en data-analyse zijn domeinen waar NHL Stenden actief bijdraagt aan innovatie in het Noord-Nederlandse werkveld. AI is hierin zowel onderwerp van onderzoek als middel om de verbinding te versterken.',
+    uitleg: 'Onder dit thema vallen alle activiteiten waarbij NHL Stenden AI toepast in en met het werkveld: via lectoraten (o.a. Computer Vision & AI), samenwerkingen met bedrijven, stages en projecten waarbij studenten en professionals samen aan AI-vraagstukken werken. Ook de valorisatie van kennis naar regionale partners valt hieronder.',
+    themas: ['Computer Vision toepassingen', 'Lectoraat AI & Computer Vision', 'Werkveldprojecten met AI', 'Regionale AI-innovatie', 'Valorisatie & kennisoverdracht', 'Student-bedrijf AI-projecten'],
+  },
+  {
+    id: 6,
+    titel: 'AI & Onderzoek',
+    bolLabel: 'AI &\nOnderzoek',
+    icon: '🔬',
+    kleur: '#0E7490',
+    kort: 'Applied Research, lectoraten en AI als onderzoeksinstrument en -onderwerp.',
+    waarom: 'NHL Stenden is een hogeschool met een sterke Applied Research traditie. AI speelt een dubbele rol: als onderwerp van onderzoek (wat doet AI met ons vakgebied?) en als instrument voor onderzoek (hoe helpt AI ons beter te onderzoeken?). Lectoraten bouwen aan een kennisbasis die direct bruikbaar is voor de beroepspraktijk.',
+    uitleg: 'Onder dit thema vallen alle onderzoeksactiviteiten waarbij AI een centrale rol speelt: van promotietrajecten en lectoraatsonderzoek tot studentonderzoek en externe onderzoeksprojecten. Thema\'s als AI-ethiek, AI in de zorg, AI in de creatieve industrie en AI in educatief onderzoek komen hier samen.',
+    themas: ['AI als onderzoeksinstrument', 'AI als onderzoeksonderwerp', 'Lectoraatsonderzoek & AI', 'Studentonderzoek met AI', 'Externe onderzoekssamenwerkingen', 'Publicaties & kennisdisseminatie'],
+  },
 ]
 
 export const lagen = [
@@ -66,8 +88,8 @@ export const lagen = [
   {
     nr: 3,
     naam: 'Onderwijs, Onderzoek & Data',
-    omschrijving: 'De onderwijskundige beweging, kennisontwikkeling, data-architectuur en AI-modellen. Welke modellen vertrouwen we? Hoe gaan we om met onze eigen data?',
-    uitleg: 'OO&I stuurt op de inhoudelijke en onderwijskundige kant van AI: hoe integreren we het in curriculum en didactiek, welke AI-modellen passen bij onze waarden, hoe borgen we kwaliteit en privacy in onze data-architectuur, en hoe ontwikkelen we de onderzoekslijn rond AI in het onderwijs? Dit is de laag waar techniek en onderwijs samenkomen.',
+    omschrijving: 'De onderwijskundige beweging, kennisontwikkeling, data-architectuur en AI-modellen.',
+    uitleg: 'OO&I stuurt op de inhoudelijke en onderwijskundige kant van AI: hoe integreren we het in curriculum en didactiek, welke AI-modellen passen bij onze waarden, hoe borgen we kwaliteit en privacy in onze data-architectuur?',
     eigenaar: 'OO&I',
     kleur: '#0F766E'
   },
@@ -75,43 +97,50 @@ export const lagen = [
     nr: 2,
     naam: 'Chips & Hardware',
     omschrijving: 'Rekenkracht en servers. Hoeveel eigen rekenkracht willen we bezitten? Balans tussen cloud en on-premise.',
-    uitleg: 'De strijd om rekenkracht is ook een geopolitieke strijd. Wie de chips controleert, controleert de toekomst van AI. NHL Stenden kiest voor een bewuste sourcingstrategie: balans tussen cloud en on-premise, in samenwerking met SURF en de AI-Fabriek Groningen.',
+    uitleg: 'De strijd om rekenkracht is ook een geopolitieke strijd. NHL Stenden kiest voor een bewuste sourcingstrategie: balans tussen cloud en on-premise, in samenwerking met SURF en de AI-Fabriek Groningen.',
     eigenaar: 'DLWO',
     kleur: '#7C3AED'
   },
   {
     nr: 1,
-    naam: 'Energie & Infrastructuur',
-    omschrijving: 'De fysieke basis en stroom. AI verbruikt enorme hoeveelheden energie. Voldoen onze faciliteiten aan de groeiende vraag?',
-    uitleg: 'Eén AI-vraag kost tot 100x meer energie dan een standaard zoekopdracht. De druk op energienetten en duurzaamheidsdoelstellingen neemt toe. Facility Management bewaakt of onze fysieke infrastructuur klaar is voor de exponentiële AI-groei, en onderzoekt off-campus oplossingen zoals de SURF AI-hub en AI-Fabriek Groningen.',
+    naam: 'Energie & Fysieke Infrastructuur',
+    omschrijving: 'Stroom, koeling en datacenters. Duurzaamheid als randvoorwaarde voor AI-groei.',
+    uitleg: 'Eén AI-vraag kost tot 100x meer energie dan een standaard zoekopdracht. De druk op energienetten en duurzaamheidsdoelstellingen neemt toe. Facility Management bewaakt of onze fysieke infrastructuur klaar is voor de exponentiële AI-groei.',
     eigenaar: 'Facility Management',
     kleur: '#374151'
   },
 ]
 
 export const initiatieven = [
-  { id: 1, naam: 'AI Compliance Groep', omschrijving: 'Rapporteert regelmatig over AI-risicos en signaleert waar actie nodig is, in lijn met de AI Act.', laag: 4, spoor: 3, status: 'actief', type: 'intern', tags: ['Governance', 'AI Act', 'Compliance'], ambities: [], impactInschatting: null },
-  { id: 2, naam: 'AI Coalitie NHL Stenden', omschrijving: 'Brede coalitie van medewerkers en docenten die actief met AI bezig zijn. In opbouw.', laag: 5, spoor: 1, status: 'groeiend', type: 'intern', tags: ['Netwerk', 'Onderwijs', 'Organisatie'], ambities: ['studiesucces'], impactInschatting: 'laag' },
-  { id: 3, naam: 'Academie Educatie: Digitalisering & Mediawijsheid', omschrijving: 'Integratie van AI in de praktijk van digitalisering en mediawijsheid binnen de lerarenopleiding.', laag: 5, spoor: 1, status: 'actief', type: 'intern', tags: ['Onderwijs', 'Geletterdheid', 'PABO'], ambities: ['studiesucces', 'uitval'], impactInschatting: 'hoog' },
-  { id: 4, naam: 'FCP: Data & AI', omschrijving: 'Financien, Control & Planning omarmt AI in datagedreven werken en bedrijfsvoeringsprocessen.', laag: 3, spoor: 2, status: 'actief', type: 'intern', tags: ['Bedrijfsvoering', 'Data', 'Financien'], ambities: [], impactInschatting: null },
-  { id: 5, naam: 'BDB Cursus AI-verrijking', omschrijving: 'De Basiskwalificatie Didactische Bekwaamheid wordt verrijkt met AI-componenten voor docenten.', laag: 5, spoor: 4, status: 'actief', type: 'intern', tags: ['Docenten', 'Geletterdheid', 'BDB'], ambities: ['studiesucces', 'vertrek'], impactInschatting: 'gemiddeld' },
-  { id: 6, naam: 'SURF Denktank', omschrijving: 'Strategisch netwerk van hoger onderwijsinstellingen dat de koers voor AI mede bepaalt. NHL Stenden levert actief input aan de koersbepaling.', laag: 4, spoor: 3, status: 'actief', type: 'surf', tags: ['Strategie', 'SURF', 'Hoger Onderwijs'], ambities: [], impactInschatting: null },
+  { id: 1, naam: 'AI Compliance Groep', omschrijving: 'Rapporteert regelmatig over AI-risico\'s en signaleert waar actie nodig is, in lijn met de AI Act.', laag: 4, spoor: 3, status: 'actief', type: 'intern', tags: ['Compliance', 'Governance', 'AI Act'], ambities: [], impactInschatting: null },
+  { id: 2, naam: 'AI Coalitie NHL Stenden', omschrijving: 'Interne coalitie van early adopters die AI-toepassingen verkennen en ervaringen delen.', laag: 5, spoor: 1, status: 'actief', type: 'intern', tags: ['Community', 'Innovatie', 'Netwerk'], ambities: ['studiesucces'], impactInschatting: 'gemiddeld' },
+  { id: 3, naam: 'Academie Educatie: Digitalisering & Mediawijsheid', omschrijving: 'Integratie van AI in de praktijk van digitalisering en mediawijsheid binnen de lerarenopleiding.', laag: 5, spoor: 1, status: 'actief', type: 'intern', tags: ['Educatie', 'Mediawijsheid', 'Curriculum'], ambities: ['studiesucces', 'uitval'], impactInschatting: 'hoog' },
+  { id: 4, naam: 'FCP: Data & AI', omschrijving: 'Financiën, Control & Planning omarmt AI in datagedreven werken en bedrijfsvoeringsprocessen.', laag: 5, spoor: 2, status: 'actief', type: 'intern', tags: ['Finance', 'Data', 'Efficiency'], ambities: [], impactInschatting: null },
+  { id: 5, naam: 'BDB Cursus AI-verrijking', omschrijving: 'De Basiskwalificatie Didactische Bekwaamheid wordt verrijkt met AI-componenten voor docenten.', laag: 5, spoor: 4, status: 'actief', type: 'intern', tags: ['BDB', 'Docenten', 'Geletterdheid'], ambities: ['studiesucces'], impactInschatting: 'gemiddeld' },
+  { id: 6, naam: 'SURF AI-Hub & Denktank', omschrijving: 'Strategisch netwerk van hoger onderwijsinstellingen dat de koers voor AI mede bepaalt. NHL Stenden levert actief input.', laag: 4, spoor: 3, status: 'actief', type: 'surf', tags: ['Strategie', 'SURF', 'Hoger Onderwijs'], ambities: [], impactInschatting: null },
   { id: 7, naam: 'NPULS Digitale Geletterdheid', omschrijving: 'Nationaal programma voor digitale geletterdheid. Kaders en materialen direct bruikbaar voor het geletterdheidsthema.', laag: 5, spoor: 4, status: 'actief', type: 'extern', tags: ['Geletterdheid', 'Nationaal', 'NPULS'], ambities: ['studiesucces', 'uitval', 'vertrek'], impactInschatting: 'gemiddeld' },
-  { id: 8, naam: 'SURF AI-HUB & GPT-NL', omschrijving: 'Soevereine infrastructuur en Nederlands eigen taalmodel als alternatief voor commerciele aanbieders. AVG-compliant en transparant.', laag: 3, spoor: 3, status: 'actief', type: 'surf', tags: ['Soevereiniteit', 'AVG', 'Taalmodel'], ambities: [], impactInschatting: null },
+  { id: 8, naam: 'SURF AI-HUB & GPT-NL', omschrijving: 'Soevereine infrastructuur en Nederlands eigen taalmodel als alternatief voor commerciële aanbieders. AVG-compliant en transparant.', laag: 3, spoor: 3, status: 'actief', type: 'surf', tags: ['Soevereiniteit', 'AVG', 'Taalmodel'], ambities: [], impactInschatting: null },
   { id: 9, naam: 'AI-Fabriek Groningen', omschrijving: 'Regionale soevereine rekenkracht en datafaciliteit. Strategisch relevant als noordelijke instelling en alternatief voor Big Tech rekenkracht.', laag: 2, spoor: 3, status: 'actief', type: 'surf', tags: ['Infrastructuur', 'Rekenkracht', 'Regio'], ambities: [], impactInschatting: null },
   { id: 10, naam: 'Regulatory Sandbox', omschrijving: 'Gecontroleerde experimenteeromgeving voor veilig experimenteren met AI. In voorbereiding.', laag: 4, spoor: 3, status: 'in-ontwikkeling', type: 'intern', tags: ['Sandbox', 'Innovatie', 'RDI'], ambities: ['uitval'], impactInschatting: 'laag' },
   { id: 11, naam: 'AI-Desk', omschrijving: 'Verplicht loket voor medewerkers die een AI-tool willen bouwen of inzetten. In voorbereiding.', laag: 4, spoor: 3, status: 'in-ontwikkeling', type: 'intern', tags: ['Governance', 'Loket', 'Ondersteuning'], ambities: [], impactInschatting: null },
+  { id: 12, naam: 'Lectoraat Computer Vision & AI', omschrijving: 'NHL Stenden lectoraat dat onderzoek doet naar Computer Vision toepassingen in het Noord-Nederlandse werkveld. Van beeldherkenning in de zorg tot kwaliteitscontrole in de industrie.', laag: 3, spoor: 5, status: 'actief', type: 'intern', tags: ['Computer Vision', 'Lectoraat', 'Werkveld', 'Onderzoek'], ambities: [], impactInschatting: null },
+  { id: 13, naam: 'AI in de Zorg — werkveldproject', omschrijving: 'Samenwerking met regionale zorgpartners rond AI-toepassingen in de zorgpraktijk. Studenten doen praktijkgericht onderzoek naar beelddiagnostiek en procesondersteuning.', laag: 5, spoor: 5, status: 'actief', type: 'extern', tags: ['Zorg', 'Werkveld', 'Computer Vision', 'Praktijkgericht'], ambities: ['studiesucces'], impactInschatting: 'gemiddeld' },
+  { id: 14, naam: 'Applied Research AI — lectoraten', omschrijving: 'Overkoepelend programma waarbij meerdere lectoraten van NHL Stenden AI inzetten als onderzoeksinstrument én als onderzoeksonderwerp in hun respectievelijke vakdomeinen.', laag: 3, spoor: 6, status: 'actief', type: 'intern', tags: ['Applied Research', 'Lectoraten', 'Multidisciplinair'], ambities: [], impactInschatting: null },
+  { id: 15, naam: 'AI-ethiek onderzoekslijn', omschrijving: 'Onderzoek naar de ethische dimensies van AI-inzet in het hoger onderwijs en maatschappij. Bijdrage aan nationale en Europese discussies over verantwoorde AI.', laag: 3, spoor: 6, status: 'in-ontwikkeling', type: 'intern', tags: ['Ethiek', 'Onderzoek', 'Publicaties', 'Maatschappij'], ambities: [], impactInschatting: null },
 ]
 
 export const vraagCategorieen = [
-  { id: 'vraag', label: 'Ik heb een vraag', icon: '❓', uitleg: 'Je hebt een concrete vraag over AI bij NHL Stenden en zoekt een antwoord of de juiste persoon.' },
-  { id: 'idee', label: 'Ik heb een idee', icon: '💡', uitleg: 'Je hebt een idee voor een AI-toepassing, aanpak of verbetering en wilt dit delen.' },
-  { id: 'initiatief', label: 'Ik wil een initiatief aanmelden', icon: '🚀', uitleg: 'Je bent al bezig met iets op het gebied van AI en wilt dit zichtbaar maken in de AI-HUB.' },
-  { id: 'ondersteuning', label: 'Ik zoek ondersteuning of samenwerking', icon: '🤝', uitleg: 'Je wilt samenwerken met anderen of hebt hulp nodig bij een AI-vraagstuk.' },
-  { id: 'zorg', label: 'Ik heb een zorg of signaal', icon: '⚠️', uitleg: 'Je hebt een zorg, risico of signaal dat aandacht verdient van het AI-HUB team.' },
+  { id: 'vraag', label: 'Een vraag stellen', icon: '💬', uitleg: 'Je hebt een concrete vraag over AI bij NHL Stenden en wil een antwoord of richting.' },
+  { id: 'idee', label: 'Een idee delen', icon: '💡', uitleg: 'Je hebt een idee over hoe AI ingezet kan worden en wil dat kenbaar maken.' },
+  { id: 'initiatief', label: 'Een initiatief aanmelden', icon: '🚀', uitleg: 'Je bent al bezig met iets en wil dat zichtbaar maken in het AI-Netwerk.' },
+  { id: 'ondersteuning', label: 'Samenwerking zoeken', icon: '🤝', uitleg: 'Je zoekt collega\'s, expertise of partners voor een AI-project of vraagstuk.' },
+  { id: 'zorg', label: 'Een zorg of signaal', icon: '⚠️', uitleg: 'Je hebt een zorg of signaal over AI-gebruik dat aandacht verdient.' },
 ]
 
-export const rolOpties = ['Docent', 'Onderzoeker', 'Student', 'Medewerker dienst', 'Management', 'Anders']
+export const rolOpties = [
+  'Docent', 'Onderzoeker / Lectorsmedewerker', 'Student', 'Medewerker dienst',
+  'Management / Leidinggevende', 'Bestuurder', 'Externe partner', 'Anders',
+]
 
 export const initiatief_types = ['intern', 'extern', 'surf']
 
