@@ -29,8 +29,8 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 In ontwikkeling — versie 1.6 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
-                <img src="/logo-AIHUB.png" alt="AI-Netwerk" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
-                <div>
+                <img src="/nhl-logo.png" alt="NHL Stenden" className="h-12 object-contain" />
+                <div className="border-l border-white/20 pl-4">
                   <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">AI-Netwerk</h1>
                   <div className="text-nhl-roze-light font-semibold text-lg">NHL Stenden</div>
                 </div>
@@ -152,8 +152,8 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         </div>
       </section>
 
-      {/* Impact dashboard */}
-      <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} />
+      {/* Thematisch impact dashboard — met evenementen */}
+      <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} evenementen={evenementen} />
 
       {/* CTA strip */}
       <section className="py-12 nhl-gradient">
@@ -185,7 +185,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit het AI-Netwerk</h2>
             <div className="grid sm:grid-cols-3 gap-6">
 
-              {/* Nieuwste goedgekeurde video — sort op id (timestamp) */}
               {(() => {
                 const goedgekeurd = videos.filter(x => x.status === 'goedgekeurd')
                 const v = [...goedgekeurd].sort((a, b) => b.id - a.id)[0]
@@ -211,7 +210,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 )
               })()}
 
-              {/* Laatste pilot */}
               {(() => {
                 const p = [...pilots].reverse()[0]
                 if (!p) return null
@@ -234,7 +232,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 )
               })()}
 
-              {/* Volgend evenement */}
               {(() => {
                 const nu = new Date()
                 const ev = evenementen
@@ -259,7 +256,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                   </Link>
                 )
               })()}
-
             </div>
           </div>
         </section>

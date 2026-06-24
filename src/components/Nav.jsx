@@ -22,6 +22,7 @@ const navGroepen = [
     label: 'Kennis',
     items: [
       { label: "Video's", to: '/video', icon: '🎬' },
+      { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
       { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
@@ -53,10 +54,8 @@ function DropdownGroep({ groep }) {
         }`}
       >
         {groep.label}
-        <svg
-          className={`w-3 h-3 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
-          fill="none" viewBox="0 0 24 24" stroke="currentColor"
-        >
+        <svg className={`w-3 h-3 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -69,15 +68,10 @@ function DropdownGroep({ groep }) {
           onMouseLeave={handleMouseLeave}
         >
           {groep.items.map(item => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => setOpen(false)}
+            <NavLink key={item.to} to={item.to} onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                  isActive
-                    ? 'text-nhl-blauw font-semibold bg-blue-50'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-nhl-blauw'
+                  isActive ? 'text-nhl-blauw font-semibold bg-blue-50' : 'text-gray-700 hover:bg-gray-50 hover:text-nhl-blauw'
                 }`
               }
             >
@@ -100,10 +94,10 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo: NHL Stenden logo links, tekst rechts */}
           <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/logo-AIHUB.png" alt="AI-Netwerk" className="h-9 w-9 object-contain bg-white rounded-lg p-0.5" />
-            <div className="hidden sm:block">
+            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
+            <div className="hidden sm:block border-l border-white/20 pl-3">
               <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
               <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
             </div>
@@ -115,8 +109,7 @@ export default function Nav() {
               <DropdownGroep key={groep.label} groep={groep} />
             ))}
 
-            <NavLink
-              to="/over"
+            <NavLink to="/over"
               className={({ isActive }) =>
                 `flex items-center px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                   isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
@@ -128,8 +121,7 @@ export default function Nav() {
 
             <div className="w-px h-5 bg-white/20 mx-2" />
 
-            <NavLink
-              to="/meld"
+            <NavLink to="/meld"
               className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap"
             >
               + Vraag of idee
@@ -137,11 +129,8 @@ export default function Nav() {
           </div>
 
           {/* Hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10"
-            aria-label="Menu"
-          >
+          <button onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10" aria-label="Menu">
             <div className={`w-5 h-0.5 bg-white mb-1.5 transition-all origin-center ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <div className={`w-5 h-0.5 bg-white mb-1.5 transition-all ${mobileOpen ? 'opacity-0 scale-x-0' : ''}`} />
             <div className={`w-5 h-0.5 bg-white transition-all origin-center ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`} />
@@ -158,19 +147,15 @@ export default function Nav() {
                   className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-blue-300 uppercase tracking-widest hover:text-white transition-colors"
                 >
                   {groep.label}
-                  <svg
-                    className={`w-3.5 h-3.5 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                  >
+                  <svg className={`w-3.5 h-3.5 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {mobileGroep === groep.label && (
                   <div className="ml-3 mb-2 space-y-0.5">
                     {groep.items.map(item => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
+                      <NavLink key={item.to} to={item.to}
                         onClick={() => { setMobileOpen(false); setMobileGroep(null) }}
                         className={({ isActive }) =>
                           `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
@@ -186,18 +171,14 @@ export default function Nav() {
                 )}
               </div>
             ))}
-            <NavLink
-              to="/over"
-              onClick={() => setMobileOpen(false)}
+            <NavLink to="/over" onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `block px-3 py-2.5 text-sm transition-colors ${isActive ? 'text-white font-medium' : 'text-blue-100 hover:text-white'}`
               }
             >
               Over het Netwerk
             </NavLink>
-            <NavLink
-              to="/meld"
-              onClick={() => setMobileOpen(false)}
+            <NavLink to="/meld" onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 mx-3 mt-3 px-4 py-2.5 rounded-xl text-sm bg-nhl-roze text-white font-bold"
             >
               + Vraag of idee

@@ -4,11 +4,11 @@ import { initiatieven, sporen } from '../data'
 import PageHeader from '../components/PageHeader'
 
 const NODES = [
-  { id: 'hub',  lines: ['AI-HUB'],                   x: 50, y: 50, r: 6.5, kleur: '#1E3A8A', type: 'kern' },
-  { id: 's1',   lines: ['AI &', 'Leren'],          x: 25, y: 20, r: 5.5, kleur: '#1E3A8A', type: 'spoor', spoorId: 1 },
-  { id: 's2',   lines: ['AI &', 'Werken'],          x: 75, y: 20, r: 5.5, kleur: '#0F766E', type: 'spoor', spoorId: 2 },
-  { id: 's3',   lines: ['AI &', 'Verantw.'],        x: 75, y: 80, r: 5.5, kleur: '#E91E8C', type: 'spoor', spoorId: 3 },
-  { id: 's4',   lines: ['AI-', 'Geletterd.'],       x: 25, y: 80, r: 5.5, kleur: '#7C3AED', type: 'spoor', spoorId: 4 },
+  { id: 'hub',  lines: ['AI-', 'Netwerk'],             x: 50, y: 50, r: 6.5, kleur: '#1E3A8A', type: 'kern' },
+  { id: 's1',   lines: ['AI &', 'Leren'],              x: 25, y: 20, r: 5.5, kleur: '#1E3A8A', type: 'spoor', spoorId: 1 },
+  { id: 's2',   lines: ['AI &', 'Werken'],             x: 75, y: 20, r: 5.5, kleur: '#0F766E', type: 'spoor', spoorId: 2 },
+  { id: 's3',   lines: ['AI &', 'Verantw.'],           x: 75, y: 80, r: 5.5, kleur: '#E91E8C', type: 'spoor', spoorId: 3 },
+  { id: 's4',   lines: ['AI &', 'Geletterd.'],         x: 25, y: 80, r: 5.5, kleur: '#7C3AED', type: 'spoor', spoorId: 4 },
   { id: 'i1',   lines: ['AI','Compliance'],  x: 10, y: 50, r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 1 },
   { id: 'i2',   lines: ['AI','Coalitie'],    x: 38, y: 5,  r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 2 },
   { id: 'i3',   lines: ['Academie','Edu.'],  x: 62, y: 5,  r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 3 },
@@ -39,82 +39,40 @@ function NetwerkNode({ node, isSelected, isDimmed, isHovered, onClick, onMouseEn
   const glowR = node.r * scale + 1.5
 
   return (
-    <g
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{
-        cursor: 'pointer',
-        opacity: isDimmed ? 0.2 : 1,
-        transition: 'opacity 0.25s ease',
-      }}
-    >
-      {/* Glow ring bij hover */}
+    <g onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
+      style={{ cursor: 'pointer', opacity: isDimmed ? 0.2 : 1, transition: 'opacity 0.25s ease' }}>
       {(isHovered || isSelected) && (
-        <circle
-          cx={node.x} cy={node.y} r={glowR}
-          fill="none"
-          stroke={isSelected ? '#E91E8C' : node.kleur}
-          strokeWidth="0.5"
-          opacity="0.4"
-          strokeDasharray={isSelected ? '' : '1.5,0.5'}
-        />
+        <circle cx={node.x} cy={node.y} r={glowR}
+          fill="none" stroke={isSelected ? '#E91E8C' : node.kleur}
+          strokeWidth="0.5" opacity="0.4" strokeDasharray={isSelected ? '' : '1.5,0.5'} />
       )}
-
-      {/* Hoofdbol met schaal via transform */}
-      <circle
-        cx={node.x}
-        cy={node.y}
-        r={node.r * scale}
-        fill={fillKleur}
+      <circle cx={node.x} cy={node.y} r={node.r * scale} fill={fillKleur}
         stroke={isSelected ? '#E91E8C' : isHovered ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.06)'}
         strokeWidth={isSelected ? 0.7 : isHovered ? 0.5 : 0.2}
-        style={{ transition: 'r 0.15s ease, fill 0.15s ease' }}
-      />
-
-      {/* Tekst — meerdere regels netjes gecentreerd */}
+        style={{ transition: 'r 0.15s ease, fill 0.15s ease' }} />
       {node.lines.map((line, i) => {
         const n = node.lines.length
-        const lineHeight = node.type === 'spoor'
-          ? node.r * scale * 0.42
-          : node.r * scale * 0.52
+        const lineHeight = node.type === 'spoor' ? node.r * scale * 0.42 : node.r * scale * 0.52
         const offsetY = (i - (n - 1) / 2) * lineHeight
-        const fs = node.type === 'kern'
-          ? node.r * scale * 0.32
-          : node.type === 'spoor'
-          ? node.r * scale * 0.25
+        const fs = node.type === 'kern' ? node.r * scale * 0.32
+          : node.type === 'spoor' ? node.r * scale * 0.25
           : node.r * scale * 0.28
-
         return (
-          <text
-            key={i}
-            x={node.x}
-            y={node.y + offsetY}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill={tekstKleur}
-            fontSize={fs}
+          <text key={i} x={node.x} y={node.y + offsetY}
+            textAnchor="middle" dominantBaseline="middle"
+            fill={tekstKleur} fontSize={fs}
             fontWeight={node.type === 'kern' || node.type === 'spoor' ? '700' : '500'}
             fontFamily="Inter, Arial, sans-serif"
-            style={{ pointerEvents: 'none', userSelect: 'none' }}
-          >
+            style={{ pointerEvents: 'none', userSelect: 'none' }}>
             {line}
           </text>
         )
       })}
-
-      {/* Tooltip label bij hover voor kleine bollen */}
       {isHovered && node.type !== 'kern' && node.type !== 'spoor' && (
-        <text
-          x={node.x}
-          y={node.y - node.r * scale - 1.2}
-          textAnchor="middle"
-          fill="#1E3A8A"
-          fontSize="1.8"
-          fontWeight="600"
+        <text x={node.x} y={node.y - node.r * scale - 1.2}
+          textAnchor="middle" fill="#1E3A8A" fontSize="1.8" fontWeight="600"
           fontFamily="Inter, Arial, sans-serif"
-          style={{ pointerEvents: 'none', userSelect: 'none' }}
-        >
+          style={{ pointerEvents: 'none', userSelect: 'none' }}>
           {node.lines.join(' ')}
         </text>
       )}
@@ -130,7 +88,6 @@ export default function Netwerk() {
     setSelected(prev => {
       const nieuw = prev === id ? null : id
       if (nieuw) {
-        // Scroll naar detail panel na kort moment voor render
         setTimeout(() => {
           const el = document.getElementById('netwerk-detail')
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -162,16 +119,17 @@ export default function Netwerk() {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Netwerkorganisatie" title="Het AI-netwerk van NHL Stenden" subtitle="Klik op een knoop om details te zien. De verbindingen laten zien hoe initiatieven en thema's samenhangen." />
+      <GradientHeader label="Netwerkorganisatie" title="Het AI-Netwerk van NHL Stenden"
+        subtitle="Klik op een knoop om details te zien. De verbindingen laten zien hoe initiatieven en thema's samenhangen." />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-{/* Uitleg legenda */}
+
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-6">
           <div className="grid sm:grid-cols-3 gap-5">
             <div className="flex gap-3">
               <div className="w-5 h-5 rounded-full bg-nhl-blauw flex-shrink-0 mt-0.5" />
               <div>
                 <div className="font-semibold text-nhl-blauw text-sm mb-1">Kern & Thema's</div>
-                <p className="text-gray-500 text-xs leading-relaxed">De grote bollen zijn de AI-HUB en de vier thema's. Ze vormen de kern waarop alles is aangesloten.</p>
+                <p className="text-gray-500 text-xs leading-relaxed">De grote bollen zijn het AI-Netwerk en de vier thema's. Ze vormen de kern waarop alles is aangesloten.</p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -192,7 +150,6 @@ export default function Netwerk() {
         </div>
 
         <div className="grid xl:grid-cols-4 gap-6">
-          {/* SVG netwerk */}
           <div className="xl:col-span-3">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               <svg viewBox="0 0 100 100" className="w-full" style={{ aspectRatio: '4/3' }}>
@@ -202,79 +159,51 @@ export default function Netwerk() {
                     <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
                   </filter>
                 </defs>
-
-                {/* Links */}
                 {LINKS.map(([vanId, naarId], i) => {
                   const van = getNode(vanId)
                   const naar = getNode(naarId)
                   const isActief = selected
                     ? (vanId === selected || naarId === selected)
-                    : hovered
-                    ? (vanId === hovered || naarId === hovered)
-                    : false
+                    : hovered ? (vanId === hovered || naarId === hovered) : false
                   return (
-                    <line
-                      key={i}
-                      x1={van.x} y1={van.y} x2={naar.x} y2={naar.y}
+                    <line key={i} x1={van.x} y1={van.y} x2={naar.x} y2={naar.y}
                       stroke={isActief ? '#E91E8C' : '#CBD5E1'}
                       strokeWidth={isActief ? 0.6 : 0.25}
                       strokeDasharray={isActief ? '' : '1.5,1'}
-                      style={{ transition: 'stroke 0.2s ease, stroke-width 0.2s ease' }}
-                    />
+                      style={{ transition: 'stroke 0.2s ease, stroke-width 0.2s ease' }} />
                   )
                 })}
-
-                {/* Nodes — render sporen voor kern zodat kern bovenop staat */}
                 {NODES.filter(n => n.type !== 'kern').map(node => {
                   const isSelected = selected === node.id
                   const isHov = hovered === node.id
                   const isDimmed = selected
                     ? (!isSelected && !verbonden.has(node.id))
-                    : hovered
-                    ? (!isHov && !hovVerbonden.has(node.id) && node.id !== 'hub')
-                    : false
-
+                    : hovered ? (!isHov && !hovVerbonden.has(node.id) && node.id !== 'hub') : false
                   return (
-                    <NetwerkNode
-                      key={node.id}
-                      node={node}
-                      isSelected={isSelected}
-                      isDimmed={isDimmed}
-                      isHovered={isHov}
+                    <NetwerkNode key={node.id} node={node} isSelected={isSelected}
+                      isDimmed={isDimmed} isHovered={isHov}
                       onClick={() => handleClick(node.id)}
                       onMouseEnter={() => setHovered(node.id)}
-                      onMouseLeave={() => setHovered(null)}
-                    />
+                      onMouseLeave={() => setHovered(null)} />
                   )
                 })}
-
-                {/* Kern altijd bovenop */}
                 {NODES.filter(n => n.type === 'kern').map(node => (
-                  <NetwerkNode
-                    key={node.id}
-                    node={node}
-                    isSelected={selected === node.id}
-                    isDimmed={false}
-                    isHovered={hovered === node.id}
+                  <NetwerkNode key={node.id} node={node} isSelected={selected === node.id}
+                    isDimmed={false} isHovered={hovered === node.id}
                     onClick={() => handleClick(node.id)}
                     onMouseEnter={() => setHovered(node.id)}
-                    onMouseLeave={() => setHovered(null)}
-                  />
+                    onMouseLeave={() => setHovered(null)} />
                 ))}
               </svg>
-
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-400">Klik voor details · Beweeg over een bol voor preview</div>
                 {selected && (
-                  <button onClick={() => setSelected(null)} className="text-xs text-gray-400 hover:text-gray-600">
-                    ✕ Deselecteer
-                  </button>
+                  <button onClick={() => setSelected(null)} className="text-xs text-gray-400 hover:text-gray-600">✕ Deselecteer</button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Detail panel */}
           <div id="netwerk-detail">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
               {!sel ? (
@@ -295,7 +224,7 @@ export default function Netwerk() {
                 </div>
               ) : sel.type === 'kern' ? (
                 <div className="animate-fade-in">
-                  <div className="font-bold text-nhl-blauw text-lg mb-3">AI-HUB NHL Stenden</div>
+                  <div className="font-bold text-nhl-blauw text-lg mb-3">AI-Netwerk NHL Stenden</div>
                   <p className="text-gray-600 text-sm leading-relaxed">De centrale verbindingsplek voor alles rond AI bij NHL Stenden. Vier thema's, vijf lagen, één kompas.</p>
                 </div>
               ) : selSpoor ? (
@@ -327,14 +256,13 @@ export default function Netwerk() {
                   <div className="font-bold text-nhl-blauw mb-2 leading-snug">{selInit.naam}</div>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4">{selInit.omschrijving}</p>
                   <div className="flex flex-wrap gap-1.5 mb-3">
-                    {selInit.tags.map(t => (
+                    {selInit.tags?.map(t => (
                       <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>
                     ))}
                   </div>
                   {selInit.laag && <div className="text-xs text-gray-400">Laag {selInit.laag} · Thema {selInit.spoor}</div>}
                 </div>
               ) : null}
-
               {sel && (
                 <button onClick={() => setSelected(null)} className="mt-5 text-xs text-gray-400 hover:text-gray-600 transition-colors block">
                   ✕ Sluiten
