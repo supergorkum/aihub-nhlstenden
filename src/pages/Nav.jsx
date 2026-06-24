@@ -91,13 +91,14 @@ function DropdownGroep({ groep }) {
   )
 }
 
-// Aparte component zodat useNavigate werkt en altijd reset naar keuzescherm
+// Aparte component zodat useNavigate werkt en altijd reset naar keuzescherm,
+// ook als je al op /meld staat (via unieke state timestamp)
 function MeldKnop({ className, children, onClick }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    // Navigeer altijd naar /meld zonder params — forceert reset via searchParams useEffect
-    navigate('/meld', { replace: false })
+    // Stuur een unieke resetKey mee — Meld.jsx detecteert dit via location.state
+    navigate('/meld', { replace: false, state: { resetKey: Date.now() } })
     if (onClick) onClick()
   }
 

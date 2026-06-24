@@ -287,7 +287,8 @@ export default function Netwerk() {
                   const isLight = ['#DBEAFE','#D1FAE5','#EDE9FE','#CCFBF1','#FCE7F3','#FEF3C7','#ECFEFF'].includes(node.kleur)
                   const fillKleur = isSelected ? (isLight ? '#E91E8C' : node.kleur) : node.kleur
                   const tekstKleur = isSelected ? 'white' : (node.tekstKleur || 'white')
-                  const scale = isHov && !isSelected ? 1.2 : isSelected ? 1.1 : 1
+                  const baseScale = node.type === 'extern' ? 1.6 : 1.2
+                  const scale = isHov && !isSelected ? baseScale : isSelected ? (node.type === 'extern' ? 1.4 : 1.1) : 1
 
                   return (
                     <g key={node.id}

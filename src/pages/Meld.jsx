@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useLocation } from 'react-router-dom'
 import GradientHeader from '../components/GradientHeader'
 import { sporen } from '../data'
 
@@ -71,10 +71,22 @@ function leegForm() {
 
 export default function Meld({ onNieuwBericht, berichten = [] }) {
   const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
   const [stap, setStap] = useState('categorie')
   const [categorie, setCategorie] = useState(null)
   const [form, setForm] = useState(leegForm())
   const [ingediend, setIngediend] = useState(false)
+
+  // Reset bij navigatie via de nav-knop (resetKey in location.state)
+  useEffect(() => {
+    if (location.state?.resetKey) {
+      setStap('categorie')
+      setCategorie(null)
+      setForm(leegForm())
+      setIngediend(false)
+      setSearchParams({})
+    }
+  }, [location.state?.resetKey])
 
   // Pre-select categorie via URL parameter (?categorie=initiatief)
   // Luistert ook naar veranderingen zodat terugnavigeren zonder param reset naar keuzescherm
