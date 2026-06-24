@@ -24,8 +24,14 @@ const navGroepen = [
       { label: "Video's", to: '/video', icon: '🎬' },
       { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
-      { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
       { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
+      { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
+    ]
+  },
+  {
+    label: 'Beleid',
+    items: [
+      { label: 'Beleid & Kaders', to: '/beleid', icon: '📋' },
     ]
   },
 ]
@@ -94,10 +100,10 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo: NHL Stenden logo links, tekst rechts */}
+          {/* Logo: NHL Stenden logo transparant op blauwe balk */}
           <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
-            <div className="hidden sm:block border-l border-white/20 pl-3">
+            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-8 object-contain brightness-0 invert" />
+            <div className="border-l border-white/30 pl-3">
               <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
               <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
             </div>
