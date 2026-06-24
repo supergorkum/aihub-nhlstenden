@@ -33,7 +33,6 @@ const ROADMAP_STATUS = {
   afgerond:          { label: 'Afgerond ✓',       kleur: 'bg-gray-100 text-gray-500',  dot: 'bg-gray-400' },
 }
 
-// Cyclus stopt bij lopend — afgerond gaat via beheerder
 const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend']
 
 export default function Initiatieven({ roadmap, setRoadmap }) {
@@ -53,17 +52,26 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
   const [filterSpoor, setFilterSpoor] = useState(null)
   const [filterType, setFilterType] = useState(null)
   const [zoek, setZoek] = useState('')
+
+  // Roadmap modal
   const [addOpen, setAddOpen] = useState(false)
   const [toegevoegd, setToegevoegd] = useState(false)
   const [form, setForm] = useState({ titel: '', omschrijving: '', prioriteit: 'hoog', verantwoordelijke: '', datum: '', naam: '' })
-  const [actieveAiAct, setActieveAiAct] = useState(null)
+
+  // Initiatief aanmelden modal
   const [initAddOpen, setInitAddOpen] = useState(false)
   const [initToegevoegd, setInitToegevoegd] = useState(false)
   const [extraInitiatieven, setExtraInitiatieven] = useState([])
-  const [initForm, setInitForm] = useState({ naam: '', omschrijving: '', type: 'intern', spoor: '', status: 'in-ontwikkeling', contactNaam: '' })
+  const [initForm, setInitForm] = useState({
+    naam: '', omschrijving: '', type: 'intern', spoor: '',
+    status: 'in-ontwikkeling', contactNaam: '', ambities: [], impactInschatting: ''
+  })
+
+  const [actieveAiAct, setActieveAiAct] = useState(null)
   const [afgerondIngeklapt, setAfgerondIngeklapt] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
+  const updInit = (k, v) => setInitForm(f => ({ ...f, [k]: v }))
 
   const alleInitiatieven = [...extraInitiatieven, ...initiatieven]
   const gefilterd = alleInitiatieven.filter(i => {
@@ -73,7 +81,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
     return true
   })
 
-  const voegToe = () => {
+  const voegRoadmapToe = () => {
     if (!form.titel) return
     setRoadmap(prev => [{
       id: Date.now(),
@@ -87,30 +95,41 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
     setToegevoegd(true)
   }
 
-  // Klik statusknop: cyclus of aanvraag afgerond
+  const voegInitiatiefToe = () => {
+    if (!initForm.naam || !initForm.omschrijving) return
+    const nieuw = {
+      id: Date.now(),
+      naam: initForm.naam,
+      omschrijving: initForm.omschrijving,
+      type: initForm.type,
+      spoor: initForm.spoor ? parseInt(initForm.spoor) : null,
+      status: initForm.status,
+      contactNaam: initForm.contactNaam,
+      ambities: initForm.ambities,
+      impactInschatting: initForm.impactInschatting || null,
+      tags: [],
+      nieuw: true,
+    }
+    setExtraInitiatieven(prev => [nieuw, ...prev])
+    setInitToegevoegd(true)
+  }
+
   const wisselStatus = (id) => {
     setRoadmap(prev => prev.map(item => {
       if (item.id !== id) return item
-      if (item.pendingAfgerond || item.pendingReopen) return item // geblokkeerd
-      if (item.status === 'afgerond') return item // al definitief afgerond
-
-      const huidig = STATUS_CYCLUS.indexOf(item.status)
-
-      // Lopend is de laatste stap → volgende klik = afgerond aanvragen
+      if (item.pendingAfgerond || item.pendingReopen) return item
+      if (item.status === 'afgerond') return item
       if (item.status === 'lopend') {
         return { ...item, pendingAfgerond: true, pendingDatum: new Date().toISOString() }
       }
-      // Normale doorstap in cyclus
+      const huidig = STATUS_CYCLUS.indexOf(item.status)
       return { ...item, status: STATUS_CYCLUS[huidig + 1] }
     }))
   }
 
-  // Re-open knop: verzoek indienen bij beheerder
   const vraagReopen = (id) => {
     setRoadmap(prev => prev.map(item =>
-      item.id === id
-        ? { ...item, pendingReopen: true, pendingReopenDatum: new Date().toISOString() }
-        : item
+      item.id === id ? { ...item, pendingReopen: true, pendingReopenDatum: new Date().toISOString() } : item
     ))
   }
 
@@ -126,13 +145,34 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
   const aantalTeStarten = (roadmap || []).filter(r => r.status === 'te-starten' || r.status === 'te-controleren').length
   const aantalLopend = (roadmap || []).filter(r => r.status === 'lopend' || r.status === 'in-ontwikkeling').length
 
+  const openInitiatiefModal = () => {
+    setInitAddOpen(true)
+    setInitToegevoegd(false)
+    setInitForm({ naam: '', omschrijving: '', type: 'intern', spoor: '', status: 'in-ontwikkeling', contactNaam: '', ambities: [], impactInschatting: '' })
+  }
+
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
       <GradientHeader
         label="Wat loopt er"
         title="Initiatieven & Roadmap"
         subtitle="Overzicht van alle AI-initiatieven bij NHL Stenden — wat loopt er, wat moet er nog starten, en hoe verhouden we ons tot de AI Act."
-      />
+      >
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button
+            onClick={openInitiatiefModal}
+            className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Initiatief aanmelden
+          </button>
+          <button
+            onClick={() => { switchTab('roadmap'); setAddOpen(true); setToegevoegd(false); setForm({ titel:'', omschrijving:'', prioriteit:'hoog', verantwoordelijke:'', datum:'', naam:'' }) }}
+            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+          >
+            + Roadmap item
+          </button>
+        </div>
+      </GradientHeader>
 
       {/* Tabs */}
       <div className="bg-white border-b border-gray-200 sticky top-16 z-30">
@@ -160,17 +200,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         {/* TAB: INITIATIEVEN */}
         {actieveTab === 'initiatieven' && (
           <div>
-            {/* Toevoegen knop */}
-            <div className="flex items-center justify-between mb-5">
-              <p className="text-sm text-gray-500">
-                Ken jij een AI-initiatief dat hier nog niet tussen staat? Voeg het toe en maak het zichtbaar.
-              </p>
-              <button
-                onClick={() => { setInitAddOpen(true); setInitToegevoegd(false); setInitForm({ naam: '', omschrijving: '', type: 'intern', spoor: '', status: 'in-ontwikkeling', contactNaam: '' }) }}
-                className="btn-roze text-sm flex-shrink-0 ml-4">
-                + Initiatief aanmelden
-              </button>
-            </div>
             <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
               <input type="text" value={zoek} onChange={e => setZoek(e.target.value)}
                 placeholder="Zoek op naam of omschrijving..."
@@ -235,7 +264,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         {/* TAB: ROADMAP */}
         {actieveTab === 'roadmap' && (
           <div>
-            {/* Tellers */}
             <div className="grid sm:grid-cols-3 gap-4 mb-8">
               {[
                 { label: 'Lopend of in voorbereiding', n: aantalLopend, kleur: 'text-green-600', bg: 'bg-green-50 border-green-200' },
@@ -249,7 +277,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
               ))}
             </div>
 
-            {/* Uitleg */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
               <div className="flex items-start gap-4">
                 <div className="text-3xl">🗺️</div>
@@ -257,20 +284,16 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                   <h3 className="font-bold text-nhl-blauw mb-1">Wat is deze roadmap?</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
                     Deze roadmap toont wat NHL Stenden moet organiseren op het gebied van AI-compliance en -beleid.
-                    Klik op de statusknop om voortgang bij te werken. Afgeronde items verschijnen bovenaan als apart overzicht.
-                    Een beheerder bevestigt afgerond of re-open verzoeken definitief.
+                    Klik op de statusknop om voortgang bij te werken. Een beheerder bevestigt afgeronde items definitief.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* ── AFGEROND BLOK BOVENAAN ── */}
             {afgerondItems.length > 0 && (
               <div className="mb-8">
-                <button
-                  onClick={() => setAfgerondIngeklapt(!afgerondIngeklapt)}
-                  className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 transition-colors rounded-2xl px-5 py-4 mb-3"
-                >
+                <button onClick={() => setAfgerondIngeklapt(!afgerondIngeklapt)}
+                  className="w-full flex items-center justify-between bg-gray-100 hover:bg-gray-200 transition-colors rounded-2xl px-5 py-4 mb-3">
                   <div className="flex items-center gap-3">
                     <span className="text-xl">✅</span>
                     <div className="text-left">
@@ -280,56 +303,24 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                   </div>
                   <span className="text-gray-400 text-sm">{afgerondIngeklapt ? '▼ Toon' : '▲ Verberg'}</span>
                 </button>
-
                 {!afgerondIngeklapt && (
                   <div className="space-y-3">
                     {afgerondItems.map(item => {
                       const aiAct = AI_ACT_ITEMS.find(a => a.id === item.aiActKoppeling)
-                      const isPendingReopen = item.pendingReopen
                       return (
-                        <div key={item.id} className={`rounded-2xl border p-5 ${isPendingReopen ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`}>
+                        <div key={item.id} className={`rounded-2xl border p-5 ${item.pendingReopen ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`}>
                           <div className="flex items-start gap-4 flex-wrap">
-                            {/* Grijs vinkje — niet klikbaar */}
-                            <div className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-gray-400 border-gray-400 flex items-center justify-center">
+                            <div className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center">
                               <span className="text-white text-xs font-bold">✓</span>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                {isPendingReopen ? (
-                                  <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium bg-blue-100 text-blue-700">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                    Re-open aangevraagd — wacht op beheerder
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-500">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                                    Afgerond ✓
-                                  </div>
-                                )}
-                                <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${PRIORITEIT_KLEUR[item.prioriteit]}`}>
-                                  {item.prioriteit === 'hoog' ? '🔴' : item.prioriteit === 'midden' ? '🟡' : '🟢'} {item.prioriteit}
-                                </span>
-                                {item.datum && <span className="text-xs text-gray-400">📅 {item.datum}</span>}
-                              </div>
                               <div className="font-bold text-gray-500 line-through mb-1">{item.titel}</div>
-                              <p className="text-gray-400 text-sm leading-relaxed">{item.omschrijving}</p>
-                              {item.verantwoordelijke && (
-                                <div className="text-xs text-gray-400 mt-1">Verantwoordelijk: {item.verantwoordelijke}</div>
-                              )}
-
-                              {/* Re-open knop — alleen als niet al pending */}
-                              {!isPendingReopen && (
-                                <button
-                                  onClick={() => vraagReopen(item.id)}
-                                  className="mt-3 inline-flex items-center gap-1.5 text-xs bg-white border border-gray-300 text-gray-600 hover:border-nhl-blauw hover:text-nhl-blauw px-3 py-1.5 rounded-lg font-medium transition-colors"
-                                >
+                              <p className="text-gray-400 text-sm">{item.omschrijving}</p>
+                              {!item.pendingReopen && (
+                                <button onClick={() => vraagReopen(item.id)}
+                                  className="mt-3 inline-flex items-center gap-1.5 text-xs bg-white border border-gray-300 text-gray-600 hover:border-nhl-blauw hover:text-nhl-blauw px-3 py-1.5 rounded-lg font-medium transition-colors">
                                   ↩ Re-open aanvragen
                                 </button>
-                              )}
-                              {isPendingReopen && (
-                                <p className="text-xs text-blue-600 italic mt-2">
-                                  Re-open aangevraagd op {new Date(item.pendingReopenDatum).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' })} — een beheerder beoordeelt dit.
-                                </p>
                               )}
                             </div>
                             {aiAct && (
@@ -348,36 +339,27 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
               </div>
             )}
 
-            {/* Wachtrij meldingen */}
             {(aantalPendingAfgerond > 0 || aantalPendingReopen > 0) && (
               <div className="space-y-2 mb-6">
                 {aantalPendingAfgerond > 0 && (
                   <div className="bg-amber-50 border border-amber-300 rounded-2xl p-4 flex items-center gap-3">
                     <span className="text-lg">⏳</span>
-                    <div className="text-sm">
-                      <span className="font-semibold text-amber-800">{aantalPendingAfgerond} item{aantalPendingAfgerond !== 1 ? 's' : ''} wacht{aantalPendingAfgerond === 1 ? '' : 'en'} op bevestiging afgerond door een beheerder.</span>
-                    </div>
+                    <span className="text-sm font-semibold text-amber-800">{aantalPendingAfgerond} item{aantalPendingAfgerond !== 1 ? 's' : ''} wacht op bevestiging door een beheerder.</span>
                   </div>
                 )}
                 {aantalPendingReopen > 0 && (
                   <div className="bg-blue-50 border border-blue-300 rounded-2xl p-4 flex items-center gap-3">
                     <span className="text-lg">↩</span>
-                    <div className="text-sm">
-                      <span className="font-semibold text-blue-800">{aantalPendingReopen} item{aantalPendingReopen !== 1 ? 's' : ''} wacht{aantalPendingReopen === 1 ? '' : 'en'} op goedkeuring re-open door een beheerder.</span>
-                    </div>
+                    <span className="text-sm font-semibold text-blue-800">{aantalPendingReopen} item{aantalPendingReopen !== 1 ? 's' : ''} wacht op goedkeuring re-open.</span>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Header actieve items */}
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-bold text-nhl-blauw text-lg">Actieve items</h2>
-              <button onClick={() => { setAddOpen(true); setToegevoegd(false); setForm({ titel:'', omschrijving:'', prioriteit:'hoog', verantwoordelijke:'', datum:'', naam:'' }) }}
-                className="btn-roze text-sm">+ Item toevoegen</button>
             </div>
 
-            {/* Actieve roadmap items */}
             <div className="space-y-3">
               {actieveItems.map(item => {
                 const s = ROADMAP_STATUS[item.status] || ROADMAP_STATUS['te-starten']
@@ -392,16 +374,8 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                     'bg-white border-gray-200'
                   }`}>
                     <div className="flex items-start gap-4 flex-wrap">
-
-                      {/* Statusknop */}
                       <button
                         onClick={() => wisselStatus(item.id)}
-                        title={
-                          isPendingAfgerond ? 'Wacht op bevestiging beheerder' :
-                          isPendingReopen ? 'Re-open in behandeling' :
-                          item.status === 'lopend' ? 'Klik om afgerond aan te vragen' :
-                          'Klik om status door te zetten'
-                        }
                         disabled={isPendingAfgerond || isPendingReopen}
                         className={`flex-shrink-0 mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
                           isPendingAfgerond ? 'bg-amber-400 border-amber-400 cursor-not-allowed' :
@@ -412,7 +386,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                         }`}
                       >
                         {isPendingAfgerond && <span className="text-white text-xs">⏳</span>}
-                        {isPendingReopen && <span className="text-white text-xs">↩</span>}
                         {!isPendingAfgerond && !isPendingReopen && item.status === 'lopend' && <span className="text-green-600 text-xs">▶</span>}
                         {!isPendingAfgerond && !isPendingReopen && item.status === 'in-ontwikkeling' && <span className="text-blue-500 text-xs">…</span>}
                       </button>
@@ -421,18 +394,11 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
                           {isPendingAfgerond ? (
                             <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium bg-amber-100 text-amber-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                              Wacht op bevestiging afgerond
-                            </div>
-                          ) : isPendingReopen ? (
-                            <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium bg-blue-100 text-blue-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                              Re-open in behandeling
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Wacht op bevestiging afgerond
                             </div>
                           ) : (
                             <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium ${s.kleur}`}>
-                              <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                              {s.label}
+                              <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} /> {s.label}
                             </div>
                           )}
                           <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${PRIORITEIT_KLEUR[item.prioriteit]}`}>
@@ -442,23 +408,15 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                         </div>
                         <div className="font-bold text-nhl-blauw mb-1">{item.titel}</div>
                         <p className="text-gray-500 text-sm leading-relaxed">{item.omschrijving}</p>
-                        {item.verantwoordelijke && (
-                          <div className="text-xs text-gray-400 mt-2">Verantwoordelijk: {item.verantwoordelijke}</div>
-                        )}
-                        {isPendingAfgerond && (
-                          <p className="text-xs text-amber-600 mt-2 italic">
-                            Aangevraagd op {new Date(item.pendingDatum).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })} — een beheerder bevestigt of zet dit terug.
-                          </p>
-                        )}
+                        {item.verantwoordelijke && <div className="text-xs text-gray-400 mt-2">Verantwoordelijk: {item.verantwoordelijke}</div>}
                       </div>
 
-                      {aiAct && !isPendingAfgerond && !isPendingReopen && (
+                      {aiAct && !isPendingAfgerond && (
                         <div className="flex-shrink-0 bg-blue-50 border border-blue-200 rounded-xl p-3 max-w-48">
                           <div className="text-xs font-bold text-nhl-blauw mb-1">⚖️ AI Act</div>
                           <div className="text-xs font-semibold text-gray-700">{aiAct.artikel}</div>
                           <div className="text-xs text-gray-500 leading-snug mt-0.5">{aiAct.titel}</div>
-                          <a href={aiAct.link} target="_blank" rel="noopener noreferrer"
-                            className="text-xs text-nhl-roze hover:underline mt-1 block">Lees artikel →</a>
+                          <a href={aiAct.link} target="_blank" rel="noopener noreferrer" className="text-xs text-nhl-roze hover:underline mt-1 block">Lees artikel →</a>
                         </div>
                       )}
                     </div>
@@ -477,11 +435,9 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                 <div>
                   <div className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">Europese regelgeving</div>
                   <h2 className="text-2xl font-extrabold mb-4">De AI Act — wat betekent het voor NHL Stenden?</h2>
-                  <p className="text-blue-100 leading-relaxed mb-4">De EU AI Act (Verordening 2024/1689) is de eerste uitgebreide wet ter wereld die AI-systemen reguleert. Ze is in augustus 2024 in werking getreden en wordt gefaseerd van kracht.</p>
-                  <p className="text-blue-100 leading-relaxed mb-6">Als hogeschool is NHL Stenden zowel <strong className="text-white">gebruiker</strong> van AI-systemen als <strong className="text-white">ontwikkelaar</strong> van pilots en tools. Beide rollen brengen verplichtingen met zich mee.</p>
+                  <p className="text-blue-100 leading-relaxed mb-4">De EU AI Act (Verordening 2024/1689) is de eerste uitgebreide wet ter wereld die AI-systemen reguleert.</p>
                   <div className="flex flex-wrap gap-3">
                     <a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener noreferrer" className="bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors">📄 Lees de AI Act →</a>
-                    <a href="https://www.rijksoverheid.nl/onderwerpen/kunstmatige-intelligentie-ai/ai-act" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors">🇳🇱 Rijksoverheid</a>
                     <a href="https://www.surf.nl/ai-act" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors">🌐 SURF</a>
                   </div>
                 </div>
@@ -499,32 +455,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8">
-              <h3 className="font-bold text-nhl-blauw text-lg mb-4">Risicoclassificatie: vier niveaus</h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { level: 'Onaanvaardbaar', kleur: '#DC2626', bg: '#FEF2F2', voorbeeld: 'Sociale scoring, biometrische surveillance', actie: 'Verboden. Niet inzetten.' },
-                  { level: 'Hoog risico', kleur: '#D97706', bg: '#FFFBEB', voorbeeld: 'ProctorExam, selectiesystemen, studentvolging', actie: 'Strikte verplichtingen: risicobeheer, toezicht, registratie.' },
-                  { level: 'Beperkt risico', kleur: '#0F766E', bg: '#F0FDFA', voorbeeld: 'Chatbots, AI-gegenereerde content', actie: 'Transparantieplicht: duidelijk aangeven dat het AI is.' },
-                  { level: 'Minimaal risico', kleur: '#374151', bg: '#F9FAFB', voorbeeld: 'Spelfilters, aanbevelingssystemen', actie: 'Vrijwillige gedragscodes, geen verplichtingen.' },
-                ].map(r => (
-                  <div key={r.level} className="rounded-xl p-4 border" style={{ backgroundColor: r.bg, borderColor: r.kleur + '40' }}>
-                    <div className="font-bold text-sm mb-2" style={{ color: r.kleur }}>{r.level}</div>
-                    <div className="text-xs text-gray-500 mb-2"><strong>Voorbeeld:</strong> {r.voorbeeld}</div>
-                    <div className="text-xs font-medium" style={{ color: r.kleur }}>{r.actie}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6 flex gap-4">
-              <div className="text-2xl flex-shrink-0">💡</div>
-              <div className="text-sm text-gray-700 space-y-1.5">
-                <div className="font-semibold text-nhl-blauw mb-2">Hoe gebruik je deze lijst?</div>
-                <p>Klik op een verplichting om de toelichting en het AI Act artikel te lezen. Staat er al een roadmap-item voor? Dan zie je dat als koppeling onderaan. Is dat niet zo? Gebruik de oranje knop om direct een actie aan te maken in de Roadmap tab.</p>
               </div>
             </div>
 
@@ -561,17 +491,16 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                       <div className="px-5 pb-5 border-t border-gray-100 pt-4">
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.omschrijving}</p>
                         <div className="flex flex-wrap gap-3 items-center">
-                          <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-xs text-nhl-roze hover:underline font-semibold">📄 Lees {item.artikel} in de AI Act →</a>
-                          {gekoppeldeRoadmap.length > 0 && (
+                          <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-xs text-nhl-roze hover:underline font-semibold">📄 Lees {item.artikel} →</a>
+                          {gekoppeldeRoadmap.length > 0 ? (
                             <div className="flex gap-2 flex-wrap">
-                              <span className="text-xs text-gray-400">Gekoppeld aan roadmap:</span>
+                              <span className="text-xs text-gray-400">Gekoppeld:</span>
                               {gekoppeldeRoadmap.map(r => (
-                                <button key={r.id} onClick={() => switchTab('roadmap')} className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full hover:bg-nhl-blauw/20 transition-colors">{r.titel}</button>
+                                <button key={r.id} onClick={() => switchTab('roadmap')} className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full hover:bg-nhl-blauw/20">{r.titel}</button>
                               ))}
                             </div>
-                          )}
-                          {gekoppeldeRoadmap.length === 0 && (
-                            <button onClick={() => { switchTab('roadmap'); setAddOpen(true) }} className="text-xs bg-orange-50 border border-orange-200 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-100 transition-colors">+ Voeg roadmap-item toe voor dit artikel</button>
+                          ) : (
+                            <button onClick={() => { switchTab('roadmap'); setAddOpen(true) }} className="text-xs bg-orange-50 border border-orange-200 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-100">+ Voeg roadmap-item toe</button>
                           )}
                         </div>
                       </div>
@@ -584,7 +513,123 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         )}
       </div>
 
-      {/* Toevoegen modal */}
+      {/* ── Modal: Initiatief aanmelden ── */}
+      {initAddOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
+            <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
+              <h2 className="font-bold text-nhl-blauw text-lg">Initiatief aanmelden</h2>
+              <button onClick={() => setInitAddOpen(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">✕</button>
+            </div>
+            {initToegevoegd ? (
+              <div className="p-8 text-center">
+                <div className="text-5xl mb-4">🚀</div>
+                <h3 className="font-bold text-nhl-blauw text-xl mb-2">Initiatief aangemeld!</h3>
+                <p className="text-gray-500 text-sm mb-6">Het initiatief is zichtbaar in het overzicht.</p>
+                <div className="flex gap-3 justify-center">
+                  <button onClick={openInitiatiefModal} className="btn-primary">Nog een aanmelden</button>
+                  <button onClick={() => setInitAddOpen(false)} className="btn-ghost border border-gray-200">Sluiten</button>
+                </div>
+              </div>
+            ) : (
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Naam van het initiatief <span className="text-red-400">*</span></label>
+                  <input type="text" value={initForm.naam} onChange={e => updInit('naam', e.target.value)}
+                    placeholder="Bijv. AI-feedback in schrijfonderwijs PABO"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Omschrijving <span className="text-red-400">*</span></label>
+                  <textarea value={initForm.omschrijving} onChange={e => updInit('omschrijving', e.target.value)} rows={4}
+                    placeholder="Wat houdt het initiatief in? Wat is het doel?"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Type</label>
+                    <div className="space-y-2">
+                      {[{ id: 'intern', label: '🏫 Intern' }, { id: 'extern', label: '🤝 Extern' }, { id: 'surf', label: '🌐 SURF/Nationaal' }].map(t => (
+                        <button key={t.id} onClick={() => updInit('type', t.id)}
+                          className={`w-full px-3 py-2 rounded-xl text-xs border-2 text-left font-medium transition-colors ${initForm.type === t.id ? 'border-nhl-blauw bg-blue-50 text-nhl-blauw' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+                          {t.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Status</label>
+                    <div className="space-y-2">
+                      {[{ id: 'actief', label: '✅ Actief' }, { id: 'in-ontwikkeling', label: '🔄 In ontwikkeling' }, { id: 'groeiend', label: '📈 Groeiend' }].map(s => (
+                        <button key={s.id} onClick={() => updInit('status', s.id)}
+                          className={`w-full px-3 py-2 rounded-xl text-xs border-2 text-left font-medium transition-colors ${initForm.status === s.id ? 'border-nhl-blauw bg-blue-50 text-nhl-blauw' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+                          {s.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Gerelateerd thema</label>
+                  <select value={initForm.spoor} onChange={e => updInit('spoor', e.target.value)}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
+                    <option value="">Kies een thema...</option>
+                    {sporen.map(s => <option key={s.id} value={s.id}>{s.icon} {s.titel}</option>)}
+                  </select>
+                </div>
+
+                {/* Ambitiekoppeling */}
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                  <div className="font-semibold text-nhl-blauw text-sm mb-2">Koppel aan een bestuurlijke ambitie</div>
+                  <p className="text-xs text-blue-700 mb-3">Draagt dit initiatief bij aan studiesucces, minder uitval of minder voortijdig vertrek?</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[{ id: 'studiesucces', label: '🎓 Studiesucces' }, { id: 'uitval', label: '📉 Minder uitval' }, { id: 'vertrek', label: '🔄 Voortijdig vertrek' }].map(a => {
+                      const actief = (initForm.ambities || []).includes(a.id)
+                      return (
+                        <button key={a.id} onClick={() => {
+                          const huidig = initForm.ambities || []
+                          updInit('ambities', actief ? huidig.filter(x => x !== a.id) : [...huidig, a.id])
+                        }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border-2 transition-colors ${actief ? 'border-nhl-blauw bg-nhl-blauw text-white' : 'border-gray-200 text-gray-600 hover:border-nhl-blauw'}`}>
+                          {a.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {(initForm.ambities || []).length > 0 && (
+                    <div>
+                      <div className="text-xs font-medium text-gray-600 mb-1.5">Verwachte impact</div>
+                      <div className="flex gap-2">
+                        {['laag', 'gemiddeld', 'hoog'].map(n => (
+                          <button key={n} onClick={() => updInit('impactInschatting', n)}
+                            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border-2 transition-colors capitalize ${initForm.impactInschatting === n ? 'border-nhl-roze bg-nhl-roze text-white' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Contactnaam (optioneel)</label>
+                  <input type="text" value={initForm.contactNaam} onChange={e => updInit('contactNaam', e.target.value)}
+                    placeholder="Bijv. Jan de Vries of Projectteam Academie Educatie"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                </div>
+
+                <button onClick={voegInitiatiefToe}
+                  disabled={!initForm.naam || !initForm.omschrijving}
+                  className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${initForm.naam && initForm.omschrijving ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
+                  Initiatief aanmelden →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Roadmap item toevoegen ── */}
       {addOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
@@ -603,16 +648,21 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
               <div className="p-6 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Wat moet er georganiseerd worden? <span className="text-red-400">*</span></label>
-                  <input type="text" value={form.titel} onChange={e => upd('titel', e.target.value)} placeholder="Bijv. Beleidskader generatieve AI voor studenten" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  <input type="text" value={form.titel} onChange={e => upd('titel', e.target.value)}
+                    placeholder="Bijv. Beleidskader generatieve AI voor studenten"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Toelichting</label>
-                  <textarea value={form.omschrijving} onChange={e => upd('omschrijving', e.target.value)} rows={3} placeholder="Wat houdt dit in en waarom is het nodig?" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
+                  <textarea value={form.omschrijving} onChange={e => upd('omschrijving', e.target.value)} rows={3}
+                    placeholder="Wat houdt dit in en waarom is het nodig?"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Prioriteit</label>
-                    <select value={form.prioriteit} onChange={e => upd('prioriteit', e.target.value)} className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
+                    <select value={form.prioriteit} onChange={e => upd('prioriteit', e.target.value)}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
                       <option value="hoog">🔴 Hoog</option>
                       <option value="midden">🟡 Midden</option>
                       <option value="laag">🟢 Laag</option>
@@ -620,18 +670,27 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Wanneer</label>
-                    <input type="text" value={form.datum} onChange={e => upd('datum', e.target.value)} placeholder="Bijv. Q3 2026" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    <input type="text" value={form.datum} onChange={e => upd('datum', e.target.value)}
+                      placeholder="Bijv. Q3 2026"
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Wie is verantwoordelijk?</label>
-                  <input type="text" value={form.verantwoordelijke} onChange={e => upd('verantwoordelijke', e.target.value)} placeholder="Bijv. OO&I, AI Compliance Groep" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  <input type="text" value={form.verantwoordelijke} onChange={e => upd('verantwoordelijke', e.target.value)}
+                    placeholder="Bijv. OO&I, AI Compliance Groep"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Jouw naam (optioneel)</label>
-                  <input type="text" value={form.naam} onChange={e => upd('naam', e.target.value)} placeholder="Bijv. Jan de Vries" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  <input type="text" value={form.naam} onChange={e => upd('naam', e.target.value)}
+                    placeholder="Bijv. Jan de Vries"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
-                <button onClick={voegToe} disabled={!form.titel} className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${form.titel ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>Toevoegen aan roadmap ✓</button>
+                <button onClick={voegRoadmapToe} disabled={!form.titel}
+                  className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${form.titel ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
+                  Toevoegen aan roadmap ✓
+                </button>
               </div>
             )}
           </div>
