@@ -3,7 +3,7 @@ import { initiatieven, sporen } from '../data'
 import ImpactDashboard from '../components/ImpactDashboard'
 
 const functies = [
-  { icon: '👁️', titel: 'Zichtbaarheid', tekst: 'Wat is er al? Wie doet wat? De AI-HUB maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.', to: '/initiatieven' },
+  { icon: '👁️', titel: 'Zichtbaarheid', tekst: 'Wat is er al? Wie doet wat? Het AI-Netwerk maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.', to: '/initiatieven' },
   { icon: '🔗', titel: 'Verbinding', tekst: 'Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.', to: '/netwerk' },
   { icon: '🧭', titel: 'Richting', tekst: 'Het AI Kompas als gedeeld kompas voor verantwoord AI-gebruik, gebaseerd op onze eigen waarden.', to: '/over' },
 ]
@@ -26,12 +26,12 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.5 · Juni 2026
+                In ontwikkeling — versie 1.6 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
-                <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
+                <img src="/logo-AIHUB.png" alt="AI-Netwerk" className="h-14 w-14 bg-white rounded-xl p-1 shadow-lg" />
                 <div>
-                  <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">AI-HUB</h1>
+                  <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">AI-Netwerk</h1>
                   <div className="text-nhl-roze-light font-semibold text-lg">NHL Stenden</div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 </Link>
               ))}
               <div className="bg-nhl-roze/20 border border-nhl-roze/40 rounded-xl p-3 mt-1">
-                <p className="text-white text-sm italic text-center">"Bewust kiezen voor onze digitale toekomst. Wie nu niet kiest, wordt gekozen."</p>
+                <p className="text-white text-sm italic text-center">"NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."</p>
               </div>
             </div>
           </div>
@@ -182,10 +182,10 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="section-label mb-2">Vers van de pers</div>
-            <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit de AI-HUB</h2>
+            <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit het AI-Netwerk</h2>
             <div className="grid sm:grid-cols-3 gap-6">
 
-              {/* Nieuwste goedgekeurde video — sort op id (timestamp), betrouwbaar en taal-onafhankelijk */}
+              {/* Nieuwste goedgekeurde video — sort op id (timestamp) */}
               {(() => {
                 const goedgekeurd = videos.filter(x => x.status === 'goedgekeurd')
                 const v = [...goedgekeurd].sort((a, b) => b.id - a.id)[0]

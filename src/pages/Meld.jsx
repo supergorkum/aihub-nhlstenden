@@ -45,7 +45,6 @@ function WordCloud({ trefwoorden }) {
   )
 }
 
-// Speelse tekstbubbels — toont berichten van bezoekers + reacties van het team
 function BubbelTijdlijn({ berichten }) {
   const zichtbaar = berichten.filter(b => b.titel || b.tekst).slice(0, 8)
   if (zichtbaar.length === 0) return null
@@ -72,7 +71,6 @@ function BubbelTijdlijn({ berichten }) {
           const isLinks = i % 2 === 0
           return (
             <div key={b.id} className={`flex flex-col gap-2 ${isLinks ? 'items-start' : 'items-end'}`}>
-              {/* Vraag / idee bubbel */}
               <div className={`max-w-sm ${isLinks ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}>
                 <div className={`rounded-2xl border px-4 py-3 ${stijl.bg} ${stijl.border} ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
                   <div className="flex items-center gap-1.5 mb-1">
@@ -83,7 +81,6 @@ function BubbelTijdlijn({ berichten }) {
                   {b.titel && <div className="font-semibold text-gray-800 text-sm leading-snug mb-1">{b.titel}</div>}
                   {b.tekst && <p className="text-gray-600 text-xs leading-relaxed">{b.tekst.slice(0, 160)}{b.tekst.length > 160 ? '...' : ''}</p>}
                 </div>
-                {/* Staartje */}
                 <div className={`w-3 h-2 ${isLinks ? 'ml-4' : 'ml-auto mr-4'}`}
                   style={{
                     background: 'transparent',
@@ -93,14 +90,12 @@ function BubbelTijdlijn({ berichten }) {
                   }}
                 />
               </div>
-
-              {/* Reactie van het team — alleen als er een antwoord is */}
               {b.antwoord && (
                 <div className={`max-w-sm ${isLinks ? 'ml-8 mr-auto' : 'ml-auto mr-8'}`}>
                   <div className={`rounded-2xl border px-4 py-3 bg-nhl-blauw/5 border-nhl-blauw/20 ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
                     <div className="flex items-center gap-1.5 mb-1">
                       <span className="text-xs">🧭</span>
-                      <span className="text-xs font-semibold text-nhl-blauw">AI-HUB team</span>
+                      <span className="text-xs font-semibold text-nhl-blauw">AI-Netwerk team</span>
                     </div>
                     <p className="text-nhl-blauw text-xs leading-relaxed">{b.antwoord}</p>
                   </div>
@@ -180,7 +175,7 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
         <div className="text-center max-w-md mx-auto px-4 animate-slide-up">
           <div className="text-6xl mb-6">✅</div>
           <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Bedankt!</h2>
-          <p className="text-gray-600 mb-3">Je bericht is ontvangen. Het AI-HUB team neemt het mee in het werk.</p>
+          <p className="text-gray-600 mb-3">Je bericht is ontvangen. Het AI-Netwerk team neemt het mee in het werk.</p>
           <p className="text-gray-500 text-sm mb-8">
             Wil je iets inspirerends delen of een initiatief aanmelden?{' '}
             <Link to="/inspiratie" className="text-nhl-roze hover:underline">Ga naar Inspiratie</Link>.
@@ -200,7 +195,7 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
       <GradientHeader
         label="Vragen & ideeën"
         title="Heb je een vraag of idee?"
-        subtitle="De AI-HUB zijn we samen. Stel je vraag, deel een idee, zoek samenwerking of geef een signaal — en help zo de wegwijzer scherper te maken."
+        subtitle="Het AI-Netwerk zijn we samen. Stel je vraag, deel een idee, zoek samenwerking of geef een signaal — en help zo de wegwijzer scherper te maken."
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
@@ -386,7 +381,6 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
           </div>
         </div>
 
-        {/* Wordcloud — compact signaal bovenaan */}
         <div className="mt-8 card p-5">
           <div className="flex items-center gap-2 mb-3">
             <h3 className="font-semibold text-nhl-blauw text-sm">Wat speelt er bij collega's?</h3>
@@ -395,7 +389,6 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
           <WordCloud trefwoorden={wordcloudData} />
         </div>
 
-        {/* Bubbel tijdlijn — het echte gesprek */}
         <BubbelTijdlijn berichten={berichten} />
       </div>
     </div>

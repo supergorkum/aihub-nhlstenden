@@ -102,9 +102,9 @@ export default function Nav() {
 
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/logo-AIHUB.png" alt="AI-HUB" className="h-9 w-9 object-contain bg-white rounded-lg p-0.5" />
+            <img src="/logo-AIHUB.png" alt="AI-Netwerk" className="h-9 w-9 object-contain bg-white rounded-lg p-0.5" />
             <div className="hidden sm:block">
-              <div className="text-white font-bold text-sm leading-tight">AI-HUB</div>
+              <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
               <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
             </div>
           </NavLink>
@@ -194,7 +194,7 @@ export default function Nav() {
                 `block px-3 py-2.5 text-sm transition-colors ${isActive ? 'text-white font-medium' : 'text-blue-100 hover:text-white'}`
               }
             >
-              Over de HUB
+              Over het Netwerk
             </NavLink>
             <NavLink
               to="/meld"

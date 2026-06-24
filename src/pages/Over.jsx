@@ -6,13 +6,13 @@ const kernteam = [
   {
     rol: 'Kwartiermaker Digitale Samenhang',
     subtitel: 'Spil & Strategie',
-    omschrijving: 'De Kwartiermaker is de initiator, strateeg en bestuurlijk aanspreekpunt van de AI-HUB. Vanuit de rol binnen het Transitieprogramma Digitalisering wordt de AI-HUB verbonden aan de bredere digitaliseringsstrategie van NHL Stenden.',
+    omschrijving: 'De Kwartiermaker is de initiator, strateeg en bestuurlijk aanspreekpunt van het AI-Netwerk. Vanuit de rol binnen het Transitieprogramma Digitalisering wordt het AI-Netwerk verbonden aan de bredere digitaliseringsstrategie van NHL Stenden.',
     taken: [
-      'Bewaakt de koers en de samenhang van de AI-HUB als geheel',
+      'Bewaakt de koers en de samenhang van het AI-Netwerk als geheel',
       'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma en directie',
-      'Verbindt de AI-HUB met het externe netwerk: SURF, NPULS, Vereniging Hogescholen',
+      'Verbindt het AI-Netwerk met het externe netwerk: SURF, NPULS, Vereniging Hogescholen',
       'Bewaakt de vier sporen en zorgt voor aansluiting op de organisatiepraktijk',
-      'Initieert de ontwikkeling van het digitale AI-HUB instrument',
+      'Initieert de ontwikkeling van het digitale AI-Netwerk instrument',
     ],
     kleur: '#1E3A8A',
     icon: '🧭',
@@ -20,7 +20,7 @@ const kernteam = [
   {
     rol: 'Informatiemanager',
     subtitel: 'Inhoud & Netwerk',
-    omschrijving: 'De Informatiemanager is verantwoordelijk voor de inhoudelijke kwaliteit en actualiteit van de AI-HUB. Deze rol vormt de brug tussen de informatiearchitectuur van de instelling en de praktijk van AI-gebruik.',
+    omschrijving: 'De Informatiemanager is verantwoordelijk voor de inhoudelijke kwaliteit en actualiteit van het AI-Netwerk. Deze rol vormt de brug tussen de informatiearchitectuur van de instelling en de praktijk van AI-gebruik.',
     taken: [
       'Beheert en actualiseert de inhoud: initiatieven, mensen, kaders en open vraagstukken',
       'Verbindt initiatieven aan het juiste laag en spoor',
@@ -34,9 +34,9 @@ const kernteam = [
   {
     rol: 'ICT Analist',
     subtitel: 'Techniek & Instrument',
-    omschrijving: 'De ICT Analist is verantwoordelijk voor de technische realisatie en het beheer van het digitale AI-HUB instrument. Deze rol verbindt de inhoudelijke ambitie aan de technische mogelijkheden van de organisatie.',
+    omschrijving: 'De ICT Analist is verantwoordelijk voor de technische realisatie en het beheer van het digitale AI-Netwerk instrument. Deze rol verbindt de inhoudelijke ambitie aan de technische mogelijkheden van de organisatie.',
     taken: [
-      'Ontwikkelt en beheert het digitale AI-HUB instrument',
+      'Ontwikkelt en beheert het digitale AI-Netwerk instrument',
       'Analyseert technische vraagstukken: platforms, API-koppelingen, datastromen',
       'Ondersteunt de inrichting van sandbox-omgevingen vanuit technisch perspectief',
       'Bewaakt de aansluiting op de bestaande IT-architectuur van NHL Stenden',
@@ -48,7 +48,7 @@ const kernteam = [
 ]
 
 const waarden = [
-  { icon: '🤝', titel: 'Verbinding', tekst: 'De AI-HUB verbindt mensen, initiatieven en kennis. Niet door te controleren, maar door zichtbaar te maken.' },
+  { icon: '🤝', titel: 'Verbinding', tekst: 'Het AI-Netwerk verbindt mensen, initiatieven en kennis. Niet door te controleren, maar door zichtbaar te maken.' },
   { icon: '🔍', titel: 'Transparantie', tekst: 'We maken zichtbaar wat loopt, wat ontbreekt en waar risico\'s zitten. Ook als iets nog niet af is.' },
   { icon: '🎯', titel: 'Eigenaarschap', tekst: 'Duurzame verandering ontstaat bij mensen die begrijpen wat ze doen en waarom. Eigenaarschap is de sleutel.' },
   { icon: '⚖️', titel: 'Verantwoord', tekst: 'Publieke waarden staan centraal. AI inzetten op een manier die past bij wie we zijn als instelling.' },
@@ -58,7 +58,14 @@ const fasering = [
   { fase: 'Fundament', periode: '2026 Q3', focus: 'Kernteam operationeel. Lagenmodel en sporen intern bekend. Eerste inventarisatie van initiatieven en mensen.', resultaat: 'Gedeelde taal aanwezig. Eigenaarschap per laag belegd.' },
   { fase: 'Infrastructuur', periode: '2026 Q4', focus: 'Sandbox ingericht. AI-desk operationeel. Digitaal instrument in ontwikkeling. Geletterdheidstrajecten gestart.', resultaat: 'Experimenteren kan veilig beginnen.' },
   { fase: 'Netwerk', periode: '2027 Q1-Q2', focus: 'Spoor-trekkers actief. Ambassadeurs per Academie en Dienst aangesteld. Extern netwerk structureel verbonden.', resultaat: 'Het netwerk loopt grotendeels op eigen kracht.' },
-  { fase: 'Verankering', periode: '2027 Q3+', focus: 'AI-HUB is onderdeel van de reguliere bestuurs- en beleidsritmen. Programmatische sturing neemt af.', resultaat: 'Netwerkorganisatie op kruissnelheid. AI-HUB leeft.' },
+  { fase: 'Verankering', periode: '2027 Q3+', focus: 'Het AI-Netwerk is onderdeel van de reguliere bestuurs- en beleidsritmen. Programmatische sturing neemt af.', resultaat: 'Netwerkorganisatie op kruissnelheid. Het AI-Netwerk leeft.' },
+]
+
+const KERNAMBITIES = [
+  { icon: '🎓', kleur: '#1E3A8A', thema: 'AI & Leren', ambitie: 'De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek.' },
+  { icon: '⚙️', kleur: '#0F766E', thema: 'AI & Werken', ambitie: 'NHL Stenden zet AI in om de efficiency van werkprocessen te verhogen, zodat medewerkers hun expertise voluit kunnen richten op onderwijs, begeleiding en samenwerking.' },
+  { icon: '⚖️', kleur: '#E91E8C', thema: 'AI & Verantwoordelijkheid', ambitie: 'NHL Stenden gebruikt AI alleen op een manier die transparant, controleerbaar en eerlijk is, en die past binnen de waarden van de instelling en de eisen van wet en samenleving.' },
+  { icon: '📖', kleur: '#7C3AED', thema: 'AI & Geletterdheid', ambitie: 'NHL Stenden zorgt ervoor dat AI-geletterdheid een basisvaardigheid is voor alle studenten en medewerkers, zodat niemand afhankelijk is van AI zonder het te begrijpen.' },
 ]
 
 export default function Over() {
@@ -75,10 +82,10 @@ export default function Over() {
           <div className="max-w-3xl">
             <div className="section-label text-blue-300 mb-3">Wie zijn wij</div>
             <h1 className="text-4xl font-extrabold text-white mb-4 leading-tight">
-              Over de AI-HUB
+              Over het AI-Netwerk
             </h1>
             <p className="text-blue-100 text-lg leading-relaxed mb-6">
-              De AI-HUB is geen afdeling en geen project. Het is een <strong className="text-white">wegwijzer</strong> — een levende,
+              Het AI-Netwerk is geen afdeling en geen project. Het is een <strong className="text-white">wegwijzer</strong> — een levende,
               digitale en organisatorische structuur die mensen, initiatieven en kennis met elkaar verbindt.
             </p>
             <p className="text-blue-200 leading-relaxed">
@@ -98,7 +105,7 @@ export default function Over() {
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
           <div>
             <div className="section-label mb-3">De kerngedachte</div>
-            <h2 className="text-2xl font-bold text-nhl-blauw mb-5">Waarom de AI-HUB bestaat</h2>
+            <h2 className="text-2xl font-bold text-nhl-blauw mb-5">Waarom het AI-Netwerk bestaat</h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
                 AI is overal tegelijk aanwezig bij NHL Stenden. Studenten verkennen de mogelijkheden voor
@@ -108,13 +115,13 @@ export default function Over() {
               </p>
               <p>
                 Al die bewegingen zijn waardevol. Maar ze hebben een gemeenschappelijk vertrekpunt nodig:
-                gedeeld overzicht, een gedeelde taal en een gedeeld kompas. Dáár is de AI-HUB voor.
+                gedeeld overzicht, een gedeelde taal en een gedeeld kompas. Dáár is het AI-Netwerk voor.
               </p>
               <p>
-                De AI-HUB legt niets op. Maar wijst de weg — door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat
+                Het AI-Netwerk legt niets op. Maar wijst de weg — door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat
                 er al is, door <strong className="text-nhl-blauw">te verbinden</strong> wie er mee bezig zijn, en door
                 <strong className="text-nhl-blauw"> richting te geven</strong> vanuit gedeelde waarden.
-                Zo wordt de AI-HUB een kompas voor iedereen die bij NHL Stenden met AI werkt, leert of beslist.
+                Zo wordt het AI-Netwerk een kompas voor iedereen die bij NHL Stenden met AI werkt, leert of beslist.
               </p>
             </div>
           </div>
@@ -131,13 +138,38 @@ export default function Over() {
           </div>
         </div>
 
-        {/* Kernuitspraak */}
-        <div className="bg-nhl-blauw rounded-2xl p-8 mb-20 text-center">
+        {/* Overkoepelende kernambitie */}
+        <div className="bg-nhl-blauw rounded-2xl p-8 mb-10 text-center">
           <div className="text-4xl mb-4">🎯</div>
           <blockquote className="text-white text-xl font-medium italic leading-relaxed max-w-3xl mx-auto mb-3">
-            "De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek."
+            "NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."
           </blockquote>
-          <div className="text-blue-200 text-sm">De kernambitie van de AI-HUB — AI als middel, niet als doel</div>
+          <div className="text-blue-200 text-sm">De overkoepelende kernambitie van het AI-Netwerk — AI als middel, niet als doel</div>
+        </div>
+
+        {/* Kernambities per thema */}
+        <div className="mb-20">
+          <div className="text-center mb-8">
+            <div className="section-label mb-2">Per thema</div>
+            <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Kernambities per thema</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto text-sm">
+              Elke ambitie is concreet en meetbaar. Samen vormen ze de bestuurlijke grondslag voor de inzet van AI bij NHL Stenden.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {KERNAMBITIES.map(k => (
+              <div key={k.thema} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ backgroundColor: k.kleur + '15' }}>
+                    {k.icon}
+                  </div>
+                  <div className="font-bold text-nhl-blauw">{k.thema}</div>
+                </div>
+                <div className="h-1 w-12 rounded-full mb-3" style={{ backgroundColor: k.kleur }} />
+                <p className="text-gray-600 text-sm leading-relaxed italic">"{k.ambitie}"</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Het kernteam */}
@@ -146,8 +178,8 @@ export default function Over() {
             <div className="section-label mb-2">Het team</div>
             <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Het kernteam</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Het kernteam bestaat in de opstartfase uit drie rollen die elkaar complementeren. 
-              Samen dekken zij de breedte van de AI-HUB: van strategie tot inhoud en techniek.
+              Het kernteam bestaat in de opstartfase uit drie rollen die elkaar complementeren.
+              Samen dekken zij de breedte van het AI-Netwerk: van strategie tot inhoud en techniek.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-6">
@@ -173,7 +205,7 @@ export default function Over() {
           </div>
           <div className="mt-6 bg-gray-50 rounded-2xl p-5 border border-gray-100 text-center">
             <p className="text-gray-600 text-sm">
-              <strong className="text-nhl-blauw">Het kernteam groeit mee.</strong> Per spoor komen trekkers, per Academie en Dienst komen ambassadeurs. 
+              <strong className="text-nhl-blauw">Het kernteam groeit mee.</strong> Per spoor komen trekkers, per Academie en Dienst komen ambassadeurs.
               Het netwerk bouwt zich op vanuit vertrouwen, eigenaarschap en gedeelde ambitie.
             </p>
           </div>
@@ -185,13 +217,13 @@ export default function Over() {
             <div className="section-label mb-2">Hoe we werken</div>
             <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Een netwerkorganisatie</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              De AI-HUB is geen hiërarchie en geen projectstructuur. Het is een levend systeem van 
+              Het AI-Netwerk is geen hiërarchie en geen projectstructuur. Het is een levend systeem van
               relaties, kennis en initiatief — verbonden op basis van gedeelde ambitie.
             </p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6 mb-8">
             {[
-              { icon: '🧠', titel: 'Collectieve intelligentie', tekst: 'Kennis is verspreid over het netwerk en wordt actief gedeeld. De AI-HUB maakt die kennis vindbaar voor iedereen.' },
+              { icon: '🧠', titel: 'Collectieve intelligentie', tekst: 'Kennis is verspreid over het netwerk en wordt actief gedeeld. Het AI-Netwerk maakt die kennis vindbaar voor iedereen.' },
               { icon: '⚡', titel: 'Snelle verspreiding', tekst: 'Een goed initiatief verspreidt zich snel, zonder dat er een formeel besluit voor nodig is. Zichtbaarheid is de motor.' },
               { icon: '🛡️', titel: 'Veerkracht', tekst: 'Als een onderdeel vertraagt, blijft het netwerk als geheel functioneren. Er is geen enkel faalpoint.' },
             ].map(item => (
@@ -208,9 +240,9 @@ export default function Over() {
               <div>
                 <div className="font-bold text-nhl-blauw mb-2">Van organisch naar programmatisch: de opstartfase</div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Een netwerkorganisatie is het eindbeeld. Maar de weg ernaartoe vraagt in de opstartfase om meer sturing. 
-                  Infrastructuur ontbreekt nog, eigenaarschap is nog niet belegd, geletterdheid is ongelijk verdeeld. 
-                  Daarom wordt de AI-HUB in de opstartfase <strong>aangestuurd als een programma</strong> — met heldere 
+                  Een netwerkorganisatie is het eindbeeld. Maar de weg ernaartoe vraagt in de opstartfase om meer sturing.
+                  Infrastructuur ontbreekt nog, eigenaarschap is nog niet belegd, geletterdheid is ongelijk verdeeld.
+                  Daarom wordt het AI-Netwerk in de opstartfase <strong>aangestuurd als een programma</strong> — met heldere
                   fasering, expliciete mijlpalen en actieve bewaking van de samenhang.
                 </p>
               </div>
@@ -251,9 +283,9 @@ export default function Over() {
         {/* CTA */}
         <div className="text-center bg-gray-50 rounded-2xl p-10 mb-12">
           <div className="text-4xl mb-4">🚀</div>
-          <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Doe mee aan de AI-HUB</h2>
+          <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Doe mee aan het AI-Netwerk</h2>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            De AI-HUB groeit vanuit de organisatie zelf. Jouw kennis, initiatief of vraag maakt het netwerk rijker.
+            Het AI-Netwerk groeit vanuit de organisatie zelf. Jouw kennis, initiatief of vraag maakt het netwerk rijker.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link to="/meld" className="btn-roze">+ Meld een initiatief</Link>
@@ -277,7 +309,7 @@ export default function Over() {
             </div>
             <div className="p-6">
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                De AI-HUB kan automatisch relevante AI-nieuws ophalen en samenvatten. Een beheerder klikt op
+                Het AI-Netwerk kan automatisch relevante AI-nieuws ophalen en samenvatten. Een beheerder klikt op
                 de knop "🔄 Nieuws ophalen" in de Beheeromgeving (Data tab). De AI analyseert dan artikelen
                 van internationale bronnen zoals de Europese Commissie, OECD AI en educatieve media.
               </p>
@@ -324,7 +356,7 @@ export default function Over() {
                   <div className="flex items-start gap-3 mb-3">
                     <div className="w-6 h-6 rounded-full border-2 border-orange-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <div className="font-semibold text-nhl-blauw text-sm">Voorbeeld: AI-geletterdheid basistraining</div>
+                      <div className="font-semibold text-nhl-blauw text-sm">Voorbeeld: AI & Geletterdheid basistraining</div>
                       <div className="text-xs text-gray-400">🔴 Hoog · 📅 Q3 2026 · Verantwoordelijk: HR & OO&I</div>
                     </div>
                   </div>
@@ -396,7 +428,7 @@ export default function Over() {
                   { vraag: 'Hoe weet ik wat ik moet doen?', antwoord: 'Klik op een artikel om het uit te klappen. Je ziet dan de volledige verplichting, de deadline, en een link naar de officiële wettekst.' },
                   { vraag: 'Er is nog geen roadmap-item — wat nu?', antwoord: 'Klik op "+ Voeg roadmap-item toe voor dit artikel". Dan ga je direct naar het formulier met de AI Act koppeling al ingevuld.' },
                   { vraag: 'Hoe weet ik of we compliant zijn?', antwoord: 'Als alle hoog-prioriteit items "Lopend" of "Afgerond" zijn, en je de bewijslast hebt geüpload bij Documentatie, ben je goed op weg.' },
-                  { vraag: 'Waar upload ik bewijslast?', antwoord: 'Ga naar Documentatie en kies als categorie "Governance & Compliance". Geef het document een duidelijke naam inclusief het AI Act artikel, bijv. "Bewijs Art. 4 AI-geletterdheid training Q3 2026".' },
+                  { vraag: 'Waar upload ik bewijslast?', antwoord: 'Ga naar Documentatie en kies als categorie "Governance & Compliance". Geef het document een duidelijke naam inclusief het AI Act artikel, bijv. "Bewijs Art. 4 AI & Geletterdheid training Q3 2026".' },
                 ].map(q => (
                   <div key={q.vraag} className="bg-gray-50 rounded-xl p-4">
                     <div className="font-semibold text-nhl-blauw text-sm mb-1">→ {q.vraag}</div>

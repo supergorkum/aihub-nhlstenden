@@ -4,7 +4,6 @@ import GradientHeader from '../components/GradientHeader'
 import { sporen } from '../data'
 import GeletterdheidsNetwerk from './GeletterdheidsNetwerk'
 
-// Doelgroepen met eigen kleur en omschrijving
 const DOELGROEPEN = [
   {
     id: 'studenten',
@@ -63,9 +62,9 @@ const DOELGROEPEN = [
 ]
 
 const INIT_BRONNEN = [
-  { id: 1, doelgroep: 'studenten', type: 'artikel', titel: 'AI verantwoord gebruiken als student', url: 'https://surf.nl', omschrijving: 'Praktische gids van SURF voor studenten die AI willen inzetten in hun studie.', stemmen: 3, toegevoegdDoor: 'Kernteam AI-HUB', datum: '10 juni 2026' },
+  { id: 1, doelgroep: 'studenten', type: 'artikel', titel: 'AI verantwoord gebruiken als student', url: 'https://surf.nl', omschrijving: 'Praktische gids van SURF voor studenten die AI willen inzetten in hun studie.', stemmen: 3, toegevoegdDoor: 'Kernteam AI-Netwerk', datum: '10 juni 2026' },
   { id: 2, doelgroep: 'docenten', type: 'video', titel: 'AI in de klas: didactische kansen', url: 'https://surf.nl', omschrijving: 'Webinar over hoe docenten AI kunnen integreren in hun lessen zonder de leerdoelen te ondermijnen.', stemmen: 4, toegevoegdDoor: 'OO&I', datum: '8 juni 2026' },
-  { id: 3, doelgroep: 'management', type: 'rapport', titel: 'AI Act voor onderwijsinstellingen', url: 'https://rathenau.nl', omschrijving: 'Rapport van het Rathenau Instituut over de implicaties van de AI Act voor het hoger onderwijs.', stemmen: 2, toegevoegdDoor: 'Kernteam AI-HUB', datum: '5 juni 2026' },
+  { id: 3, doelgroep: 'management', type: 'rapport', titel: 'AI Act voor onderwijsinstellingen', url: 'https://rathenau.nl', omschrijving: 'Rapport van het Rathenau Instituut over de implicaties van de AI Act voor het hoger onderwijs.', stemmen: 2, toegevoegdDoor: 'Kernteam AI-Netwerk', datum: '5 juni 2026' },
   { id: 4, doelgroep: 'medewerkers', type: 'cursus', titel: 'AI-basistraining voor medewerkers', url: '#', omschrijving: 'Interne introductiecursus AI voor alle NHL Stenden medewerkers. Wat is AI, hoe werkt het en hoe gebruik je het veilig?', stemmen: 1, toegevoegdDoor: 'HR & OO&I', datum: '1 juni 2026' },
   { id: 5, doelgroep: 'onderwijs', type: 'kader', titel: 'NHL Stenden AI-competentieframework', url: '#', omschrijving: 'Overzicht van de AI-competenties die we verwachten van onze studenten bij afstuderen, per opleidingsniveau.', stemmen: 2, toegevoegdDoor: 'OO&I', datum: '15 mei 2026' },
 ]
@@ -126,11 +125,11 @@ export default function Geletterdheid() {
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
       <GradientHeader
-        label="AI-Geletterdheid"
+        label="AI & Geletterdheid"
         title="Begrijpen, kunnen en durven"
         subtitle="AI-geletterdheid is het vermogen om AI te begrijpen, kritisch te beoordelen en er eigenaarschap bij te ervaren. Niet iedereen hoeft een developer te zijn — maar iedereen moet kunnen meepraten."
       >
-        <div className="mt-5">
+        <div className="mt-5 flex flex-wrap items-center gap-4">
           <button
             onClick={() => { setAddOpen(true); setToegevoegd(false); setForm({ titel:'', doelgroep: actieveDoelgroep||'', type:'artikel', url:'', omschrijving:'', naam:'' }) }}
             className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
@@ -139,6 +138,17 @@ export default function Geletterdheid() {
           </button>
         </div>
       </GradientHeader>
+
+      {/* Kernambitie banner */}
+      <div className="bg-purple-700 px-4 sm:px-6 py-3">
+        <div className="max-w-7xl mx-auto flex items-center gap-3">
+          <span className="text-purple-200 text-xs font-semibold uppercase tracking-wider flex-shrink-0">Kernambitie</span>
+          <span className="text-white/80 text-xs hidden sm:inline">·</span>
+          <p className="text-purple-100 text-sm italic">
+            "NHL Stenden zorgt ervoor dat AI-geletterdheid een basisvaardigheid is voor alle studenten en medewerkers, zodat niemand afhankelijk is van AI zonder het te begrijpen."
+          </p>
+        </div>
+      </div>
 
       {/* Wat is AI-geletterdheid */}
       <section className="bg-white py-14">
@@ -168,7 +178,6 @@ export default function Geletterdheid() {
               </div>
             </div>
 
-            {/* Symbool */}
             <div className="flex flex-col items-center justify-center">
               <div className="relative w-64 h-64">
                 <div className="absolute inset-0 rounded-full border-4 border-nhl-blauw/20 flex items-center justify-center">
@@ -226,7 +235,6 @@ export default function Geletterdheid() {
             })}
           </div>
 
-          {/* Actieve doelgroep uitleg */}
           {actieveGroep && (
             <div className="rounded-2xl p-6 border-2 mb-8 animate-fade-in"
               style={{ borderColor: actieveGroep.kleur, backgroundColor: actieveGroep.licht }}>
@@ -249,7 +257,6 @@ export default function Geletterdheid() {
             </div>
           )}
 
-          {/* Bronnen grid */}
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-bold text-nhl-blauw">
               {actieveDoelgroep ? `Bronnen voor ${actieveGroep?.label}` : 'Alle bronnen'} ({gefilterd.length})
@@ -307,7 +314,6 @@ export default function Geletterdheid() {
             </div>
           )}
 
-          {/* ── Netwerkdiagram ── */}
           <div className="mt-8">
             <GeletterdheidsNetwerk
               bronnen={bronnen}
@@ -345,12 +351,12 @@ export default function Geletterdheid() {
             </div>
             <div>
               <div className="section-label mb-2">Gerelateerd</div>
-              <h2 className="text-xl font-bold text-nhl-blauw mb-5">Vind meer in de AI-HUB</h2>
+              <h2 className="text-xl font-bold text-nhl-blauw mb-5">Vind meer in het AI-Netwerk</h2>
               <div className="space-y-3">
                 {[
                   { to: '/video', icon: '🎬', titel: "Video's over AI", tekst: 'Curated video\'s over AI in het onderwijs' },
-                  { to: '/initiatieven', icon: '🚀', titel: 'Initiatieven', tekst: 'Wat loopt er al op het gebied van AI-geletterdheid?' },
-                  { to: '/pilots', icon: '🧪', titel: 'Pilots', tekst: 'AI-geletterdheid in de praktijk testen' },
+                  { to: '/initiatieven', icon: '🚀', titel: 'Initiatieven', tekst: 'Wat loopt er al op het gebied van AI & Geletterdheid?' },
+                  { to: '/pilots', icon: '🧪', titel: 'Pilots', tekst: 'AI & Geletterdheid in de praktijk testen' },
                   { to: '/inspiratie', icon: '💡', titel: 'Inspiratie', tekst: 'Delen wat anderen inspireert' },
                   { to: '/linkjes', icon: '🔗', titel: 'Bronnen', tekst: 'Externe links en referenties' },
                 ].map(item => (
@@ -370,7 +376,6 @@ export default function Geletterdheid() {
         </div>
       </section>
 
-      {/* Toevoegen modal */}
       {addOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">

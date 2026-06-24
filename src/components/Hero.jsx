@@ -15,23 +15,23 @@ export default function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-sm px-3 py-1.5 rounded-full mb-6 border border-white/20">
               <span className="w-2 h-2 bg-nhl-oranje rounded-full pulse-soft" />
-              In ontwikkeling — versie 1.0 | Juni 2026
+              In ontwikkeling — versie 1.6 | Juni 2026
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-              AI-HUB
+              AI-Netwerk
               <span className="block text-2xl sm:text-3xl lg:text-4xl font-normal text-blue-200 mt-2">
                 NHL Stenden
               </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-blue-100 leading-relaxed mb-8 max-w-xl">
-              De plek waar NHL Stenden alles rond AI samenbrengt: wat we doen, 
+              De plek waar NHL Stenden alles rond AI samenbrengt: wat we doen,
               wie we zijn en hoe we het <strong className="text-white">verantwoord aanpakken</strong>.
             </p>
 
             <p className="text-blue-200 mb-10 max-w-lg">
-              Of je nu docent, student, medewerker of bestuurder bent — 
+              Of je nu docent, student, medewerker of bestuurder bent —
               hier vind je overzicht, verbinding en richting.
             </p>
 
@@ -40,7 +40,7 @@ export default function Hero() {
                 href="#sporen"
                 className="bg-white text-nhl-blauw hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-colors"
               >
-                Ontdek de AI-HUB
+                Ontdek het AI-Netwerk
               </a>
               <a
                 href="#meld"
@@ -57,7 +57,7 @@ export default function Hero() {
               {
                 icon: '👁️',
                 titel: 'Zichtbaarheid',
-                tekst: 'Wat is er al? Wie doet wat? De AI-HUB maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.',
+                tekst: 'Wat is er al? Wie doet wat? Het AI-Netwerk maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.',
               },
               {
                 icon: '🔗',
@@ -84,7 +84,7 @@ export default function Hero() {
 
             <div className="bg-nhl-oranje/20 border border-nhl-oranje/40 rounded-xl p-4 mt-2">
               <p className="text-white text-sm italic text-center">
-                "Bewust kiezen voor onze digitale toekomst. Wie nu niet kiest, wordt gekozen."
+                "NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."
               </p>
             </div>
           </div>

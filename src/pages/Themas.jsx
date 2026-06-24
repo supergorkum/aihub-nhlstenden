@@ -4,6 +4,13 @@ import { Link, useLocation } from 'react-router-dom'
 import { sporen } from '../data'
 import PageHeader from '../components/PageHeader'
 
+const KERNAMBITIES = {
+  1: 'De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek.',
+  2: 'NHL Stenden zet AI in om de efficiency van werkprocessen te verhogen, zodat medewerkers hun expertise voluit kunnen richten op onderwijs, begeleiding en samenwerking.',
+  3: 'NHL Stenden gebruikt AI alleen op een manier die transparant, controleerbaar en eerlijk is, en die past binnen de waarden van de instelling en de eisen van wet en samenleving.',
+  4: 'NHL Stenden zorgt ervoor dat AI-geletterdheid een basisvaardigheid is voor alle studenten en medewerkers, zodat niemand afhankelijk is van AI zonder het te begrijpen.',
+}
+
 export default function Themas() {
   const location = useLocation()
   const [actief, setActief] = useState(() => {
@@ -21,7 +28,7 @@ export default function Themas() {
     <div className="min-h-screen pt-16 bg-gray-50">
       <GradientHeader label="Vier thema's" title="AI Thema's" subtitle="De vier sporen waarlangs NHL Stenden AI aanpakt." />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-<div className="grid lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {/* Thema kiezer */}
           <div className="space-y-3">
             {sporen.map(s => (
@@ -58,6 +65,14 @@ export default function Themas() {
                     <div className="w-14 h-1.5 rounded-full" style={{ backgroundColor: thema.kleur }} />
                   </div>
                 </div>
+
+                {/* Kernambitie */}
+                {KERNAMBITIES[thema.id] && (
+                  <div className="rounded-xl p-4 mb-5 border-l-4" style={{ borderColor: thema.kleur, backgroundColor: thema.kleur + '10' }}>
+                    <div className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: thema.kleur }}>Kernambitie</div>
+                    <p className="text-gray-700 text-sm leading-relaxed italic">"{KERNAMBITIES[thema.id]}"</p>
+                  </div>
+                )}
 
                 <p className="text-gray-600 leading-relaxed mb-4 text-base">{thema.waarom}</p>
                 {thema.uitleg && (
@@ -97,16 +112,16 @@ export default function Themas() {
           )}
         </div>
 
-        {/* Geletterdheid basis */}
+        {/* AI & Geletterdheid basis */}
         <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6 mb-10">
           <div className="flex gap-4 items-start">
             <span className="text-3xl">📖</span>
             <div>
-              <div className="font-bold text-purple-900 mb-2 text-lg">AI-Geletterdheid: de basis onder alles</div>
+              <div className="font-bold text-purple-900 mb-2 text-lg">AI & Geletterdheid: de basis onder alles</div>
               <p className="text-purple-700 text-sm leading-relaxed mb-3">
-                Geen enkel ander thema werkt zonder mensen die begrijpen wat AI is en wat het van hen vraagt. 
-                Geletterdheid is geen eenmalige training maar een doorlopend fundament — voor bestuurders, 
-                docenten, studenten en medewerkers. Het is de sleutel tot eigenaarschap, en eigenaarschap 
+                Geen enkel ander thema werkt zonder mensen die begrijpen wat AI is en wat het van hen vraagt.
+                Geletterdheid is geen eenmalige training maar een doorlopend fundament — voor bestuurders,
+                docenten, studenten en medewerkers. Het is de sleutel tot eigenaarschap, en eigenaarschap
                 is de sleutel tot duurzame verandering.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -129,8 +144,8 @@ export default function Themas() {
             <div className="flex-1">
               <div className="font-bold text-nhl-blauw mb-1">De thema's bouwen op het fundament</div>
               <p className="text-gray-600 text-sm leading-relaxed mb-3">
-                Elk thema staat niet op zichzelf. Achter de thema's ligt het vijflagenmodel als technisch 
-                en organisatorisch fundament. Van energie en infrastructuur tot de toepassingen die 
+                Elk thema staat niet op zichzelf. Achter de thema's ligt het vijflagenmodel als technisch
+                en organisatorisch fundament. Van energie en infrastructuur tot de toepassingen die
                 iedereen dagelijks ziet. Elke laag heeft een eigen eigenaar en verantwoordelijkheid.
               </p>
               <Link to="/fundament" className="inline-flex items-center gap-1.5 text-nhl-blauw text-sm font-semibold hover:underline">
