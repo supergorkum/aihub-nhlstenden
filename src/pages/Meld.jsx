@@ -1,189 +1,70 @@
-import GradientHeader from '../components/GradientHeader'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { vraagCategorieen, rolOpties, sporen } from '../data'
-import PageHeader from '../components/PageHeader'
+import GradientHeader from '../components/GradientHeader'
+import { sporen } from '../data'
 
-const TOEGESTANE_TYPES = ['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','image/png','image/jpeg']
-
-const TREFWOORD_SUGGESTIES = {
-  vraag: ['Toetsing','Integriteit','Privacy','Beleid','Didactiek','Studenten','Docenten','Tools','Wetgeving','AVG'],
-  idee: ['Innovatie','Pilot','Tool','Onderwijs','Begeleiding','Automatisering','Data','Geletterdheid','Curriculum'],
-  initiatief: ['Project','Samenwerking','Research','Experiment','Implementatie','Netwerk'],
-  ondersteuning: ['Samenwerking','Kennis','Expertise','Workshop','Begeleiding','Co-creatie'],
-  zorg: ['Risico','Privacy','Integriteit','Veiligheid','Afhankelijkheid','Ethiek','Toezicht'],
-}
-
-const INIT_TREFWOORDEN = [
-  { woord: 'Toetsing', n: 8 }, { woord: 'Privacy', n: 6 }, { woord: 'Didactiek', n: 5 },
-  { woord: 'Geletterdheid', n: 7 }, { woord: 'Studentsucces', n: 4 }, { woord: 'Tools', n: 9 },
-  { woord: 'Beleid', n: 3 }, { woord: 'Ethiek', n: 5 }, { woord: 'SURF', n: 4 },
-  { woord: 'Innovatie', n: 6 }, { woord: 'AVG', n: 3 }, { woord: 'Curriculum', n: 4 },
+const vraagCategorieen = [
+  { id: 'vraag',       label: 'Een vraag stellen',         icon: '💬', uitleg: 'Je hebt een concrete vraag over AI bij NHL Stenden en wil een antwoord of richting.' },
+  { id: 'idee',        label: 'Een idee delen',             icon: '💡', uitleg: 'Je hebt een idee over hoe AI ingezet kan worden en wil dat kenbaar maken.' },
+  { id: 'initiatief',  label: 'Een initiatief aanmelden',  icon: '🚀', uitleg: 'Je bent al bezig met iets en wil dat zichtbaar maken in het AI-Netwerk.' },
+  { id: 'ondersteuning', label: 'Samenwerking zoeken',    icon: '🤝', uitleg: 'Je zoekt collega\'s, expertise of partners voor een AI-project of vraagstuk.' },
+  { id: 'zorg',        label: 'Een zorg of signaal',       icon: '⚠️', uitleg: 'Je hebt een zorg of signaal over AI-gebruik dat aandacht verdient.' },
 ]
 
-function WordCloud({ trefwoorden }) {
-  const max = Math.max(...trefwoorden.map(t => t.n))
-  const kleuren = ['#1E3A8A','#0F766E','#E91E8C','#7C3AED','#D97706','#059669']
-  return (
-    <div className="flex flex-wrap gap-2 items-center justify-center p-4">
-      {trefwoorden
-        .sort((a, b) => b.n - a.n)
-        .map((t, i) => {
-          const grootte = 12 + Math.round((t.n / max) * 16)
-          const kleur = kleuren[i % kleuren.length]
-          return (
-            <span key={t.woord}
-              className="cursor-default transition-transform hover:scale-110"
-              style={{ fontSize: `${grootte}px`, color: kleur, fontWeight: t.n > max * 0.6 ? '700' : '500', lineHeight: 1.4 }}
-              title={`${t.woord}: ${t.n}x`}
-            >
-              {t.woord}
-            </span>
-          )
-        })}
-    </div>
-  )
-}
+const rolOpties = [
+  'Docent', 'Onderzoeker / Lectormedewerker', 'Student', 'Medewerker dienst',
+  'Management / Leidinggevende', 'Bestuurder', 'Externe partner', 'Anders',
+]
 
-function BubbelTijdlijn({ berichten }) {
-  const zichtbaar = berichten.filter(b => b.titel || b.tekst).slice(0, 8)
-  if (zichtbaar.length === 0) return null
-
-  const catKleur = {
-    vraag: { bg: 'bg-blue-50', border: 'border-blue-200', icon: '💬', label: 'Vraag' },
-    idee: { bg: 'bg-purple-50', border: 'border-purple-200', icon: '💡', label: 'Idee' },
-    initiatief: { bg: 'bg-green-50', border: 'border-green-200', icon: '🚀', label: 'Initiatief' },
-    ondersteuning: { bg: 'bg-yellow-50', border: 'border-yellow-200', icon: '🤝', label: 'Samenwerking' },
-    zorg: { bg: 'bg-red-50', border: 'border-red-200', icon: '⚠️', label: 'Signaal' },
-  }
-
-  return (
-    <div className="mt-8">
-      <div className="flex items-center gap-2 mb-2">
-        <h3 className="font-bold text-nhl-blauw text-lg">Wat leeft er bij collega's?</h3>
-      </div>
-      <p className="text-gray-500 text-sm mb-6">
-        Vragen en ideeën die anderen al deelden. Jouw bijdrage komt er ook bij — anoniem, tenzij je je naam hebt ingevuld.
-      </p>
-      <div className="space-y-4">
-        {zichtbaar.map((b, i) => {
-          const stijl = catKleur[b.categorie] || catKleur.vraag
-          const isLinks = i % 2 === 0
-          return (
-            <div key={b.id} className={`flex flex-col gap-2 ${isLinks ? 'items-start' : 'items-end'}`}>
-              <div className={`max-w-sm ${isLinks ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}>
-                <div className={`rounded-2xl border px-4 py-3 ${stijl.bg} ${stijl.border} ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-xs">{stijl.icon}</span>
-                    <span className="text-xs font-semibold text-gray-500">{b.categorieDef?.label || stijl.label}</span>
-                    {b.naam && <span className="text-xs text-gray-400">· {b.naam}</span>}
-                  </div>
-                  {b.titel && <div className="font-semibold text-gray-800 text-sm leading-snug mb-1">{b.titel}</div>}
-                  {b.tekst && <p className="text-gray-600 text-xs leading-relaxed">{b.tekst.slice(0, 160)}{b.tekst.length > 160 ? '...' : ''}</p>}
-                </div>
-                <div className={`w-3 h-2 ${isLinks ? 'ml-4' : 'ml-auto mr-4'}`}
-                  style={{
-                    background: 'transparent',
-                    borderLeft: isLinks ? '6px solid transparent' : 'none',
-                    borderRight: isLinks ? 'none' : '6px solid transparent',
-                    borderTop: `8px solid ${stijl.bg.includes('blue') ? '#EFF6FF' : stijl.bg.includes('purple') ? '#FAF5FF' : stijl.bg.includes('green') ? '#F0FDF4' : stijl.bg.includes('yellow') ? '#FEFCE8' : '#FEF2F2'}`,
-                  }}
-                />
-              </div>
-              {b.antwoord && (
-                <div className={`max-w-sm ${isLinks ? 'ml-8 mr-auto' : 'ml-auto mr-8'}`}>
-                  <div className={`rounded-2xl border px-4 py-3 bg-nhl-blauw/5 border-nhl-blauw/20 ${isLinks ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}>
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-xs">🧭</span>
-                      <span className="text-xs font-semibold text-nhl-blauw">AI-Netwerk team</span>
-                    </div>
-                    <p className="text-nhl-blauw text-xs leading-relaxed">{b.antwoord}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
+const bubbels = [
+  "Ik zou graag weten welke AI-tools goedgekeurd zijn voor gebruik.",
+  "We zijn bezig met een pilot voor AI-feedback op studentwerk. Kan ik dit aanmelden?",
+  "Hoe zit het met de AVG bij het gebruik van ChatGPT voor werktaken?",
+  "Ik heb een idee voor een AI-toepassing in ons curriculum.",
+  "Zijn er collega\'s die ook bezig zijn met AI in toetsing?",
+  "Wat doet NHL Stenden met de AI Act? Waar kan ik dat volgen?",
+  "Ik wil graag meedoen aan het AI-Netwerk. Hoe doe ik dat?",
+  "Wij werken samen met een regionaal bedrijf aan een Computer Vision project.",
+]
 
 export default function Meld({ onNieuwBericht, berichten = [] }) {
-  const [stap, setStap] = useState(0)
-  const [form, setForm] = useState({ rol: '', naam: '', categorie: '', spoor: '', titel: '', tekst: '', url: '', trefwoorden: [] })
-  const [trefwoordInput, setTrefwoordInput] = useState('')
-  const [bestand, setBestand] = useState(null)
-  const [bestandFout, setBestandFout] = useState('')
-  const [verstuurd, setVerstuurd] = useState(false)
-  const [wordcloudData, setWordcloudData] = useState(INIT_TREFWOORDEN)
+  const [stap, setStap] = useState('categorie')
+  const [categorie, setCategorie] = useState(null)
+  const [form, setForm] = useState({ naam: '', rol: '', thema: '', vraag: '', email: '' })
+  const [ingediend, setIngediend] = useState(false)
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
-  const kanVolgende = () => {
-    if (stap === 0) return form.rol !== ''
-    if (stap === 1) return form.categorie !== ''
-    if (stap === 2) return form.tekst.trim().length >= 5
-    return true
-  }
-
-  const voegTrefwoordToe = (woord) => {
-    const w = woord.trim()
-    if (!w || form.trefwoorden.includes(w)) return
-    upd('trefwoorden', [...form.trefwoorden, w])
-    setTrefwoordInput('')
-  }
-
-  const verwijderTrefwoord = (w) => upd('trefwoorden', form.trefwoorden.filter(t => t !== w))
-
-  const handleBestand = (file) => {
-    if (!file) return
-    if (!TOEGESTANE_TYPES.includes(file.type)) { setBestandFout('Alleen PDF, Word, PNG of JPEG toegestaan.'); return }
-    if (file.size > 10 * 1024 * 1024) { setBestandFout('Bestand mag maximaal 10 MB zijn.'); return }
-    setBestandFout('')
-    setBestand(file)
-  }
-
   const verstuur = () => {
-    setWordcloudData(prev => {
-      const updated = [...prev]
-      form.trefwoorden.forEach(w => {
-        const idx = updated.findIndex(t => t.woord.toLowerCase() === w.toLowerCase())
-        if (idx >= 0) updated[idx] = { ...updated[idx], n: updated[idx].n + 1 }
-        else updated.push({ woord: w, n: 1 })
-      })
-      return updated
-    })
-    const nieuw = {
-      id: Date.now(), ...form,
-      bestandNaam: bestand?.name || null,
+    if (!form.vraag || !categorie) return
+    const bericht = {
+      id: Date.now(),
+      categorie: categorie.id,
+      categorieLabel: categorie.label,
+      categorieIcon: categorie.icon,
+      ...form,
+      themaLabel: sporen.find(s => s.id === parseInt(form.thema))?.titel || null,
       datum: new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }),
-      categorieDef: vraagCategorieen.find(c => c.id === form.categorie),
-      sporeDef: sporen.find(s => s.id === parseInt(form.spoor)),
-      antwoord: null,
+      status: 'nieuw',
     }
-    onNieuwBericht(nieuw)
-    setVerstuurd(true)
+    if (onNieuwBericht) onNieuwBericht(bericht)
+    setIngediend(true)
   }
 
-  const suggesties = TREFWOORD_SUGGESTIES[form.categorie] || []
-  const beschikbareSuggesties = suggesties.filter(s => !form.trefwoorden.includes(s))
-
-  if (verstuurd) {
+  if (ingediend) {
     return (
-      <div className="min-h-screen pt-16 bg-white flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4 animate-slide-up">
-          <div className="text-6xl mb-6">✅</div>
-          <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Bedankt!</h2>
-          <p className="text-gray-600 mb-3">Je bericht is ontvangen. Het AI-Netwerk team neemt het mee in het werk.</p>
-          <p className="text-gray-500 text-sm mb-8">
-            Wil je iets inspirerends delen of een initiatief aanmelden?{' '}
-            <Link to="/inspiratie" className="text-nhl-roze hover:underline">Ga naar Inspiratie</Link>.
+      <div className="min-h-screen pt-16 bg-gray-50 flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl shadow-xl p-10 max-w-md text-center">
+          <div className="text-6xl mb-5">🎉</div>
+          <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Ontvangen!</h2>
+          <p className="text-gray-600 mb-2">
+            Je {categorie.label.toLowerCase()} is doorgestuurd naar het kernteam van het AI-Netwerk.
           </p>
-          <div className="flex gap-3 justify-center">
-            <button onClick={() => { setVerstuurd(false); setStap(0); setForm({ rol:'',naam:'',categorie:'',spoor:'',titel:'',tekst:'',url:'',trefwoorden:[] }); setBestand(null) }}
-              className="btn-primary">Nog een vraag stellen</button>
-            <Link to="/" className="btn-ghost border border-gray-200">Naar start</Link>
+          <p className="text-gray-500 text-sm mb-8">We reageren zo spoedig mogelijk, meestal binnen een paar werkdagen.</p>
+          <div className="flex flex-col gap-3">
+            <button onClick={() => { setIngediend(false); setStap('categorie'); setCategorie(null); setForm({ naam: '', rol: '', thema: '', vraag: '', email: '' }) }}
+              className="btn-primary">Nog een bericht sturen</button>
+            <Link to="/" className="btn-ghost text-center">Terug naar het AI-Netwerk</Link>
           </div>
         </div>
       </div>
@@ -191,205 +72,141 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-white">
-      <GradientHeader
-        label="Vragen & ideeën"
-        title="Heb je een vraag of idee?"
-        subtitle="Het AI-Netwerk zijn we samen. Stel je vraag, deel een idee, zoek samenwerking of geef een signaal — en help zo de wegwijzer scherper te maken."
-      />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+    <div className="min-h-screen pt-16 bg-gray-50">
+      <GradientHeader label="Vraag of idee" title="Neem contact op"
+        subtitle="Het AI-Netwerk is van iedereen bij NHL Stenden. Deel je vraag, idee of initiatief en het kernteam neemt contact op." />
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-8 flex gap-3">
-          <span className="text-lg flex-shrink-0">💡</span>
-          <p className="text-sm text-purple-700">
-            Wil je een inspirerende ontwikkeling, artikel of initiatief delen?
-            Dat doe je via <Link to="/inspiratie" className="underline font-medium">Inspiratie</Link> in het menu.
-            Deze pagina is voor vragen, ideeën en zorgen.
-          </p>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+
+        {/* Bubbels */}
+        <div className="mb-10">
+          <div className="section-label mb-4">Wat speelt er</div>
+          <div className="flex flex-wrap gap-2">
+            {bubbels.map((b, i) => (
+              <div key={i} className="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 text-sm text-gray-600 shadow-sm leading-snug max-w-xs">
+                "{b}"
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Stappen */}
-        <div className="flex items-center gap-2 mb-10">
-          {['Wie ben je?','Wat wil je?','Jouw bericht'].map((s, i) => (
-            <div key={i} className="flex items-center gap-2 flex-1">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 transition-colors ${i < stap ? 'bg-nhl-roze text-white' : i === stap ? 'bg-nhl-blauw text-white' : 'bg-gray-100 text-gray-400'}`}>
-                {i < stap ? '✓' : i + 1}
+        <div className="card overflow-hidden">
+          {/* Stap 1: Categorie */}
+          {stap === 'categorie' && (
+            <div className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-xl font-bold text-nhl-blauw mb-2">Waar gaat het over?</h2>
+                <p className="text-gray-500 text-sm">Kies het type bericht zodat het kernteam je goed kan helpen.</p>
               </div>
-              <div className={`text-xs hidden sm:block ${i === stap ? 'text-nhl-blauw font-medium' : 'text-gray-400'}`}>{s}</div>
-              {i < 2 && <div className={`flex-1 h-0.5 rounded ${i < stap ? 'bg-nhl-roze' : 'bg-gray-200'}`} />}
-            </div>
-          ))}
-        </div>
-
-        <div className="card p-8 shadow-sm">
-
-          {stap === 0 && (
-            <div className="animate-fade-in">
-              <h3 className="font-bold text-nhl-blauw text-xl mb-6">Wie ben je?</h3>
-              <div className="grid sm:grid-cols-2 gap-2 mb-6">
-                {rolOpties.map(rol => (
-                  <button key={rol} onClick={() => upd('rol', rol)}
-                    className={`px-4 py-3 rounded-xl text-left text-sm font-medium border-2 transition-colors ${form.rol === rol ? 'border-nhl-blauw bg-nhl-blauw text-white' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}>
-                    {rol}
-                  </button>
-                ))}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Jouw naam (optioneel)</label>
-                <input type="text" value={form.naam} onChange={e => upd('naam', e.target.value)}
-                  placeholder="Bijv. Jan de Vries"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
-              </div>
-            </div>
-          )}
-
-          {stap === 1 && (
-            <div className="animate-fade-in">
-              <h3 className="font-bold text-nhl-blauw text-xl mb-6">Wat wil je delen?</h3>
-              <div className="space-y-2 mb-6">
+              <div className="space-y-3">
                 {vraagCategorieen.map(cat => (
-                  <button key={cat.id} onClick={() => upd('categorie', cat.id)}
-                    className={`w-full px-5 py-4 rounded-xl text-left border-2 transition-colors ${form.categorie === cat.id ? 'border-nhl-blauw bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="text-2xl">{cat.icon}</span>
-                      <span className="font-semibold text-gray-800">{cat.label}</span>
+                  <button key={cat.id} onClick={() => { setCategorie(cat); setStap('form') }}
+                    className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-gray-200 bg-white hover:border-nhl-blauw hover:bg-blue-50 transition-all group text-left">
+                    <span className="text-3xl">{cat.icon}</span>
+                    <div>
+                      <div className="font-semibold text-nhl-blauw group-hover:text-nhl-roze transition-colors">{cat.label}</div>
+                      <div className="text-gray-500 text-sm">{cat.uitleg}</div>
                     </div>
-                    <p className="text-xs text-gray-500 ml-9 leading-relaxed">{cat.uitleg}</p>
+                    <div className="ml-auto text-gray-300 group-hover:text-nhl-blauw transition-colors">→</div>
                   </button>
                 ))}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Gerelateerd thema (optioneel)</label>
-                <select value={form.spoor} onChange={e => upd('spoor', e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
-                  <option value="">Kies een thema...</option>
-                  {sporen.map(s => <option key={s.id} value={s.id}>{s.icon} {s.titel}</option>)}
-                </select>
-              </div>
             </div>
           )}
 
-          {stap === 2 && (
-            <div className="animate-fade-in">
-              <h3 className="font-bold text-nhl-blauw text-xl mb-2">Jouw bericht</h3>
-              <p className="text-gray-400 text-sm mb-6">
-                {vraagCategorieen.find(c => c.id === form.categorie)?.icon}{' '}
-                {vraagCategorieen.find(c => c.id === form.categorie)?.label}
-              </p>
-              <div className="space-y-4">
+          {/* Stap 2: Formulier */}
+          {stap === 'form' && categorie && (
+            <div>
+              <div className="flex items-center gap-3 p-6 border-b border-gray-100 bg-gray-50">
+                <span className="text-2xl">{categorie.icon}</span>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Korte omschrijving <span className="text-red-400">*</span></label>
-                  <input type="text" value={form.titel} onChange={e => upd('titel', e.target.value)}
-                    placeholder={
-                      form.categorie === 'vraag' ? 'Bijv. Hoe ga ik om met AI in mijn toetsing?' :
-                      form.categorie === 'idee' ? 'Bijv. Idee: AI-assistent voor studieloopbaanbegeleiding' :
-                      form.categorie === 'initiatief' ? 'Bijv. Project AI in curriculum Academie Educatie' :
-                      form.categorie === 'ondersteuning' ? 'Bijv. Zoek samenwerking voor AI-pilot' :
-                      'Bijv. Zorg over gebruik AI bij tentamens'
-                    }
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  <div className="font-bold text-nhl-blauw">{categorie.label}</div>
+                  <div className="text-gray-500 text-xs">{categorie.uitleg}</div>
                 </div>
+                <button onClick={() => setStap('categorie')} className="ml-auto text-xs text-gray-400 hover:text-gray-600">← Wijzig</button>
+              </div>
+              <div className="p-8 space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Toelichting <span className="text-red-400">*</span></label>
-                  <textarea value={form.tekst} onChange={e => upd('tekst', e.target.value)} rows={5}
-                    placeholder="Geef zo veel context als je wilt. Hoe meer we weten, hoe beter we je kunnen helpen."
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
-                  <div className={`text-xs mt-1 ${form.tekst.trim().length < 5 ? 'text-red-400' : 'text-gray-400'}`}>
-                    {form.tekst.length} tekens{form.tekst.trim().length < 5 ? ' — minimaal 5 tekens' : ''}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Trefwoorden</label>
-                  <div className="flex gap-2 mb-2">
-                    <input type="text" value={trefwoordInput} onChange={e => setTrefwoordInput(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); voegTrefwoordToe(trefwoordInput) } }}
-                      placeholder="Typ een trefwoord en druk Enter..."
-                      className="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
-                    <button onClick={() => voegTrefwoordToe(trefwoordInput)}
-                      className="px-4 py-2 bg-nhl-blauw text-white rounded-xl text-sm font-medium hover:bg-nhl-blauw-dark transition-colors">+</button>
-                  </div>
-                  {beschikbareSuggesties.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {beschikbareSuggesties.slice(0, 8).map(s => (
-                        <button key={s} onClick={() => voegTrefwoordToe(s)}
-                          className="px-2.5 py-1 rounded-full text-xs border border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors bg-gray-50">
-                          + {s}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {form.trefwoorden.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {form.trefwoorden.map(w => (
-                        <span key={w} className="inline-flex items-center gap-1 bg-nhl-blauw text-white px-2.5 py-1 rounded-full text-xs font-medium">
-                          {w}
-                          <button onClick={() => verwijderTrefwoord(w)} className="ml-0.5 hover:text-red-200 transition-colors">✕</button>
-                        </span>
-                      ))}
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    {categorie.id === 'initiatief' ? 'Naam van het initiatief' : 'Jouw vraag of bericht'} <span className="text-red-400">*</span>
+                  </label>
+                  {categorie.id === 'initiatief' ? (
+                    <>
+                      <input type="text" value={form.vraag} onChange={e => upd('vraag', e.target.value)}
+                        placeholder="Bijv. AI-feedback tool voor schrijfonderwijs PABO"
+                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                    </>
+                  ) : (
+                    <textarea value={form.vraag} onChange={e => upd('vraag', e.target.value)}
+                      placeholder={categorie.id === 'vraag' ? 'Stel je vraag hier...' : categorie.id === 'zorg' ? 'Beschrijf je zorg of signaal...' : 'Beschrijf je idee of verzoek...'}
+                      rows={4}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
                   )}
                 </div>
+
+                {/* Thema koppeling — alle zes */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Link of URL (optioneel)</label>
-                  <input type="url" value={form.url} onChange={e => upd('url', e.target.value)}
-                    placeholder="https://..."
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Bijlage (optioneel)</label>
-                  <div onClick={() => document.getElementById('meld-upload').click()}
-                    onDragOver={e => e.preventDefault()}
-                    onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0]) }}
-                    className="border-2 border-dashed border-gray-200 rounded-xl p-5 text-center cursor-pointer hover:border-nhl-blauw hover:bg-blue-50 transition-colors">
-                    {bestand ? (
-                      <div className="flex items-center justify-center gap-3">
-                        <span className="text-2xl">{bestand.type.includes('pdf') ? '📄' : bestand.type.includes('image') ? '🖼️' : '📝'}</span>
-                        <div className="text-left">
-                          <div className="font-medium text-nhl-blauw text-sm">{bestand.name}</div>
-                          <div className="text-xs text-gray-400">{(bestand.size / 1024).toFixed(0)} KB</div>
-                        </div>
-                        <button onClick={e => { e.stopPropagation(); setBestand(null) }} className="ml-2 text-gray-400 hover:text-red-500">✕</button>
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="text-2xl mb-1">📎</div>
-                        <div className="text-sm text-gray-600 font-medium">Klik of sleep een bestand</div>
-                        <div className="text-xs text-gray-400 mt-1">PDF, Word, PNG of JPEG · max 10 MB</div>
-                      </div>
-                    )}
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Gerelateerd thema <span className="text-gray-400 font-normal">(optioneel)</span>
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {sporen.map(s => (
+                      <button key={s.id} onClick={() => upd('thema', form.thema === String(s.id) ? '' : String(s.id))}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs border-2 transition-all ${
+                          form.thema === String(s.id)
+                            ? 'border-transparent text-white font-semibold'
+                            : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                        }`}
+                        style={form.thema === String(s.id) ? { backgroundColor: s.kleur } : {}}>
+                        <span>{s.icon}</span>
+                        <span className="leading-snug">{s.titel}</span>
+                      </button>
+                    ))}
                   </div>
-                  <input id="meld-upload" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" className="hidden" onChange={e => handleBestand(e.target.files[0])} />
-                  {bestandFout && <div className="text-red-500 text-xs mt-2">{bestandFout}</div>}
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Jouw naam <span className="text-gray-400 font-normal">(optioneel)</span></label>
+                    <input type="text" value={form.naam} onChange={e => upd('naam', e.target.value)}
+                      placeholder="Bijv. Jan de Vries"
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">E-mail <span className="text-gray-400 font-normal">(optioneel)</span></label>
+                    <input type="email" value={form.email} onChange={e => upd('email', e.target.value)}
+                      placeholder="naam@nhlstenden.com"
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Jouw rol <span className="text-gray-400 font-normal">(optioneel)</span></label>
+                  <div className="flex flex-wrap gap-2">
+                    {rolOpties.map(rol => (
+                      <button key={rol} onClick={() => upd('rol', form.rol === rol ? '' : rol)}
+                        className={`px-3 py-1.5 rounded-full text-xs border-2 font-medium transition-colors ${
+                          form.rol === rol ? 'border-nhl-blauw bg-nhl-blauw text-white' : 'border-gray-200 text-gray-600 hover:border-nhl-blauw'
+                        }`}>
+                        {rol}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-gray-100 flex items-center gap-4">
+                  <button onClick={verstuur} disabled={!form.vraag}
+                    className={`flex-1 py-3 rounded-xl font-semibold text-sm transition-colors ${
+                      form.vraag ? 'bg-nhl-roze hover:bg-nhl-roze-dark text-white' : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                    }`}>
+                    {categorie.label} versturen →
+                  </button>
+                  <p className="text-xs text-gray-400 flex-1">Je bericht gaat direct naar het kernteam van het AI-Netwerk NHL Stenden.</p>
                 </div>
               </div>
             </div>
           )}
-
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
-            {stap > 0 ? <button onClick={() => setStap(s => s - 1)} className="btn-ghost">← Terug</button> : <div />}
-            {stap < 2 ? (
-              <button onClick={() => setStap(s => s + 1)} disabled={!kanVolgende()}
-                className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-colors ${kanVolgende() ? 'bg-nhl-blauw text-white hover:bg-nhl-blauw-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
-                Volgende →
-              </button>
-            ) : (
-              <button onClick={verstuur} disabled={!kanVolgende()}
-                className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-colors ${kanVolgende() ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
-                Verstuur bericht →
-              </button>
-            )}
-          </div>
         </div>
-
-        <div className="mt-8 card p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <h3 className="font-semibold text-nhl-blauw text-sm">Wat speelt er bij collega's?</h3>
-            <span className="text-xs text-gray-400">— trefwoorden uit ingezonden berichten</span>
-          </div>
-          <WordCloud trefwoorden={wordcloudData} />
-        </div>
-
-        <BubbelTijdlijn berichten={berichten} />
       </div>
     </div>
   )
