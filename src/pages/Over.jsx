@@ -1,6 +1,4 @@
-import GradientHeader from '../components/GradientHeader'
 import { Link } from 'react-router-dom'
-import PageHeader from '../components/PageHeader'
 
 const kernteam = [
   {
@@ -12,7 +10,6 @@ const kernteam = [
       'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma en directie',
       'Verbindt het AI-Netwerk met het externe netwerk: SURF, NPULS, Vereniging Hogescholen',
       'Bewaakt de vier sporen en zorgt voor aansluiting op de organisatiepraktijk',
-      'Initieert de ontwikkeling van het digitale AI-Netwerk instrument',
     ],
     kleur: '#1E3A8A',
     icon: '🧭',
@@ -24,7 +21,6 @@ const kernteam = [
     taken: [
       'Beheert en actualiseert de inhoud: initiatieven, mensen, kaders en open vraagstukken',
       'Verbindt initiatieven aan het juiste laag en spoor',
-      'Ondersteunt de inrichting van het informatiemodel achter het digitale instrument',
       'Bewaakt de aansluiting op bestaande informatiestromen en governance-processen',
       'Ondersteunt de AI-desk bij het beoordelen van nieuwe AI-initiatieven',
     ],
@@ -38,7 +34,6 @@ const kernteam = [
     taken: [
       'Ontwikkelt en beheert het digitale AI-Netwerk instrument',
       'Analyseert technische vraagstukken: platforms, API-koppelingen, datastromen',
-      'Ondersteunt de inrichting van sandbox-omgevingen vanuit technisch perspectief',
       'Bewaakt de aansluiting op de bestaande IT-architectuur van NHL Stenden',
       'Volgt technische ontwikkelingen bij SURF, AI-Fabriek en GPT-NL',
     ],
@@ -81,10 +76,8 @@ export default function Over() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 relative">
           <div className="max-w-3xl">
             <div className="section-label text-blue-300 mb-3">Wie zijn wij</div>
-            <h1 className="text-4xl font-extrabold text-white mb-4 leading-tight">
-              Over het AI-Netwerk
-            </h1>
-            <p className="text-blue-100 text-lg leading-relaxed mb-6">
+            <h1 className="text-4xl font-extrabold text-white mb-4 leading-tight">Over het AI-Netwerk</h1>
+            <p className="text-blue-100 text-lg leading-relaxed mb-4">
               Het AI-Netwerk is geen afdeling en geen project. Het is een <strong className="text-white">wegwijzer</strong> — een levende,
               digitale en organisatorische structuur die mensen, initiatieven en kennis met elkaar verbindt.
             </p>
@@ -95,7 +88,10 @@ export default function Over() {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block"><path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/><path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/></svg>
+          <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full block">
+            <path d="M0 72L1440 72L1440 28C1320 60 1200 8 1080 20C960 32 840 64 720 52C600 40 480 4 360 16C240 28 120 60 0 40L0 72Z" fill="white"/>
+            <path d="M0 72L1440 72L1440 40C1320 68 1200 20 1080 36C960 52 840 72 720 64C600 56 480 20 360 32C240 44 120 68 0 52L0 72Z" fill="white" fillOpacity="0.5"/>
+          </svg>
         </div>
       </div>
 
@@ -110,8 +106,7 @@ export default function Over() {
               <p>
                 AI is overal tegelijk aanwezig bij NHL Stenden. Studenten verkennen de mogelijkheden voor
                 hun leerproces. Docenten zoeken houvast bij vragen over integriteit en didactiek. Diensten
-                ontdekken wat procesondersteuning kan betekenen. En Europese regelgeving vraagt om concrete
-                stappen.
+                ontdekken wat procesondersteuning kan betekenen. En Europese regelgeving vraagt om concrete stappen.
               </p>
               <p>
                 Al die bewegingen zijn waardevol. Maar ze hebben een gemeenschappelijk vertrekpunt nodig:
@@ -121,7 +116,6 @@ export default function Over() {
                 Het AI-Netwerk legt niets op. Maar wijst de weg — door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat
                 er al is, door <strong className="text-nhl-blauw">te verbinden</strong> wie er mee bezig zijn, en door
                 <strong className="text-nhl-blauw"> richting te geven</strong> vanuit gedeelde waarden.
-                Zo wordt het AI-Netwerk een kompas voor iedereen die bij NHL Stenden met AI werkt, leert of beslist.
               </p>
             </div>
           </div>
@@ -144,7 +138,7 @@ export default function Over() {
           <blockquote className="text-white text-xl font-medium italic leading-relaxed max-w-3xl mx-auto mb-3">
             "NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."
           </blockquote>
-          <div className="text-blue-200 text-sm">De overkoepelende kernambitie van het AI-Netwerk — AI als middel, niet als doel</div>
+          <div className="text-blue-200 text-sm">De overkoepelende kernambitie van het AI-Netwerk</div>
         </div>
 
         {/* Kernambities per thema */}
@@ -152,9 +146,6 @@ export default function Over() {
           <div className="text-center mb-8">
             <div className="section-label mb-2">Per thema</div>
             <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Kernambities per thema</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto text-sm">
-              Elke ambitie is concreet en meetbaar. Samen vormen ze de bestuurlijke grondslag voor de inzet van AI bij NHL Stenden.
-            </p>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             {KERNAMBITIES.map(k => (
@@ -211,7 +202,7 @@ export default function Over() {
           </div>
         </div>
 
-        {/* Netwerkorganisatie uitleg */}
+        {/* Netwerkorganisatie */}
         <div className="mb-20">
           <div className="text-center mb-10">
             <div className="section-label mb-2">Hoe we werken</div>
@@ -261,7 +252,8 @@ export default function Over() {
             <div className="space-y-6">
               {fasering.map((f, i) => (
                 <div key={f.fase} className="relative sm:pl-16">
-                  <div className="absolute left-0 w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm hidden sm:flex" style={{ backgroundColor: ['#1E3A8A','#0F766E','#7C3AED','#E91E8C'][i] }}>
+                  <div className="absolute left-0 w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm hidden sm:flex"
+                    style={{ backgroundColor: ['#1E3A8A','#0F766E','#7C3AED','#E91E8C'][i] }}>
                     {i + 1}
                   </div>
                   <div className="card p-5">
@@ -290,155 +282,25 @@ export default function Over() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link to="/meld" className="btn-roze">+ Meld een initiatief</Link>
             <Link to="/netwerk" className="btn-primary">Bekijk het netwerk</Link>
+            <Link to="/themas" className="btn-ghost border border-gray-200">Ontdek de thema's</Link>
           </div>
         </div>
 
-        {/* Handleiding: Slim nieuws ophalen */}
-        <div className="mb-12">
-          <div className="section-label mb-2">Hoe werkt het</div>
-          <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Functies uitgelegd</h2>
-
-          {/* Nieuws refresh */}
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
-            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
-              <span className="text-2xl">🤖</span>
-              <div>
-                <div className="text-white font-bold">Slim nieuws ophalen</div>
-                <div className="text-blue-200 text-xs">AI-aangedreven nieuws voor NHL Stenden</div>
-              </div>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                Het AI-Netwerk kan automatisch relevante AI-nieuws ophalen en samenvatten. Een beheerder klikt op
-                de knop "🔄 Nieuws ophalen" in de Beheeromgeving (Data tab). De AI analyseert dan artikelen
-                van internationale bronnen zoals de Europese Commissie, OECD AI en educatieve media.
-              </p>
-              <div className="grid sm:grid-cols-3 gap-4 mb-4">
-                {[
-                  { stap: '1', tekst: 'Beheerder klikt op "🔄 Nieuws ophalen" in Beheer → Data' },
-                  { stap: '2', tekst: 'Claude AI leest RSS feeds en beoordeelt elk artikel op relevantie voor NHL Stenden' },
-                  { stap: '3', tekst: 'Relevante items verschijnen met 🤖 badge in de Inspiratie sectie' },
-                ].map(s => (
-                  <div key={s.stap} className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
-                    <div className="w-7 h-7 rounded-full bg-nhl-blauw text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{s.stap}</div>
-                    <p className="text-sm text-gray-600">{s.tekst}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
-                <span className="text-xl flex-shrink-0">💡</span>
-                <p className="text-sm text-blue-700">
-                  Je ziet in de navigatiebalk wanneer de laatste refresh was: <strong>🤖 Nieuws · [datum]</strong>.
-                  In de Beheeromgeving staat de exacte datum en tijd.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Roadmap handleiding */}
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
-            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
-              <span className="text-2xl">🗺️</span>
-              <div>
-                <div className="text-white font-bold">Roadmap — handleiding</div>
-                <div className="text-blue-200 text-xs">Hoe lees en gebruik je de roadmap?</div>
-              </div>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                De roadmap (via <strong>Beleid → Roadmap</strong>) toont wat NHL Stenden moet organiseren op het
-                gebied van AI-compliance en -beleid. Items zijn gekoppeld aan concrete AI Act artikelen.
-              </p>
-
-              <div className="space-y-4 mb-6">
-                <h3 className="font-bold text-nhl-blauw">Hoe lees je een roadmap-item?</h3>
-                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-6 h-6 rounded-full border-2 border-orange-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-nhl-blauw text-sm">Voorbeeld: AI & Geletterdheid basistraining</div>
-                      <div className="text-xs text-gray-400">🔴 Hoog · 📅 Q3 2026 · Verantwoordelijk: HR & OO&I</div>
-                    </div>
-                  </div>
-                  <div className="ml-9 space-y-2 text-sm text-gray-600">
-                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-orange-400 flex-shrink-0" /><span><strong>Rondje links</strong> — de huidige status. Klik erop om de status te wisselen.</span></div>
-                    <div className="flex items-center gap-2"><span className="text-red-600 font-bold">🔴</span><span><strong>Prioriteit</strong> — hoog (rood), midden (geel) of laag (groen).</span></div>
-                    <div className="flex items-center gap-2"><span>⚖️</span><span><strong>AI Act koppeling</strong> — het wetsartikel dat dit item vereist, met directe link.</span></div>
-                  </div>
-                </div>
-
-                <h3 className="font-bold text-nhl-blauw">Statussen en wat ze betekenen</h3>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {[
-                    { kleur: 'bg-orange-400', label: 'Nog te starten', uitleg: 'Er is nog niets mee gedaan. Moet worden opgepakt.' },
-                    { kleur: 'bg-blue-500', label: 'In voorbereiding', uitleg: 'Er wordt aan gewerkt maar het is nog niet actief.' },
-                    { kleur: 'bg-green-500', label: 'Lopend', uitleg: 'Actief in uitvoering.' },
-                    { kleur: 'bg-gray-400', label: 'Afgerond ✓', uitleg: 'Klaar. Item staat doorgestreept.' },
-                  ].map(s => (
-                    <div key={s.label} className="flex items-start gap-3 bg-gray-50 rounded-xl p-3">
-                      <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 ${s.kleur}`} />
-                      <div>
-                        <div className="font-semibold text-sm text-nhl-blauw">{s.label}</div>
-                        <div className="text-xs text-gray-500">{s.uitleg}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <h3 className="font-bold text-nhl-blauw">Taak aanmaken en afronden</h3>
-                <div className="space-y-3">
-                  {[
-                    { n: '1', tekst: 'Klik op "+ Item toevoegen" in de Roadmap tab om een nieuwe taak toe te voegen.' },
-                    { n: '2', tekst: 'Geef de taak een titel, omschrijving, prioriteit, planning en verantwoordelijke.' },
-                    { n: '3', tekst: 'Klik op het rondje links van een item om de status te wisselen (te starten → in voorbereiding → lopend → afgerond).' },
-                    { n: '4', tekst: 'Upload bewijslast via Documentatie. Koppel het document aan het juiste thema zodat het traceerbaar is.' },
-                  ].map(s => (
-                    <div key={s.n} className="flex items-start gap-3">
-                      <div className="w-7 h-7 rounded-full bg-nhl-blauw text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{s.n}</div>
-                      <p className="text-sm text-gray-600 pt-1">{s.tekst}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-3 flex-wrap">
-                <Link to="/initiatieven?tab=roadmap" className="btn-primary text-sm">Naar de Roadmap →</Link>
-                <Link to="/initiatieven?tab=aiact" className="btn-ghost border border-gray-200 text-sm">Naar AI Act compliance →</Link>
-              </div>
-            </div>
-          </div>
-
-          {/* AI Act handleiding */}
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-            <div className="nhl-gradient-deep px-6 py-5 flex items-center gap-3">
-              <span className="text-2xl">⚖️</span>
-              <div>
-                <div className="text-white font-bold">AI Act compliance — handleiding</div>
-                <div className="text-blue-200 text-xs">Wat moet NHL Stenden doen en wanneer?</div>
-              </div>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                De AI Act compliance pagina (via <strong>Beleid → AI Act & Compliance</strong>) toont alle
-                wettelijke verplichtingen die op NHL Stenden van toepassing zijn. Per artikel zie je wat er
-                vereist is, wanneer het van kracht wordt, en of er al een roadmap-item voor is aangemaakt.
-              </p>
-              <div className="space-y-3 mb-6">
-                {[
-                  { vraag: 'Hoe weet ik wat ik moet doen?', antwoord: 'Klik op een artikel om het uit te klappen. Je ziet dan de volledige verplichting, de deadline, en een link naar de officiële wettekst.' },
-                  { vraag: 'Er is nog geen roadmap-item — wat nu?', antwoord: 'Klik op "+ Voeg roadmap-item toe voor dit artikel". Dan ga je direct naar het formulier met de AI Act koppeling al ingevuld.' },
-                  { vraag: 'Hoe weet ik of we compliant zijn?', antwoord: 'Als alle hoog-prioriteit items "Lopend" of "Afgerond" zijn, en je de bewijslast hebt geüpload bij Documentatie, ben je goed op weg.' },
-                  { vraag: 'Waar upload ik bewijslast?', antwoord: 'Ga naar Documentatie en kies als categorie "Governance & Compliance". Geef het document een duidelijke naam inclusief het AI Act artikel, bijv. "Bewijs Art. 4 AI & Geletterdheid training Q3 2026".' },
-                ].map(q => (
-                  <div key={q.vraag} className="bg-gray-50 rounded-xl p-4">
-                    <div className="font-semibold text-nhl-blauw text-sm mb-1">→ {q.vraag}</div>
-                    <p className="text-gray-600 text-sm">{q.antwoord}</p>
-                  </div>
-                ))}
-              </div>
-              <Link to="/initiatieven?tab=aiact" className="btn-primary text-sm">Naar AI Act compliance →</Link>
-            </div>
-          </div>
+        {/* Snel naar */}
+        <div className="grid sm:grid-cols-4 gap-4">
+          {[
+            { to: '/initiatieven', icon: '🚀', label: 'Initiatieven' },
+            { to: '/beleid', icon: '📋', label: 'Beleid & Kaders' },
+            { to: '/geletterdheid', icon: '📖', label: 'AI & Geletterdheid' },
+            { to: '/beheer', icon: '🔐', label: 'Beheer' },
+          ].map(item => (
+            <Link key={item.to} to={item.to}
+              className="flex items-center gap-3 bg-white border border-gray-100 rounded-xl p-4 hover:border-nhl-blauw/30 hover:bg-blue-50 transition-colors group">
+              <span className="text-xl">{item.icon}</span>
+              <span className="text-sm font-medium text-nhl-blauw group-hover:text-nhl-roze transition-colors">{item.label}</span>
+              <span className="ml-auto text-gray-300 group-hover:text-nhl-blauw text-xs">→</span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

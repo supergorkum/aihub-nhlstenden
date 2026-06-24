@@ -93,30 +93,35 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
-            <div className="hidden sm:block border-l border-white/25 pl-3">
-              <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
-              <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
-            </div>
-          </NavLink>
+          {/* Links: Logo + naam + Start direct aansluitend */}
+          <div className="flex items-center gap-0 flex-shrink-0">
+            <NavLink to="/" className="flex items-center gap-2.5">
+              {/* NHL Stenden logo: klein, wit, geen achtergrond */}
+              <img
+                src="/nhl-logo.png"
+                alt="NHL Stenden"
+                className="h-8 w-8 object-contain rounded"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
+              <div className="border-l border-white/25 pl-2.5">
+                <div className="text-white font-bold text-sm leading-tight">AI-Netwerk</div>
+                <div className="text-blue-200 text-xs leading-tight">NHL Stenden</div>
+              </div>
+            </NavLink>
 
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center h-16 gap-0.5">
-
-            {/* Start */}
+            {/* Start knop direct aansluitend rechts van naam */}
             <NavLink to="/"
               className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors mr-1 ${
-                  isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'
+                `flex items-center gap-1.5 ml-3 pl-3 border-l border-white/20 py-2 text-xs font-semibold transition-colors ${
+                  isActive ? 'text-white' : 'text-blue-200 hover:text-white'
                 }`
               }>
               🏠 Start
             </NavLink>
+          </div>
 
-            <div className="w-px h-5 bg-white/20 mx-1" />
-
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center h-16 gap-0.5">
             {navGroepen.map(groep => (
               <DropdownGroep key={groep.label} groep={groep} />
             ))}
@@ -151,15 +156,12 @@ export default function Nav() {
         {mobileOpen && (
           <div className="lg:hidden border-t border-white/20 py-4">
             <NavLink to="/" onClick={() => setMobileOpen(false)}
-              className={({ isActive }) =>
-                `block px-3 py-2.5 text-sm font-semibold mb-1 transition-colors ${isActive ? 'text-white' : 'text-blue-100 hover:text-white'}`
-              }>
+              className="block px-3 py-2.5 text-sm font-semibold text-blue-100 hover:text-white mb-1">
               🏠 Start
             </NavLink>
             {navGroepen.map(groep => (
               <div key={groep.label} className="mb-1">
-                <button
-                  onClick={() => setMobileGroep(mobileGroep === groep.label ? null : groep.label)}
+                <button onClick={() => setMobileGroep(mobileGroep === groep.label ? null : groep.label)}
                   className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-blue-300 uppercase tracking-widest hover:text-white transition-colors">
                   {groep.label}
                   <svg className={`w-3.5 h-3.5 transition-transform ${mobileGroep === groep.label ? 'rotate-180' : ''}`}
