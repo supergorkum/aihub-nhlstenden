@@ -30,6 +30,37 @@ const AMBITIES = [
   },
 ]
 
+const THEMA_AMBITIES = [
+  {
+    icon: '🎓',
+    kleur: '#1E3A8A',
+    thema: 'AI & Leren',
+    ambitie: 'De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek.',
+    to: '/themas?spoor=1',
+  },
+  {
+    icon: '⚙️',
+    kleur: '#0F766E',
+    thema: 'AI & Werken',
+    ambitie: 'NHL Stenden zet AI in om de efficiency van werkprocessen te verhogen, zodat medewerkers hun expertise voluit kunnen richten op onderwijs, begeleiding en samenwerking.',
+    to: '/themas?spoor=2',
+  },
+  {
+    icon: '⚖️',
+    kleur: '#E91E8C',
+    thema: 'AI & Verantwoordelijkheid',
+    ambitie: 'NHL Stenden gebruikt AI alleen op een manier die transparant, controleerbaar en eerlijk is, en die past binnen de waarden van de instelling en de eisen van wet en samenleving.',
+    to: '/themas?spoor=3',
+  },
+  {
+    icon: '📖',
+    kleur: '#7C3AED',
+    thema: 'AI & Geletterdheid',
+    ambitie: 'NHL Stenden zorgt ervoor dat AI-geletterdheid een basisvaardigheid is voor alle studenten en medewerkers, zodat niemand afhankelijk is van AI zonder het te begrijpen.',
+    to: '/themas?spoor=4',
+  },
+]
+
 const IMPACT_PUNTEN = { laag: 1, gemiddeld: 2, hoog: 3 }
 
 export function berekenImpact(items, ambitieId) {
@@ -41,7 +72,6 @@ export function berekenImpact(items, ambitieId) {
   return { aantal, score, max, items: relevant }
 }
 
-const IMPACT_LABEL = { laag: 'laag', gemiddeld: 'gemiddeld', hoog: 'hoog' }
 const IMPACT_DOT = {
   laag: 'bg-yellow-300',
   gemiddeld: 'bg-blue-300',
@@ -63,17 +93,17 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [] }) {
       <div className="nhl-gradient-deep text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
 
-          {/* Kop */}
+          {/* Overkoepelende kernambitie */}
           <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-10">
             <div className="flex-1">
               <div className="text-white font-semibold text-xs uppercase tracking-widest mb-3 opacity-70">
                 De kernambitie van NHL Stenden
               </div>
               <blockquote className="text-xl sm:text-2xl font-bold text-white leading-snug border-l-4 border-nhl-roze pl-4 mb-4">
-                "De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek."
+                "NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."
               </blockquote>
               <p className="text-blue-200 text-sm leading-relaxed max-w-xl">
-                Hieronder zie je hoeveel initiatieven en pilots expliciet aan deze ambitie zijn gekoppeld — en welke dat zijn.
+                Hieronder zie je hoeveel initiatieven en pilots expliciet aan de ambitie van AI & Leren zijn gekoppeld — en welke dat zijn.
                 De verwachte impact per item is ingeschat door degene die het heeft aangemeld.
               </p>
             </div>
@@ -84,8 +114,8 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [] }) {
             </div>
           </div>
 
-          {/* Drie kolommen */}
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
+          {/* AI & Leren impact — drie kolommen */}
+          <div className="grid sm:grid-cols-3 gap-4 mb-10">
             {AMBITIES.map(ambitie => {
               const { aantal, items } = berekenImpact(alleItems, ambitie.id)
               const hoog = items.filter(i => i.impactInschatting === 'hoog').length
@@ -95,22 +125,16 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [] }) {
               return (
                 <div key={ambitie.id}
                   className={`${ambitie.bg} backdrop-blur-sm border ${ambitie.border} rounded-2xl p-5`}>
-
-                  {/* Header */}
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-2xl">{ambitie.icon}</span>
                     <span className="font-bold text-white text-sm leading-snug">{ambitie.label}</span>
                   </div>
-
-                  {/* Groot getal */}
                   <div className="flex items-baseline gap-2 mb-3">
                     <span className="text-4xl font-extrabold text-white">{aantal}</span>
                     <span className="text-blue-200 text-xs">
                       {aantal === 1 ? 'initiatief' : 'initiatieven'}
                     </span>
                   </div>
-
-                  {/* Impact verdeling — alleen als er items zijn */}
                   {aantal > 0 && (
                     <div className="flex gap-2 mb-4">
                       {hoog > 0 && (
@@ -133,8 +157,6 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [] }) {
                       )}
                     </div>
                   )}
-
-                  {/* Lijst van namen */}
                   {items.length > 0 ? (
                     <div className="space-y-1.5">
                       {items.map(i => (
@@ -156,10 +178,39 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [] }) {
             })}
           </div>
 
+          {/* Divider */}
+          <div className="border-t border-white/10 mb-10" />
+
+          {/* Kernambities per thema */}
+          <div className="mb-8">
+            <div className="text-white font-semibold text-xs uppercase tracking-widest mb-5 opacity-70">
+              Kernambities per thema
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {THEMA_AMBITIES.map(k => (
+                <Link key={k.thema} to={k.to}
+                  className="group bg-white/8 hover:bg-white/15 border border-white/15 rounded-2xl p-5 transition-all">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0"
+                      style={{ backgroundColor: k.kleur + '40' }}>
+                      {k.icon}
+                    </div>
+                    <div className="font-bold text-white text-sm group-hover:text-nhl-roze-light transition-colors">
+                      {k.thema}
+                    </div>
+                    <span className="ml-auto text-white/30 group-hover:text-white/70 transition-colors text-xs">→</span>
+                  </div>
+                  <div className="h-0.5 w-8 rounded-full mb-3 transition-all group-hover:w-16" style={{ backgroundColor: k.kleur }} />
+                  <p className="text-blue-200 text-xs leading-relaxed italic">"{k.ambitie}"</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* CTA */}
           <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-white/20">
             <p className="text-blue-200 text-sm flex-1">
-              Draagt jouw initiatief of pilot bij aan deze ambitie? Koppel het bij aanmelding.
+              Draagt jouw initiatief of pilot bij aan deze ambities? Koppel het bij aanmelding.
             </p>
             <Link to="/pilots" className="bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors flex-shrink-0">
               Bekijk pilots →

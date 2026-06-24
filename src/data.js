@@ -34,8 +34,8 @@ export const sporen = [
   },
   {
     id: 4,
-    titel: 'AI-Geletterdheid',
-    bolLabel: 'AI-\nGeletterd.',
+    titel: 'AI & Geletterdheid',
+    bolLabel: 'AI &\nGeletterd.',
     icon: '📖',
     kleur: '#7C3AED',
     kort: 'De doorlopende basis voor iedereen in de organisatie.',

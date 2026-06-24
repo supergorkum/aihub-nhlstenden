@@ -26,31 +26,31 @@ import {
 
 const INIT_ROADMAP = [
   {
-    id: 1, titel: 'AI-geletterdheid basistraining voor alle medewerkers',
+    id: 1, titel: 'AI & Geletterdheid basistraining voor alle medewerkers',
     omschrijving: 'Verplichte introductiecursus AI voor alle NHL Stenden medewerkers en docenten. Wat is AI, hoe werkt het, wat mag wel en niet?',
     status: 'lopend', prioriteit: 'hoog', verantwoordelijke: 'HR & OO&I',
-    aiActKoppeling: 'aa1', datum: 'Q3 2026', toegevoegdDoor: 'Kernteam AI-HUB',
+    aiActKoppeling: 'aa1', datum: 'Q3 2026', toegevoegdDoor: 'Kernteam AI-Netwerk',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 2, titel: 'Inventarisatie hoog-risico AI-systemen',
     omschrijving: 'Welke AI-systemen die we gebruiken vallen onder de "hoog-risico" categorie van de AI Act? ProctorExam en mogelijke profileringssystemen als eerste te onderzoeken.',
     status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'AI Compliance Groep',
-    aiActKoppeling: 'aa2', datum: 'Q4 2026', toegevoegdDoor: 'Kernteam AI-HUB',
+    aiActKoppeling: 'aa2', datum: 'Q4 2026', toegevoegdDoor: 'Kernteam AI-Netwerk',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 3, titel: 'Beleidskader generatieve AI voor studenten',
     omschrijving: 'Helder beleid over wat studenten wel en niet mogen met AI bij opdrachten en toetsing. Inclusief transparantieverplichting conform AI Act art. 50.',
     status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'OO&I',
-    aiActKoppeling: 'aa4', datum: 'Q3 2026', toegevoegdDoor: 'Kernteam AI-HUB',
+    aiActKoppeling: 'aa4', datum: 'Q3 2026', toegevoegdDoor: 'Kernteam AI-Netwerk',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 4, titel: 'AI-desk operationeel',
     omschrijving: 'Centraal loket voor medewerkers die AI willen inzetten. Toetst of het systeem veilig, AVG-compliant en AI Act-conform is voordat breed gebruik wordt toegestaan.',
     status: 'in-ontwikkeling', prioriteit: 'hoog', verantwoordelijke: 'Prog. Digitale Transitie',
-    aiActKoppeling: 'aa5', datum: 'Q4 2026', toegevoegdDoor: 'Kernteam AI-HUB',
+    aiActKoppeling: 'aa5', datum: 'Q4 2026', toegevoegdDoor: 'Kernteam AI-Netwerk',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
@@ -76,7 +76,6 @@ function AppInner() {
     } catch { return [] }
   })
 
-  // Berichten automatisch opslaan bij wijziging
   const setBerichten_ = (fn) => {
     setBerichten(prev => {
       const nieuw = typeof fn === 'function' ? fn(prev) : fn
@@ -84,6 +83,7 @@ function AppInner() {
       return nieuw
     })
   }
+
   const [videos, setVideos] = useState(() => {
     try {
       const opgeslagen = localStorage.getItem('aihub-videos')
@@ -99,6 +99,7 @@ function AppInner() {
       return nieuw
     })
   }
+
   const [pilots, setPilots] = useState(INIT_PILOTS)
   const [docs, setDocs] = useState(INIT_DOCS)
   const [evenementen, setEvenementen] = useState(INIT_EVENEMENTEN)
