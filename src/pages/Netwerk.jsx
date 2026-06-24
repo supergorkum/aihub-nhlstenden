@@ -28,29 +28,29 @@ const NODE_LINKS = {
 
 // Zes sporen rondom de kern, evenwichtig verdeeld (60° tussenruimte)
 const NODES = [
-  { id: 'hub', lines: ['AI-','Netwerk'],         x: 50, y: 50, r: 6,  kleur: '#1E3A8A', type: 'kern' },
-  // Zes sporen
-  { id: 's1',  lines: ['AI &','Leren'],          x: 50, y: 18, r: 5,  kleur: '#1E3A8A', type: 'spoor', spoorId: 1 },
-  { id: 's2',  lines: ['AI &','Werken'],         x: 77, y: 30, r: 5,  kleur: '#0F766E', type: 'spoor', spoorId: 2 },
-  { id: 's3',  lines: ['AI &','Verantw.'],       x: 77, y: 70, r: 5,  kleur: '#E91E8C', type: 'spoor', spoorId: 3 },
-  { id: 's4',  lines: ['AI &','Geletterd.'],     x: 50, y: 83, r: 5,  kleur: '#7C3AED', type: 'spoor', spoorId: 4 },
-  { id: 's5',  lines: ['AI &','Werkveld'],       x: 23, y: 70, r: 5,  kleur: '#B45309', type: 'spoor', spoorId: 5 },
-  { id: 's6',  lines: ['AI &','Onderzoek'],      x: 23, y: 30, r: 5,  kleur: '#0E7490', type: 'spoor', spoorId: 6 },
-  // Initiatieven
-  { id: 'i1',  lines: ['AI','Compliance'],  x: 92, y: 50, r: 2.8, kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 1 },
-  { id: 'i2',  lines: ['AI','Coalitie'],    x: 62, y: 5,  r: 2.8, kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 2 },
-  { id: 'i3',  lines: ['Academie','Edu.'],  x: 82, y: 10, r: 2.8, kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 3 },
-  { id: 'i4',  lines: ['FCP','Data&AI'],    x: 96, y: 28, r: 2.8, kleur: '#CCFBF1', tekstKleur: '#0F766E', type: 'init', initId: 4 },
-  { id: 'i5',  lines: ['BDB','AI-cursus'],  x: 62, y: 96, r: 2.8, kleur: '#EDE9FE', tekstKleur: '#7C3AED', type: 'init', initId: 5 },
-  { id: 'i10', lines: ['Sandbox'],          x: 38, y: 96, r: 2.8, kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 10 },
-  { id: 'i11', lines: ['AI-Desk'],          x: 96, y: 72, r: 2.8, kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 11 },
-  { id: 'i12', lines: ['Computer','Vision'],x: 7,  y: 55, r: 2.8, kleur: '#FEF3C7', tekstKleur: '#B45309', type: 'init', initId: 12 },
-  { id: 'i14', lines: ['Applied','Res.AI'], x: 7,  y: 20, r: 2.8, kleur: '#ECFEFF', tekstKleur: '#0E7490', type: 'init', initId: 14 },
-  // Externe partners
-  { id: 'e6',  lines: ['SURF','AI-Hub'],    x: 38, y: 4,  r: 2.5, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 6 },
-  { id: 'e8',  lines: ['GPT-NL'],           x: 18, y: 4,  r: 2.5, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 8 },
-  { id: 'e9',  lines: ['AI-Fabriek'],       x: 4,  y: 38, r: 2.5, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 9 },
-  { id: 'e7',  lines: ['NPULS'],            x: 38, y: 97, r: 2.5, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 7 },
+  { id: 'hub', lines: ['AI-','Netwerk'],         x: 55, y: 55, r: 6.5, kleur: '#1E3A8A', type: 'kern' },
+  // Zes sporen — centrum 55,55 — radius 35 — 60° tussenruimte
+  { id: 's1',  lines: ['AI &','Leren'],          x: 55, y: 20, r: 5.5, kleur: '#1E3A8A', type: 'spoor', spoorId: 1 },
+  { id: 's2',  lines: ['AI &','Werken'],         x: 85, y: 37, r: 5.5, kleur: '#0F766E', type: 'spoor', spoorId: 2 },
+  { id: 's3',  lines: ['AI &','Verantw.'],       x: 85, y: 73, r: 5.5, kleur: '#E91E8C', type: 'spoor', spoorId: 3 },
+  { id: 's4',  lines: ['AI &','Geletterd.'],     x: 55, y: 90, r: 5.5, kleur: '#7C3AED', type: 'spoor', spoorId: 4 },
+  { id: 's5',  lines: ['AI &','Werkveld'],       x: 25, y: 73, r: 5.5, kleur: '#B45309', type: 'spoor', spoorId: 5 },
+  { id: 's6',  lines: ['AI &','Onderzoek'],      x: 25, y: 37, r: 5.5, kleur: '#0E7490', type: 'spoor', spoorId: 6 },
+  // Initiatieven — goed gespreid zodat geen overlapping
+  { id: 'i1',  lines: ['AI','Compliance'],  x: 103, y: 55, r: 3,   kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 1 },
+  { id: 'i2',  lines: ['AI','Coalitie'],    x: 68,  y: 6,  r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 2 },
+  { id: 'i3',  lines: ['Academie','Edu.'],  x: 90,  y: 13, r: 3,   kleur: '#DBEAFE', tekstKleur: '#1E3A8A', type: 'init', initId: 3 },
+  { id: 'i4',  lines: ['FCP','Data&AI'],    x: 103, y: 32, r: 3,   kleur: '#CCFBF1', tekstKleur: '#0F766E', type: 'init', initId: 4 },
+  { id: 'i5',  lines: ['BDB','AI-cursus'],  x: 70,  y: 104,r: 3,   kleur: '#EDE9FE', tekstKleur: '#7C3AED', type: 'init', initId: 5 },
+  { id: 'i10', lines: ['Sandbox'],          x: 45,  y: 104,r: 3,   kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 10 },
+  { id: 'i11', lines: ['AI-Desk'],          x: 103, y: 77, r: 3,   kleur: '#FCE7F3', tekstKleur: '#E91E8C', type: 'init', initId: 11 },
+  { id: 'i12', lines: ['Computer','Vision'],x: 6,   y: 73, r: 3,   kleur: '#FEF3C7', tekstKleur: '#B45309', type: 'init', initId: 12 },
+  { id: 'i14', lines: ['Applied','Res.AI'], x: 6,   y: 25, r: 3,   kleur: '#ECFEFF', tekstKleur: '#0E7490', type: 'init', initId: 14 },
+  // Externe partners — ruim buiten de sporen
+  { id: 'e6',  lines: ['SURF','AI-Hub'],    x: 42,  y: 5,  r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 6 },
+  { id: 'e8',  lines: ['GPT-NL'],           x: 20,  y: 7,  r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 8 },
+  { id: 'e9',  lines: ['AI-Fabriek'],       x: 5,   y: 46, r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 9 },
+  { id: 'e7',  lines: ['NPULS'],            x: 26,  y: 104,r: 2.8, kleur: '#D1FAE5', tekstKleur: '#065F46', type: 'extern', initId: 7 },
 ]
 
 const LINKS = [
@@ -134,7 +134,7 @@ export default function Netwerk() {
           {/* SVG — ruimer viewBox zodat bollen niet buiten het frame vallen */}
           <div className="xl:col-span-3">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-              <svg viewBox="-8 -8 116 116" className="w-full" style={{ aspectRatio: '1/1' }}>
+              <svg viewBox="-14 -14 138 138" className="w-full" style={{ aspectRatio: '1/1' }}>
                 <defs>
                   <radialGradient id="netCenterGrad" cx="40%" cy="35%">
                     <stop offset="0%" stopColor="#3B5FC0"/>
@@ -142,8 +142,8 @@ export default function Netwerk() {
                   </radialGradient>
                 </defs>
                 {/* Decoratieve ringen */}
-                <circle cx="50" cy="50" r="22" fill="none" stroke="#E5E7EB" strokeWidth="0.4" strokeDasharray="3 3"/>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#F3F4F6" strokeWidth="0.4"/>
+                <circle cx="55" cy="55" r="24" fill="none" stroke="#E5E7EB" strokeWidth="0.4" strokeDasharray="3 3"/>
+                <circle cx="55" cy="55" r="42" fill="none" stroke="#F3F4F6" strokeWidth="0.4"/>
 
                 {/* Links */}
                 {LINKS.map(([vanId, naarId], i) => {

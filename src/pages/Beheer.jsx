@@ -474,7 +474,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'video', label: "Video's", n: (videos || []).filter(v => v.status === 'wachtrij').length > 0 ? `${(videos || []).filter(v => v.status === 'wachtrij').length} wachtrij` : (videos || []).length },
     { id: 'pilots', label: 'Pilots', n: (pilots || []).length },
     { id: 'docs', label: 'Documenten', n: (docs || []).length },
-    { id: 'data', label: 'Data', n: null },
+    { id: 'backup', label: '☁️ Backup & Restore', n: null },
   ]
 
   return (
@@ -484,7 +484,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
         <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
           <div>
             <div className="text-nhl-roze font-semibold text-xs uppercase tracking-widest mb-1">Beheer</div>
-            <h1 className="text-2xl font-bold text-nhl-blauw">AI-HUB Beheer</h1>
+            <h1 className="text-2xl font-bold text-nhl-blauw">AI-Netwerk Beheer</h1>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <div className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs border transition-colors ${
@@ -727,6 +727,24 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
 
         {actieveTab === 'backup' && (
           <div className="space-y-6">
+
+            {/* Nieuws ophalen — bovenaan, aparte sectie */}
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100" style={{background: 'linear-gradient(135deg, #0E7490, #0F766E)'}}>
+                <div>
+                  <div className="text-white font-bold flex items-center gap-2">📰 Nieuws ophalen</div>
+                  <div className="text-white/70 text-xs mt-0.5">Haal actuele AI-berichten op via RSS-feeds en voeg ze toe als inspiratie</div>
+                </div>
+              </div>
+              <div className="p-6">
+                <NieuwsOphalen onNieuwItems={(items) => {
+                  setInspiraties(prev => {
+                    const nieuweIds = new Set(prev.map(i => i.titel))
+                    return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]
+                  })
+                }} />
+              </div>
+            </div>
 
             {/* Cloud backup */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">

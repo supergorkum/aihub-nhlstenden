@@ -201,11 +201,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 In ontwikkeling — versie 1.7 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
-                <svg viewBox="0 0 48 48" className="h-14 w-14" fill="none">
-                  <rect x="3" y="4" width="32" height="40" rx="1.5" stroke="white" strokeWidth="2.5" fill="none"/>
-                  <text x="6" y="22" fontSize="10" fontWeight="800" fill="white" fontFamily="Arial,sans-serif">NHL</text>
-                  <text x="6" y="36" fontSize="7.5" fontWeight="700" fill="white" fontFamily="Arial,sans-serif">STENDEN</text>
-                </svg>
+                <img src="/nhl-logo-transparent.png" alt="NHL Stenden" className="h-16 w-16 object-contain" />
                 <div>
                   <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">AI-Netwerk</h1>
                   <div className="text-nhl-roze-light font-semibold text-lg">NHL Stenden</div>
