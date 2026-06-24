@@ -474,6 +474,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'video', label: "Video's", n: (videos || []).filter(v => v.status === 'wachtrij').length > 0 ? `${(videos || []).filter(v => v.status === 'wachtrij').length} wachtrij` : (videos || []).length },
     { id: 'pilots', label: 'Pilots', n: (pilots || []).length },
     { id: 'docs', label: 'Documenten', n: (docs || []).length },
+    { id: 'nieuws', label: '📰 Nieuws ophalen', n: null },
     { id: 'backup', label: '☁️ Backup & Restore', n: null },
   ]
 
@@ -725,18 +726,46 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {actieveTab === 'backup' && (
+        {actieveTab === 'nieuws' && (
           <div className="space-y-6">
-
-            {/* Nieuws ophalen — bovenaan, aparte sectie */}
+            {/* Uitleg */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100" style={{background: 'linear-gradient(135deg, #0E7490, #0F766E)'}}>
-                <div>
-                  <div className="text-white font-bold flex items-center gap-2">📰 Nieuws ophalen</div>
-                  <div className="text-white/70 text-xs mt-0.5">Haal actuele AI-berichten op via RSS-feeds en voeg ze toe als inspiratie</div>
-                </div>
+              <div className="px-6 py-5 border-b border-gray-100" style={{background: 'linear-gradient(135deg, #0E7490 0%, #0F766E 100%)'}}>
+                <div className="text-white font-bold text-base flex items-center gap-2 mb-1">📰 Nieuws ophalen</div>
+                <div className="text-white/80 text-sm">Actuele AI-berichten worden opgehaald, beoordeeld op relevantie voor NHL Stenden, en toegevoegd aan Inspiratie.</div>
               </div>
               <div className="p-6">
+                <div className="grid sm:grid-cols-2 gap-5 mb-6">
+                  <div className="rounded-xl border border-gray-100 p-4 bg-gray-50">
+                    <div className="font-semibold text-nhl-blauw text-sm mb-2 flex items-center gap-2">🔍 Hoe werkt het?</div>
+                    <ol className="space-y-2 text-sm text-gray-600">
+                      <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">1</span><span>Het systeem haalt berichten op uit RSS-feeds van relevante bronnen.</span></li>
+                      <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">2</span><span>Claude AI beoordeelt elk bericht op relevantie voor NHL Stenden en AI in onderwijs.</span></li>
+                      <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span><span>Relevante items worden automatisch vertaald naar het Nederlands en toegevoegd aan Inspiratie.</span></li>
+                    </ol>
+                  </div>
+                  <div className="rounded-xl border border-gray-100 p-4 bg-gray-50">
+                    <div className="font-semibold text-nhl-blauw text-sm mb-2 flex items-center gap-2">📡 Bronnen die worden gevolgd</div>
+                    <div className="space-y-2">
+                      {[
+                        { naam: 'Rijksoverheid', omschrijving: 'AI-beleid, AI-Fabriek, nationale strategie', icon: '🏛️', kleur: '#1E3A8A' },
+                        { naam: 'SURF', omschrijving: 'AI-Hub, GPT-NL, onderwijs & ICT', icon: '🤝', kleur: '#0F766E' },
+                        { naam: 'NPULS', omschrijving: 'Digitalisering hoger onderwijs', icon: '📚', kleur: '#7C3AED' },
+                        { naam: 'AI Act (EUR-Lex)', omschrijving: 'EU compliance & regelgeving', icon: '⚖️', kleur: '#E91E8C' },
+                        { naam: 'The Gradient, Import AI', omschrijving: 'Internationale AI-ontwikkelingen', icon: '🌐', kleur: '#B45309' },
+                      ].map(b => (
+                        <div key={b.naam} className="flex items-start gap-2">
+                          <span className="text-base flex-shrink-0">{b.icon}</span>
+                          <div>
+                            <span className="text-xs font-semibold" style={{color: b.kleur}}>{b.naam}</span>
+                            <span className="text-xs text-gray-400"> — {b.omschrijving}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
                 <NieuwsOphalen onNieuwItems={(items) => {
                   setInspiraties(prev => {
                     const nieuweIds = new Set(prev.map(i => i.titel))
@@ -745,8 +774,13 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 }} />
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Cloud backup */}
+                {actieveTab === 'backup' && (
+          <div className="space-y-6">
+
+{/* Cloud backup */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="nhl-gradient-deep px-6 py-5">
                 <div className="flex items-center gap-3">
@@ -794,23 +828,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               </div>
             </div>
 
-            {/* Nieuws ophalen — aparte sectie bovenaan */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                <div>
-                  <div className="font-bold text-nhl-blauw flex items-center gap-2">📰 Nieuws ophalen</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Haal relevante AI-berichten op via de Rijksoverheid, SURF, NPULS en andere bronnen. Voeg ze toe als inspiratie.</div>
-                </div>
-              </div>
-              <div className="p-6">
-                <NieuwsOphalen onNieuwItems={(items) => {
-                  setInspiraties(prev => {
-                    const nieuweIds = new Set(prev.map(i => i.titel))
-                    return [...items.filter(i => !nieuweIds.has(i.titel)), ...prev]
-                  })
-                }} />
-              </div>
-            </div>
+
 
             {/* JSON export / import */}
             <div className="grid sm:grid-cols-2 gap-4">

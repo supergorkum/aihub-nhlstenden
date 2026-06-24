@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 const navGroepen = [
   { label: 'Verkennen', items: [
@@ -26,21 +26,42 @@ const navGroepen = [
   ]},
 ]
 
-function DropdownGroep({ groep }) {
-  const [open, setOpen] = useState(false)
+// Gedeelde activeGroep state in parent zodat slechts één dropdown tegelijk open is
+function DropdownGroep({ groep, activeGroep, setActiveGroep }) {
   const t = useRef(null)
-  const enter = () => { if (t.current) clearTimeout(t.current); setOpen(true) }
-  const leave = () => { t.current = setTimeout(() => setOpen(false), 150) }
+  const isOpen = activeGroep === groep.label
+
+  const enter = useCallback(() => {
+    if (t.current) clearTimeout(t.current)
+    setActiveGroep(groep.label)
+  }, [groep.label, setActiveGroep])
+
+  const leave = useCallback(() => {
+    // Langere delay (300ms) zodat muisbeweging tussen items soepel gaat
+    t.current = setTimeout(() => {
+      setActiveGroep(prev => prev === groep.label ? null : prev)
+    }, 300)
+  }, [groep.label, setActiveGroep])
+
+  const cancelLeave = useCallback(() => {
+    if (t.current) clearTimeout(t.current)
+  }, [])
+
   return (
     <div className="relative h-16 flex items-center" onMouseEnter={enter} onMouseLeave={leave}>
-      <button className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${open ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>
+      <button className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${isOpen ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>
         {groep.label}
-        <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7"/></svg>
+        <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7"/></svg>
       </button>
-      {open && (
-        <div className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50" style={{marginTop:'-1px'}} onMouseEnter={enter} onMouseLeave={leave}>
+      {isOpen && (
+        <div
+          className="absolute top-full left-0 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-52 z-50"
+          style={{marginTop:'-1px'}}
+          onMouseEnter={cancelLeave}
+          onMouseLeave={leave}
+        >
           {groep.items.map(item => (
-            <NavLink key={item.to} to={item.to} onClick={() => setOpen(false)}
+            <NavLink key={item.to} to={item.to} onClick={() => setActiveGroep(null)}
               className={({isActive}) => `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${isActive ? 'text-nhl-blauw font-semibold bg-blue-50' : 'text-gray-700 hover:bg-gray-50 hover:text-nhl-blauw'}`}>
               <span className="w-5 text-center">{item.icon}</span><span>{item.label}</span>
             </NavLink>
@@ -54,13 +75,15 @@ function DropdownGroep({ groep }) {
 export default function Nav() {
   const [mob, setMob] = useState(false)
   const [mobGroep, setMobGroep] = useState(null)
+  // Gedeelde state: slechts één dropdown tegelijk
+  const [activeGroep, setActiveGroep] = useState(null)
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 shadow-lg" style={{backgroundColor:'#1E3A8A'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center flex-shrink-0">
             <NavLink to="/" className="flex items-center gap-2.5">
-              {/* Logo: transparante PNG — witte elementen zichtbaar op blauwe balk */}
               <img
                 src="/nhl-logo-transparent.png"
                 alt="NHL Stenden"
@@ -76,7 +99,14 @@ export default function Nav() {
             </NavLink>
           </div>
           <div className="hidden lg:flex items-center h-16 gap-0.5">
-            {navGroepen.map(g => <DropdownGroep key={g.label} groep={g}/>)}
+            {navGroepen.map(g => (
+              <DropdownGroep
+                key={g.label}
+                groep={g}
+                activeGroep={activeGroep}
+                setActiveGroep={setActiveGroep}
+              />
+            ))}
             <NavLink to="/over" className={({isActive}) => `flex items-center px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:text-white hover:bg-white/10'}`}>Over</NavLink>
             <div className="w-px h-5 bg-white/20 mx-2"/>
             <NavLink to="/meld" className="flex items-center gap-1.5 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap">+ Vraag of idee</NavLink>

@@ -210,9 +210,9 @@ export default function Netwerk() {
                       onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)}>
                       <circle cx={node.x} cy={node.y} r={node.r * scale} fill="url(#netCenterGrad)"
                         style={{ transition: 'r 0.15s' }}/>
-                      <text x={node.x} y={node.y - 2.5} textAnchor="middle" fontSize="4" fontWeight="800"
+                      <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize="3.2" fontWeight="800"
                         fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>AI-</text>
-                      <text x={node.x} y={node.y + 2.5} textAnchor="middle" fontSize="4" fontWeight="800"
+                      <text x={node.x} y={node.y + 2.2} textAnchor="middle" fontSize="3.2" fontWeight="800"
                         fill="white" fontFamily="Inter, Arial, sans-serif" style={{ pointerEvents: 'none' }}>Netwerk</text>
                     </g>
                   )
