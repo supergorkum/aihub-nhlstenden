@@ -77,6 +77,7 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
   const [ingediend, setIngediend] = useState(false)
 
   // Pre-select categorie via URL parameter (?categorie=initiatief)
+  // Luistert ook naar veranderingen zodat terugnavigeren zonder param reset naar keuzescherm
   useEffect(() => {
     const catParam = searchParams.get('categorie')
     if (catParam) {
@@ -84,9 +85,16 @@ export default function Meld({ onNieuwBericht, berichten = [] }) {
       if (gevonden) {
         setCategorie(gevonden)
         setStap('form')
+        setIngediend(false)
       }
+    } else {
+      // Geen categorie in URL: altijd terugvallen op keuzescherm
+      setStap('categorie')
+      setCategorie(null)
+      setForm(leegForm())
+      setIngediend(false)
     }
-  }, [])
+  }, [searchParams])
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 

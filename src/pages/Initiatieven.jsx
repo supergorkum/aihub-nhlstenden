@@ -1,6 +1,6 @@
 import GradientHeader from '../components/GradientHeader'
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
 const statusConfig = {
@@ -38,27 +38,39 @@ const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend']
 export default function Initiatieven({ roadmap, setRoadmap }) {
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const [actieveTab, setActieveTab] = useState(() => {
     const urlTab = new URLSearchParams(location.search).get('tab')
     return urlTab || 'initiatieven'
   })
 
+  // Tab-switching vanuit URL
   useEffect(() => {
     const urlTab = new URLSearchParams(location.search).get('tab')
     if (urlTab) setActieveTab(urlTab)
   }, [location.search])
 
+  // Modal openen vanuit URL (?modal=aanmelden), bijv. vanuit Over pagina
+  useEffect(() => {
+    const modalParam = searchParams.get('modal')
+    if (modalParam === 'aanmelden') {
+      openInitiatiefModal()
+      // Verwijder de param zodat refresh de modal niet opnieuw opent
+      const nieuweParams = new URLSearchParams(location.search)
+      nieuweParams.delete('modal')
+      navigate(`/initiatieven${nieuweParams.toString() ? '?' + nieuweParams.toString() : ''}`, { replace: true })
+    }
+  }, [])
+
   const [filterSpoor, setFilterSpoor] = useState(null)
   const [filterType, setFilterType] = useState(null)
   const [zoek, setZoek] = useState('')
 
-  // Roadmap modal
   const [addOpen, setAddOpen] = useState(false)
   const [toegevoegd, setToegevoegd] = useState(false)
   const [form, setForm] = useState({ titel: '', omschrijving: '', prioriteit: 'hoog', verantwoordelijke: '', datum: '', naam: '' })
 
-  // Initiatief aanmelden modal
   const [initAddOpen, setInitAddOpen] = useState(false)
   const [initToegevoegd, setInitToegevoegd] = useState(false)
   const [extraInitiatieven, setExtraInitiatieven] = useState([])
@@ -155,7 +167,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
     <div className="min-h-screen pt-16 bg-gray-50">
       <GradientHeader
         label="Wat loopt er"
-        title="Initiatieven & Roadmap"
+        title="Initiatieven en Roadmap"
         subtitle="Overzicht van alle AI-initiatieven bij NHL Stenden — wat loopt er, wat moet er nog starten, en hoe verhouden we ons tot de AI Act."
       >
         <div className="mt-5 flex flex-wrap gap-3">
@@ -513,7 +525,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         )}
       </div>
 
-      {/* ── Modal: Initiatief aanmelden ── */}
+      {/* Modal: Initiatief aanmelden */}
       {initAddOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
@@ -577,8 +589,6 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                     {sporen.map(s => <option key={s.id} value={s.id}>{s.icon} {s.titel}</option>)}
                   </select>
                 </div>
-
-                {/* Ambitiekoppeling */}
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                   <div className="font-semibold text-nhl-blauw text-sm mb-2">Koppel aan een bestuurlijke ambitie</div>
                   <p className="text-xs text-blue-700 mb-3">Draagt dit initiatief bij aan studiesucces, minder uitval of minder voortijdig vertrek?</p>
@@ -610,14 +620,12 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                     </div>
                   )}
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Contactnaam (optioneel)</label>
                   <input type="text" value={initForm.contactNaam} onChange={e => updInit('contactNaam', e.target.value)}
                     placeholder="Bijv. Jan de Vries of Projectteam Academie Educatie"
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw" />
                 </div>
-
                 <button onClick={voegInitiatiefToe}
                   disabled={!initForm.naam || !initForm.omschrijving}
                   className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors ${initForm.naam && initForm.omschrijving ? 'bg-nhl-roze text-white hover:bg-nhl-roze-dark' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
@@ -629,7 +637,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         </div>
       )}
 
-      {/* ── Modal: Roadmap item toevoegen ── */}
+      {/* Modal: Roadmap item toevoegen */}
       {addOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">

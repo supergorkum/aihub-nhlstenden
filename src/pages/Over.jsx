@@ -10,29 +10,29 @@ const ALLE_THEMAS = [
 ]
 
 const kernteam = [
-  { rol: 'Kwartiermaker Digitale Samenhang', subtitel: 'Spil & Strategie', icon: '🧭', kleur: '#1E3A8A', contact: null,
+  { rol: 'Kwartiermaker Digitale Samenhang', subtitel: 'Spil en Strategie', icon: '🧭', kleur: '#1E3A8A', contact: null,
     omschrijving: 'De Kwartiermaker is de initiator, strateeg en bestuurlijk aanspreekpunt van het AI-Netwerk.',
-    taken: ['Bewaakt de koers en samenhang van het AI-Netwerk als geheel', 'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma', 'Verbindt het AI-Netwerk met SURF, NPULS en Vereniging Hogescholen', 'Bewaakt de zes thema\'s en zorgt voor aansluiting op de organisatiepraktijk'] },
-  { rol: 'Informatiemanager', subtitel: 'Inhoud & Netwerk', icon: '🗂️', kleur: '#0F766E', contact: null,
+    taken: ['Bewaakt de koers en samenhang van het AI-Netwerk als geheel', 'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma', 'Verbindt het AI-Netwerk met SURF, NPULS en Vereniging Hogescholen', "Bewaakt de zes thema's en zorgt voor aansluiting op de organisatiepraktijk"] },
+  { rol: 'Informatiemanager', subtitel: 'Inhoud en Netwerk', icon: '🗂️', kleur: '#0F766E', contact: null,
     omschrijving: 'Verantwoordelijk voor de inhoudelijke kwaliteit en actualiteit van het AI-Netwerk.',
     taken: ['Beheert en actualiseert de inhoud: initiatieven, mensen en kaders', 'Verbindt initiatieven aan het juiste thema en laag', 'Bewaakt de aansluiting op bestaande informatiestromen', 'Ondersteunt de AI-desk bij het beoordelen van nieuwe initiatieven'] },
-  { rol: 'ICT Analist', subtitel: 'Techniek & Instrument', icon: '⚙️', kleur: '#7C3AED', contact: null,
+  { rol: 'ICT Analist', subtitel: 'Techniek en Instrument', icon: '⚙️', kleur: '#7C3AED', contact: null,
     omschrijving: 'Verantwoordelijk voor de technische realisatie van het digitale AI-Netwerk instrument.',
     taken: ['Ontwikkelt en beheert het digitale AI-Netwerk instrument', 'Analyseert technische vraagstukken: platforms en datastromen', 'Bewaakt de aansluiting op de IT-architectuur van NHL Stenden', 'Volgt ontwikkelingen bij SURF, AI-Fabriek en GPT-NL'] },
 ]
 
 const waarden = [
   { icon: '🤝', kleur: '#1E3A8A', licht: '#EFF6FF', titel: 'Verbinding',     tekst: 'Het AI-Netwerk verbindt mensen, initiatieven en kennis. Niet door te controleren, maar door zichtbaar te maken.' },
-  { icon: '🔍', kleur: '#0F766E', licht: '#F0FDFA', titel: 'Transparantie',  tekst: 'We maken zichtbaar wat loopt, wat ontbreekt en waar risico\'s zitten. Ook als iets nog niet af is.' },
+  { icon: '🔍', kleur: '#0F766E', licht: '#F0FDFA', titel: 'Transparantie',  tekst: "We maken zichtbaar wat loopt, wat ontbreekt en waar risico's zitten. Ook als iets nog niet af is." },
   { icon: '🎯', kleur: '#7C3AED', licht: '#F5F3FF', titel: 'Eigenaarschap',  tekst: 'Duurzame verandering ontstaat bij mensen die begrijpen wat ze doen en waarom. Eigenaarschap is de sleutel.' },
   { icon: '⚖️', kleur: '#E91E8C', licht: '#FDF2F8', titel: 'Verantwoord',    tekst: 'Publieke waarden staan centraal. AI inzetten op een manier die past bij wie we zijn als instelling.' },
 ]
 
 const fasering = [
-  { fase: 'Fundament',      periode: '2026 Q3',  kleur: '#1E3A8A', focus: 'Kernteam operationeel. Lagenmodel en thema\'s intern bekend. Eerste inventarisatie van initiatieven.', resultaat: 'Gedeelde taal aanwezig. Eigenaarschap per thema belegd.' },
-  { fase: 'Infrastructuur', periode: '2026 Q4',  kleur: '#0F766E', focus: 'Sandbox ingericht. AI-desk operationeel. Digitaal instrument in ontwikkeling. Geletterdheidstrajecten gestart.', resultaat: 'Experimenteren kan veilig beginnen.' },
+  { fase: 'Fundament',      periode: '2026 Q3',    kleur: '#1E3A8A', focus: "Kernteam operationeel. Lagenmodel en thema's intern bekend. Eerste inventarisatie van initiatieven.", resultaat: 'Gedeelde taal aanwezig. Eigenaarschap per thema belegd.' },
+  { fase: 'Infrastructuur', periode: '2026 Q4',    kleur: '#0F766E', focus: 'Sandbox ingericht. AI-desk operationeel. Digitaal instrument in ontwikkeling. Geletterdheidstrajecten gestart.', resultaat: 'Experimenteren kan veilig beginnen.' },
   { fase: 'Netwerk',        periode: '2027 Q1-Q2', kleur: '#7C3AED', focus: 'Thema-trekkers actief. Ambassadeurs per Academie en Dienst aangesteld. Extern netwerk structureel verbonden.', resultaat: 'Het netwerk loopt grotendeels op eigen kracht.' },
-  { fase: 'Verankering',    periode: '2027 Q3+', kleur: '#E91E8C', focus: 'Het AI-Netwerk is onderdeel van de reguliere bestuurs- en beleidsritmen. Programmatische sturing neemt af.', resultaat: 'Netwerkorganisatie op kruissnelheid.' },
+  { fase: 'Verankering',    periode: '2027 Q3+',   kleur: '#E91E8C', focus: 'Het AI-Netwerk is onderdeel van de reguliere bestuurs- en beleidsritmen. Programmatische sturing neemt af.', resultaat: 'Netwerkorganisatie op kruissnelheid.' },
 ]
 
 function ContactKnop({ contact, label = 'Neem contact op' }) {
@@ -81,7 +81,7 @@ export default function Over() {
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>AI is overal tegelijk aanwezig bij NHL Stenden. Studenten verkennen mogelijkheden voor hun leerproces. Docenten zoeken houvast bij vragen over integriteit en didactiek. Lectoraten doen onderzoek. Diensten ontdekken wat procesondersteuning kan betekenen. En werkveldpartners verwachten dat onze studenten AI-vaardig zijn.</p>
               <p>Al die bewegingen zijn waardevol. Maar ze hebben een gemeenschappelijk vertrekpunt nodig: gedeeld overzicht, een gedeelde taal en een gedeeld kompas.</p>
-              <p>Het AI-Netwerk legt niets op. Maar wijst de weg — door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat er al is, door <strong className="text-nhl-blauw">te verbinden</strong> wie er mee bezig zijn, en door <strong className="text-nhl-blauw">richting te geven</strong> vanuit gedeelde waarden.</p>
+              <p>Het AI-Netwerk legt niets op. Maar wijst de weg door <strong className="text-nhl-blauw">zichtbaar te maken</strong> wat er al is, door <strong className="text-nhl-blauw">te verbinden</strong> wie er mee bezig zijn, en door <strong className="text-nhl-blauw">richting te geven</strong> vanuit gedeelde waarden.</p>
             </div>
           </div>
           <div className="space-y-3">
@@ -167,7 +167,7 @@ export default function Over() {
               <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl flex-shrink-0">🏗️</div>
               <div>
                 <div className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-0.5">Fundament laag — breed over het kernteam</div>
-                <div className="text-white font-bold text-lg">Techniek & Infrastructuur</div>
+                <div className="text-white font-bold text-lg">Techniek en Infrastructuur</div>
               </div>
             </div>
             <div className="p-6 bg-white">
@@ -194,7 +194,7 @@ export default function Over() {
           </div>
         </div>
 
-        {/* Thema-trekkers — nu zes */}
+        {/* Thema-trekkers */}
         <div className="mb-20">
           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <div className="flex items-start gap-4 mb-6">
@@ -266,13 +266,19 @@ export default function Over() {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA — knop verwijst nu naar initiatieven pagina met modal parameter */}
         <div className="text-center bg-nhl-blauw rounded-2xl p-10">
           <div className="text-4xl mb-4">🚀</div>
           <h2 className="text-2xl font-bold text-white mb-3">Doe mee aan het AI-Netwerk</h2>
           <p className="text-blue-200 mb-6 max-w-md mx-auto">Het AI-Netwerk groeit vanuit de organisatie zelf. Jouw kennis, initiatief of vraag maakt het netwerk rijker.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link to="/meld?categorie=initiatief" className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">+ Meld een initiatief</Link>
+            {/* Verwijst naar /initiatieven?modal=aanmelden — pikt de modal daar op */}
+            <Link
+              to="/initiatieven?modal=aanmelden"
+              className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+            >
+              + Meld een initiatief
+            </Link>
             <Link to="/netwerk" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">Bekijk het netwerk</Link>
             <Link to="/themas" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">Ontdek de thema's</Link>
           </div>
