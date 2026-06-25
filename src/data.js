@@ -5,9 +5,9 @@ export const sporen = [
     bolLabel: 'AI &\nLeren',
     icon: '🎓',
     kleur: '#1E3A8A',
-    kort: 'AI versterkt leren: meer succes, minder uitval.',
-    waarom: 'AI verandert hoe studenten leren en hoe docenten begeleiden. Van adaptieve feedback tot slimmere toetsing en vroegtijdig signaleren van uitval: dit thema gaat over AI als versterker van het onderwijs, niet als vervanging van de docent. NHL Stenden wil dat AI bijdraagt aan studiesucces voor elke student, ongeacht achtergrond of leerstijl.',
-    uitleg: 'Onder dit thema vallen didactische vernieuwing, AI in toetsing en integriteit, curriculumontwikkeling, studieloopbaanbegeleiding en de inzet van AI om uitval vroegtijdig te signaleren en te voorkomen.',
+    kort: 'Onderwijs, didactiek, studiesucces en voorbereiding op de arbeidsmarkt.',
+    waarom: 'AI verandert hoe studenten leren en hoe docenten lesgeven. Van toetsing en integriteit tot curriculumontwikkeling en studiesucces — dit thema raakt de kern van wat NHL Stenden doet. Hier is de urgentie het meest voelbaar in de dagelijkse praktijk.',
+    uitleg: 'Onder dit thema vallen alle vraagstukken rond AI in het onderwijs én in de begeleiding van studenten. Hoe gebruik je AI integer in opdrachten en toetsen? Hoe integreer je AI-vaardigheden in het curriculum? Hoe helpt AI om studenten beter te begeleiden en uitval te verminderen?',
     themas: ['Toetsing & integriteit', 'Didactische inbedding', 'Curriculumontwikkeling', 'Studiesucces & uitval', 'Arbeidsmarktvoorbereiding', 'Studentbegeleiding met AI'],
   },
   {
@@ -16,9 +16,9 @@ export const sporen = [
     bolLabel: 'AI &\nWerken',
     icon: '⚙️',
     kleur: '#0F766E',
-    kort: 'AI neemt werk uit handen, zodat mensen het verschil maken.',
-    waarom: 'Administratieve lasten, repetitieve taken, complexe planningsvraagstukken: AI kan hier werk overnemen zodat medewerkers zich richten op wat echt telt. Dit thema gaat over slimmere werkprocessen, betere dienstverlening en een organisatie die wendbaarder wordt zonder de menselijke maat te verliezen.',
-    uitleg: 'Onder dit thema vallen procesautomatisering, AI-ondersteuning bij bedrijfsvoering, nieuwe werkwijzen bij diensten, HR-toepassingen en operationele efficiëntie.',
+    kort: 'Procesverbetering, bedrijfsvoering en nieuwe werkwijzen bij diensten.',
+    waarom: 'AI raakt niet alleen het onderwijs maar ook hoe NHL Stenden als organisatie functioneert. Diensten werken slimmer, processen worden geautomatiseerd en nieuwe tools maken werk efficiënter. Maar zonder richting leidt dat tot losse initiatieven zonder samenhang.',
+    uitleg: 'Onder dit thema vallen AI-toepassingen in de bedrijfsvoering van NHL Stenden: van FCP en HRM tot facilitaire diensten. Hoe zetten we AI in om processen te verbeteren? Hoe bouwen medewerkers zelf tools voor hun vakgebied? En hoe zorgen we dat nieuwe AI-mogelijkheden aansluiten op onze kernmissie?',
     themas: ['Procesverbetering bij diensten', 'Datagedreven werken', 'Eigen toolontwikkeling', 'Automatisering & efficiëntie', 'AI in HR en planning', 'Nieuwe werkwijzen'],
   },
   {
@@ -38,9 +38,9 @@ export const sporen = [
     bolLabel: 'AI &\nGeletterd.',
     icon: '📖',
     kleur: '#7C3AED',
-    kort: 'Iedereen AI-vaardig, niemand afhankelijk.',
-    waarom: 'AI-geletterdheid is geen luxe maar een basisvaardigheid. Dit thema gaat over het vermogen van studenten en medewerkers om AI te begrijpen, te beoordelen en bewust in te zetten. NHL Stenden wil dat iedereen mee kan doen in een wereld waarin AI gewoon is geworden, op een manier die past bij hun rol. Dat vraagt ook om aandacht voor kritisch denken en digitale weerbaarheid, zodat AI-vaardigheid nooit omslaat in blinde afhankelijkheid.',
-    uitleg: 'Onder dit thema vallen digitale geletterdheid in het curriculum, professionalisering van medewerkers via onder andere ARDA en het CTL, bewustwording over AI-risico's, mediawijsheid en kritisch denkvermogen rond algoritmische systemen.',
+    kort: 'De doorlopende basis voor iedereen in de organisatie.',
+    waarom: 'Geen enkel ander thema werkt zonder mensen die begrijpen wat AI is en wat het van hen vraagt. Geletterdheid is geen eenmalige training maar een doorlopend fundament — de sleutel tot eigenaarschap en duurzame verandering.',
+    uitleg: 'Onder dit thema vallen alle activiteiten gericht op het begrijpen en verantwoord kunnen inzetten van AI. Voor bestuurders betekent dat strategisch inzicht. Voor docenten praktische vaardigheden. Voor studenten een competentie die hen voorbereidt op de arbeidsmarkt. En voor medewerkers de zelfredzaamheid om AI in hun eigen werk te gebruiken.',
     themas: ['Bestuur & strategisch inzicht', 'Docenten & AI in de les', 'Studenten & AI-competenties', 'Medewerkers & zelfredzaamheid', 'Organisatiebrede leertrajecten', 'Aansluiting NPULS & nationaal beleid'],
   },
   {
@@ -49,9 +49,9 @@ export const sporen = [
     bolLabel: 'AI &\nWerkveld',
     icon: '🏭',
     kleur: '#B45309',
-    kort: 'Samen met het werkveld versnellen we innovatie.',
-    waarom: 'NHL Stenden staat midden in de regio en het werkveld. Dit thema gaat over samenwerking met bedrijven, zorginstellingen en publieke organisaties die AI willen toepassen maar daarvoor ondersteuning zoeken. Studenten en docenten dragen bij aan echte vraagstukken uit de Friese en Noord-Nederlandse praktijk, zoals de inzet van AI in de zorg, de maakindustrie en het MKB.',
-    uitleg: 'Onder dit thema vallen praktijkgericht onderwijs met AI, samenwerking met regionale partners zoals Frisius MC en het Innovatie Cluster Drachten, living labs en co-creatie, stages en afstudeeropdrachten rond AI-vraagstukken, en kennisoverdracht naar het MKB.',
+    kort: 'Lectoraten, werkveldverbindingen, Computer Vision en regionale innovatie.',
+    waarom: 'NHL Stenden staat midden in de samenleving. Lectoraten verbinden onderzoek met beroepspraktijk. Computer Vision, procesautomatisering en data-analyse zijn domeinen waar NHL Stenden actief bijdraagt aan innovatie in het Noord-Nederlandse werkveld. AI is hierin zowel onderwerp van onderzoek als middel om de verbinding te versterken.',
+    uitleg: 'Onder dit thema vallen alle activiteiten waarbij NHL Stenden AI toepast in en met het werkveld: via lectoraten (o.a. Computer Vision & AI), samenwerkingen met bedrijven, stages en projecten waarbij studenten en professionals samen aan AI-vraagstukken werken. Ook de valorisatie van kennis naar regionale partners valt hieronder.',
     themas: ['Computer Vision toepassingen', 'Lectoraat AI & Computer Vision', 'Werkveldprojecten met AI', 'Regionale AI-innovatie', 'Valorisatie & kennisoverdracht', 'Student-bedrijf AI-projecten'],
   },
   {
@@ -127,17 +127,6 @@ export const initiatieven = [
   { id: 13, naam: 'AI in de Zorg — werkveldproject', omschrijving: 'Samenwerking met regionale zorgpartners rond AI-toepassingen in de zorgpraktijk. Studenten doen praktijkgericht onderzoek naar beelddiagnostiek en procesondersteuning.', laag: 5, spoor: 5, status: 'actief', type: 'extern', tags: ['Zorg', 'Werkveld', 'Computer Vision', 'Praktijkgericht'], ambities: ['studiesucces'], impactInschatting: 'gemiddeld' },
   { id: 14, naam: 'Applied Research AI — lectoraten', omschrijving: 'Overkoepelend programma waarbij meerdere lectoraten van NHL Stenden AI inzetten als onderzoeksinstrument én als onderzoeksonderwerp in hun respectievelijke vakdomeinen.', laag: 3, spoor: 6, status: 'actief', type: 'intern', tags: ['Applied Research', 'Lectoraten', 'Multidisciplinair'], ambities: [], impactInschatting: null },
   { id: 15, naam: 'AI-ethiek onderzoekslijn', omschrijving: 'Onderzoek naar de ethische dimensies van AI-inzet in het hoger onderwijs en maatschappij. Bijdrage aan nationale en Europese discussies over verantwoorde AI.', laag: 3, spoor: 6, status: 'in-ontwikkeling', type: 'intern', tags: ['Ethiek', 'Onderzoek', 'Publicaties', 'Maatschappij'], ambities: [], impactInschatting: null },
-]
-
-  { id: 16, naam: 'AI-beleid v2.0', omschrijving: 'Officieel NHL Stenden AI-beleid gepubliceerd in NL en EN. Inclusief intakeproces met nummeringsystematiek en risicomatrix gekoppeld aan het software-aanvraagproces.', laag: 4, spoor: 3, status: 'actief', type: 'intern', tags: ['Beleid', 'Governance', 'AI Act'], ambities: [], impactInschatting: 'hoog' },
-  { id: 17, naam: 'Ethisch waardenkompas', omschrijving: 'NHL Stenden ethisch waardenkompas voor AI-gebruik. Gereed voor bestuurlijke agendering. Na vaststelling: vertaling naar handelingsperspectief voor medewerkers en studenten.', laag: 4, spoor: 3, status: 'in-ontwikkeling', type: 'intern', tags: ['Ethiek', 'Waarden', 'Governance'], ambities: [], impactInschatting: 'hoog' },
-  { id: 18, naam: 'ARDA AI-modules', omschrijving: 'AI-modules ingericht binnen ARDA voor medewerkers en studenten. Livegang begin 2026. Onderdeel van het AI-geletterdheidsplan conform het AP-stappenplan.', laag: 5, spoor: 4, status: 'actief', type: 'intern', tags: ['ARDA', 'Professionalisering', 'Geletterdheid'], ambities: ['studiesucces'], impactInschatting: 'hoog' },
-  { id: 19, naam: 'LibGuides AI-ondersteuning', omschrijving: 'Bibliotheek ontwikkelde LibGuides voor AI-ondersteuning van studenten en medewerkers. Praktische wegwijzer voor verantwoord AI-gebruik bij onderzoek en onderwijs.', laag: 5, spoor: 4, status: 'actief', type: 'intern', tags: ['Bibliotheek', 'Ondersteuning', 'Informatie'], ambities: [], impactInschatting: 'gemiddeld' },
-  { id: 20, naam: 'AI Regulatory Sandbox', omschrijving: 'Juridisch begeleidingstraject van RDI en AP voor NHL Stenden als aanbieder van hoog-risico AI-systemen. Relevant zodra NHL Stenden zelf AI bouwt voor selectie, beoordeling of begeleiding van studenten. Operationeel augustus 2026.', laag: 4, spoor: 3, status: 'in-ontwikkeling', type: 'extern', tags: ['AI Act', 'Hoog-risico', 'Compliance', 'RDI'], ambities: [], impactInschatting: 'hoog' },
-  { id: 21, naam: 'Programma Bach', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale autonomie en soevereiniteit. Geïnitieerd vanuit de Universiteit van het Noorden. Vier programmalijnen, investering 94 miljoen euro in 5 jaar.', laag: 3, spoor: 6, status: 'in-ontwikkeling', type: 'extern', tags: ['Soevereiniteit', 'Onderwijs', 'Nationaal', 'Bach'], ambities: [], impactInschatting: 'hoog' },
-  { id: 22, naam: 'Friese AI-propositie', omschrijving: 'Regionale samenwerking tussen Frisius MC, NHL Stenden en Firda voor een Friese AI-propositie. Acht propositierichtingen voor zorg, onderwijs, maakindustrie en geletterdheid.', laag: 5, spoor: 5, status: 'in-ontwikkeling', type: 'extern', tags: ['Friesland', 'Regio', 'Samenwerking', 'Frisius'], ambities: [], impactInschatting: 'hoog' },
-  { id: 23, naam: 'Vision Technology opschaling', omschrijving: 'Fryslân heeft meer dan 20 jaar expertise in Vision Technology. NHL Stenden zet in op opschaling naar nieuwe sectoren: maritiem, recycling, zorg en landbouw. In samenwerking met RUG en bedrijfsleven.', laag: 5, spoor: 5, status: 'actief', type: 'intern', tags: ['Computer Vision', 'Innovatie', 'Regio', 'Werkveld'], ambities: [], impactInschatting: 'hoog' },
-  { id: 24, naam: 'Studie-uitval AI-dashboard', omschrijving: 'Verkennend initiatief voor een AI-systeem dat op basis van studiegegevens vroegtijdige uitval voorspelt. Als NHL Stenden dit zelf bouwt, is een AI Regulatory Sandbox-aanvraag aanbevolen vanwege hoog-risico classificatie.', laag: 4, spoor: 1, status: 'verkenning', type: 'intern', tags: ['Studiesucces', 'Uitval', 'Voorspelling', 'Hoog-risico'], ambities: ['studiesucces', 'uitval'], impactInschatting: 'hoog' }
 ]
 
 export const vraagCategorieen = [
