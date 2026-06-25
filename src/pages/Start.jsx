@@ -260,7 +260,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 )
               })}
               <div className="bg-nhl-roze/20 border border-nhl-roze/40 rounded-xl p-3 mt-1">
-                <p className="text-white text-sm italic text-center">"NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."</p>
+                <p className="text-white text-sm italic text-center">"AI bij NHL Stenden: slimmer leren, sterker werken en verantwoord innoveren."</p>
               </div>
             </div>
           </div>
