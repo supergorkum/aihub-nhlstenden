@@ -31,7 +31,7 @@ function maakICS(event) {
     `DTEND;TZID=Europe/Amsterdam:${fmt(eind)}`,
     `SUMMARY:${event.naam}`,
     `LOCATION:${event.locatie}`,
-    `DESCRIPTION:${event.omschrijving}\\nGeorganiseerd door: ${event.organisator || 'NHL Stenden AI-HUB'}\\nMeer info: https://aihub-nhlstenden.netlify.app`,
+    `DESCRIPTION:${event.omschrijving}\\nGeorganiseerd door: ${event.organisator || 'NHL Stenden AI-Netwerk'}\\nMeer info: https://ai-netwerk-nhlstenden.netlify.app`,
     `STATUS:CONFIRMED`,
     `BEGIN:VALARM`,
     `TRIGGER:-PT30M`,
