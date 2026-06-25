@@ -55,6 +55,46 @@ export const INIT_PILOTS = [
   },
 ]
 
+  {
+    id: 2,
+    naam: 'AI-Feedback ChatGPT op scripties',
+    academie: 'Meerdere academies',
+    onderdeel: 'intern',
+    platform: 'ChatGPT (zakelijke versie)',
+    status: 'Verkenning',
+    doel: 'Docenten experimenteren met ChatGPT om studenten sneller feedback te geven op scripties. Geen sandboxaanvraag nodig: NHL Stenden is gebruiker, niet aanbieder. Wel verplicht: verwerkersovereenkomst en DPIA.',
+    bereiken: 'Snellere feedback, tijdbesparing docenten, bewustwording over verantwoord AI-gebruik bij toetsing.',
+    spoor: 1, laag: 5,
+    surf: 'Nee / niet van toepassing',
+    trefwoorden: ['Feedback', 'Scripties', 'Toetsing', 'ChatGPT'],
+    ambities: ['studiesucces'],
+    impactInschatting: 'gemiddeld',
+    contactNaam: 'AI Compliance Team',
+    contactEmail: '',
+    startDatum: '2026-09',
+    updates: [],
+  },
+  {
+    id: 3,
+    naam: 'Frisius MC AI-workshops',
+    academie: 'Academie Verpleegkunde en Gezondheid',
+    onderdeel: 'extern',
+    platform: 'Diverse',
+    status: 'In ontwikkeling',
+    doel: 'Gezamenlijke AI-workshops tussen Frisius MC en NHL Stenden als onderdeel van de Friese AI-propositie. Focus op AI in de zorg: ambient listening, virtual nursing en ketenoverstijgende datakoppeling.',
+    bereiken: 'Versterking samenwerking zorg en onderwijs, praktijkgericht AI-onderwijs in de zorgsector.',
+    spoor: 5, laag: 5,
+    surf: 'Nee / niet van toepassing',
+    trefwoorden: ['Zorg', 'Frisius', 'Samenwerking', 'Workshop'],
+    ambities: [],
+    impactInschatting: 'hoog',
+    contactNaam: 'Frisius MC en NHL Stenden Werkveld',
+    contactEmail: '',
+    startDatum: '2026-10',
+    updates: [],
+  }
+]
+
 export const INIT_DOCS = [
   { id: 1, titel: 'AI Kompas NHL Stenden', categorie: 'strategie', spoor: null, type: 'pdf', datum: 'Juni 2026', omschrijving: 'Strategisch overzicht van de AI-architectuur en het vijflagenmodel.', icon: '📄' },
   { id: 2, titel: 'AI-HUB Fundament v1.2', categorie: 'strategie', spoor: null, type: 'pdf', datum: 'Juni 2026', omschrijving: 'Fundament document met opzet, sporen en netwerkorganisatie.', icon: '📄' },
@@ -100,6 +140,13 @@ export const INIT_INSPIRATIES = [
 ]
 
 // NHL Stenden organisatiestructuur (uit organogram)
+  { id: 10, titel: 'NVAO Startverkenning Generatieve AI', categorie: 'onderzoek', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Thematische analyse van generatieve AI in visitatierapporten. Conclusie: focus op toetsing, integrale aanpak ontbreekt. Aanbeveling: instellingsbrede richtlijnen en expliciete aandacht in kwaliteitszorg.', icon: '📊' },
+  { id: 11, titel: 'AI Compliance Voortgangsrapportage', categorie: 'governance', spoor: 3, type: 'pdf', datum: 'Februari 2026', omschrijving: 'Rapportage AI Compliance Team aan CvB. Kernboodschap: AI leeft sterk maar centrale regie ontbreekt. Zeven aanbevelingen waaronder AI-visie, programmatische aanpak en formalisering van het AI-team.', icon: '📋' },
+  { id: 12, titel: 'Programmavoorstel Bach - Digitale Autonomie', categorie: 'strategie', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale soevereiniteit. Vier programmalijnen, investering 94 miljoen euro, geinitieerd vanuit de Universiteit van het Noorden.', icon: '🏛️' },
+  { id: 13, titel: 'AI Regulatory Sandbox Praktijkgids', categorie: 'governance', spoor: 3, type: 'pdf', datum: '2026', omschrijving: 'Praktijkgids voor NHL Stenden: wanneer wel en niet een regulatory sandbox aanvragen. Inclusief beslisboom en stappenplan. Sandbox operationeel augustus 2026 via RDI.', icon: '⚖️' },
+  { id: 14, titel: 'Friese AI-behoeften werksessie', categorie: 'samenwerking', spoor: 5, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Uitwerking werksessie Friese AI-propositie met Frisius MC, NHL Stenden en Firda. Acht propositierichtingen voor zorg, onderwijs en maakindustrie.', icon: '🤝' }
+]
+
 export const NHL_DIENSTEN = [
   'Onderwijs, Onderzoek & Internationalisering (OO&I)',
   'Onderwijslogistiek & Studentondersteuning',
