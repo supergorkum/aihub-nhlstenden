@@ -217,10 +217,10 @@ export default function NVAO() {
               <div className="font-bold text-nhl-blauw text-base mb-1">NVAO Startverkenning Generatieve Artificiële Intelligentie</div>
               <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg — januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
               <div className="flex flex-wrap gap-3">
-                <a href="https://www.nvao.net/files/attachments/.14069/Startverkenning_Generatieve_Artificiele_Intelligentie.pdf"
+                <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-nhl-roze text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-nhl-roze/90 transition-colors">
-                  ⬇️ Download PDF (NL)
+                  ⬇️ Download rapport (PDF)
                 </a>
                 <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
@@ -246,10 +246,10 @@ export default function NVAO() {
               <div className="font-bold text-nhl-blauw text-base mb-1">NVAO Startverkenning Generatieve Artificiële Intelligentie</div>
               <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg — januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
               <div className="flex flex-wrap gap-3">
-                <a href="https://www.nvao.net/files/attachments/.14069/Startverkenning_Generatieve_Artificiele_Intelligentie.pdf"
+                <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-nhl-roze text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-nhl-roze/90 transition-colors">
-                  ⬇️ Download PDF (NL)
+                  ⬇️ Download rapport (PDF)
                 </a>
                 <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
