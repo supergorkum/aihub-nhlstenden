@@ -174,7 +174,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
               {b.url && (
                 <a href={b.url} target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-nhl-roze text-xs font-medium hover:underline mb-3">
-                  🔗 Bekijk link
+                  🔗 {b.bronLabel || 'Bekijk bron'}
                 </a>
               )}
               {b.laag && (
