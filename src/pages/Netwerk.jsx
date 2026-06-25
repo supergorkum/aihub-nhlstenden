@@ -1,5 +1,5 @@
 import GradientHeader from '../components/GradientHeader'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
@@ -180,6 +180,7 @@ function DetailPanelInhoud({ nodeId }) {
 export default function Netwerk() {
   const [selected, setSelected] = useState(null)
   const [hovered, setHovered] = useState(null)
+  const hoverTimer = useRef(null)
 
   const panelNode = selected ?? hovered
   const activeForLinks = selected ?? hovered

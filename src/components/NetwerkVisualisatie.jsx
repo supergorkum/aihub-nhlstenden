@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 
@@ -73,6 +73,7 @@ function getNode(id) { return NODES.find(n => n.id === id) }
 export default function NetwerkVisualisatie({ fullscreen = false }) {
   const [selected, setSelected] = useState(null)
   const [hovered, setHovered] = useState(null)
+  const hoverTimer = useRef(null)
   const navigate = useNavigate()
 
   const panelNode = selected ?? hovered
@@ -92,8 +93,13 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
     setHovered(null)
   }
 
-  const handleHoverIn = (nodeId) => { setHovered(nodeId) }
-  const handleHoverUit = () => { setHovered(null) }
+  const handleHoverIn = (nodeId) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    setHovered(nodeId)
+  }
+  const handleHoverUit = () => {
+    hoverTimer.current = setTimeout(() => setHovered(null), 80)
+  }
 
   const handlePanelMouseEnter = () => {
     // Vergrendel alleen als er iets gehoverd wordt én nog niets geselecteerd is
