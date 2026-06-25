@@ -185,7 +185,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
               <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-400">{b.naam !== 'Anoniem' ? b.naam : b.rol} · {b.datum}</div>
                 <div className="flex items-center gap-2">
-                  {b.nieuw && <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">Nieuw</span>}
+                  {b.nieuw && <span className="inline-flex items-center gap-1 text-xs bg-nhl-roze text-white px-2 py-0.5 rounded-full font-bold">🆕 Nieuw</span>}
                   <div className="flex items-center gap-1">
                     <button onClick={() => stem(b.id, 'omhoog')}
                       className={`flex items-center gap-0.5 px-2 py-1 rounded-lg text-xs transition-colors ${gestemd === 'omhoog' ? 'bg-green-100 text-green-700' : 'hover:bg-gray-100 text-gray-400'}`}>
@@ -223,7 +223,12 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
             <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
               <div className="font-bold text-nhl-blauw mb-4">📋 Alle bijdragen</div>
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {[...alle].sort((a, b) => new Date(b.datum) - new Date(a.datum)).map(b => (
+                {[...alle].sort((a, b) => {
+                    // Nieuw altijd bovenaan, dan datum
+                    if (a.nieuw && !b.nieuw) return -1
+                    if (!a.nieuw && b.nieuw) return 1
+                    return 0
+                  }).map(b => (
                   <div key={b.id} className="flex items-start gap-2 py-2 border-b border-gray-50 last:border-0">
                     <span className="text-base flex-shrink-0">{b.icon}</span>
                     <div className="flex-1 min-w-0">

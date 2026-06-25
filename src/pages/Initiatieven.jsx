@@ -63,7 +63,27 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
     }
   }, [])
 
-  const [filterSpoor, setFilterSpoor] = useState(null)
+  // Spoor filter activeren vanuit URL (?spoor=X of ?thema=X)
+  useEffect(() => {
+    const spoorParam = searchParams.get('spoor')
+    const themaParam = searchParams.get('thema')
+    const param = spoorParam || themaParam
+    if (param) {
+      setFilterSpoor(parseInt(param))
+      // Scroll naar de initiatieven sectie
+      setTimeout(() => {
+        const el = document.getElementById('initiatieven-filter')
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    }
+  }, [location.search])
+
+  const [filterSpoor, setFilterSpoor] = useState(() => {
+    const spoorParam = new URLSearchParams(location.search).get('spoor')
+    const themaParam = new URLSearchParams(location.search).get('thema')
+    const param = spoorParam || themaParam
+    return param ? parseInt(param) : null
+  })
   const [filterType, setFilterType] = useState(null)
   const [zoek, setZoek] = useState('')
 
@@ -248,7 +268,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'surf' ? 'bg-purple-100 text-purple-700' : init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
                           {init.type === 'surf' ? '🌐 SURF' : init.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
                         </span>
-                        {init.nieuw && <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">Nieuw</span>}
+                        {init.nieuw && <span className="inline-flex items-center gap-1 text-xs bg-nhl-roze text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🆕 Nieuw</span>}
                       </div>
                     </div>
                     <div className="font-bold text-nhl-blauw mb-2 leading-snug">{init.naam}</div>

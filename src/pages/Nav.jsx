@@ -13,7 +13,7 @@ const navGroepen = [
   {
     label: 'Aan de slag',
     items: [
-      { label: 'Initiatieven', to: '/initiatieven', icon: '🚀' },
+      { label: 'Initiatieven', to: '/initiatieven', icon: '🚀', nieuw: true },
       { label: 'Pilots', to: '/pilots', icon: '🧪' },
       { label: 'Evenementen', to: '/evenementen', icon: '📅' },
     ]
@@ -24,7 +24,7 @@ const navGroepen = [
       { label: "Video's", to: '/video', icon: '🎬' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
-      { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
+      { label: 'Inspiratie', to: '/inspiratie', icon: '💡', nieuw: true },
     ]
   },
 ]
