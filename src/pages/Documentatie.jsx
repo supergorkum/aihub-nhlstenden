@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import GradientHeader from '../components/GradientHeader'
 
 const CATEGORIEEN = [
@@ -21,8 +21,45 @@ const typeKleur = {
   overig: 'bg-gray-100 text-gray-600',
 }
 
+
+function DocAuthWall({ doc, onSuccess, onCancel }) {
+  const [poging, setPoging] = React.useState('')
+  const [fout, setFout] = React.useState(false)
+  const probeer = () => {
+    if (poging === 'nhlstenden2026') { onSuccess() }
+    else { setFout(true); setPoging('') }
+  }
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl p-8 max-w-md w-full">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-12 h-12 rounded-xl bg-nhl-blauw/10 flex items-center justify-center text-2xl">&#128272;</div>
+          <div>
+            <div className="font-bold text-nhl-blauw text-base">Beveiligd document</div>
+            <div className="text-gray-400 text-xs">{doc && doc.titel}</div>
+          </div>
+        </div>
+        <p className="text-gray-600 text-sm leading-relaxed mb-2">Dit document is versleuteld en uitsluitend beschikbaar voor geautoriseerde medewerkers van NHL Stenden.</p>
+        <p className="text-gray-400 text-xs leading-relaxed mb-6">Voer de toegangscode in om het document te downloaden. Neem bij vragen contact op met de beheerder van het AI-Netwerk via het contactformulier.</p>
+        <div className="space-y-3">
+          <input type="password" value={poging}
+            onChange={function(e) { setPoging(e.target.value); setFout(false) }}
+            onKeyDown={function(e) { if (e.key === 'Enter') probeer() }}
+            placeholder="Voer toegangscode in" autoFocus
+            className="w-full border rounded-xl px-4 py-3 text-sm outline-none border-gray-200 focus:border-nhl-blauw transition-colors" />
+          {fout && <p className="text-red-500 text-xs">Onjuiste toegangscode. Neem contact op als je hulp nodig hebt.</p>}
+          <button onClick={probeer} className="w-full bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors">Toegang verkrijgen</button>
+          <button onClick={onCancel} className="w-full text-gray-400 hover:text-gray-600 text-sm py-1 transition-colors">Annuleren</button>
+        </div>
+        <p className="text-center text-gray-300 text-xs mt-5 pt-4 border-t border-gray-100">&#128274; Beveiligde verbinding - NHL Stenden AI-Netwerk - 2026</p>
+      </div>
+    </div>
+  )
+}
+
 export default function Documentatie({ docs, setDocs }) {
   const [filterCat, setFilterCat] = useState(null)
+  const [authDoc, setAuthDoc] = useState(null)
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadStap, setUploadStap] = useState(0)
   const [bestand, setBestand] = useState(null)
@@ -95,7 +132,7 @@ export default function Documentatie({ docs, setDocs }) {
     setUploadForm({ titel: '', categorie: '', spoor: '', omschrijving: '' })
   }
 
-  const downloadDoc = (doc) => {
+  const voerDownloadUit = (doc) => {
     if (doc.bestand) {
       window.open(doc.bestand, '_blank')
     } else if (doc.bestandData) {
@@ -106,13 +143,22 @@ export default function Documentatie({ docs, setDocs }) {
     } else if (doc.url) {
       window.open(doc.url, '_blank')
     } else {
-      alert('Dit document heeft geen downloadbaar bestand. Neem contact op met de AI-HUB.')
+      return
     }
   }
+
+  const downloadDoc = (doc) => { setAuthDoc(doc) }
 
   const kanVersturen = bestand && uploadForm.titel && uploadForm.categorie
 
   return (
+    <>
+    {authDoc && (
+      <DocAuthWall doc={authDoc}
+        onSuccess={function() { voerDownloadUit(authDoc); setAuthDoc(null) }}
+        onCancel={function() { setAuthDoc(null) }}
+      />
+    )}
     <div className="min-h-screen pt-16 bg-white">
       <GradientHeader
         label="Kennis & materiaal"
@@ -315,5 +361,7 @@ export default function Documentatie({ docs, setDocs }) {
         </div>
       )}
     </div>
+  )
+    </>
   )
 }
