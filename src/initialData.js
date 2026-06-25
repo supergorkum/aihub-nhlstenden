@@ -53,8 +53,6 @@ export const INIT_PILOTS = [
       { id: 1, datum: '15 juni 2026', tekst: 'Eerste tests met drie docenten afgerond. Studenten reageren positief op de snelheid van feedback. Aandachtspunt: de feedback is soms te generiek.', auteur: 'Projectteam' },
     ],
   },
-]
-
   {
     id: 2,
     naam: 'AI-Feedback ChatGPT op scripties',
