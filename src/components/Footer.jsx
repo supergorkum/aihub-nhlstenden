@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="flex items-center gap-4 mb-5">
               <img src="/AILOGO-Netwerk.png" alt="AI-Netwerk" className="h-12 w-12 rounded-xl object-contain shadow" />
               <div className="h-10 w-px bg-white/20" />
-              <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
+              <a href="https://www.nhlstenden.com" target="_blank" rel="noopener noreferrer"><img src="/nhl-logo-wit.png" alt="NHL Stenden" className="h-9 object-contain" /></a>
             </div>
             <div className="text-white font-bold text-base mb-1">AI-Netwerk NHL Stenden</div>
             <div className="text-blue-300 text-xs mb-4">Samen slimmer & verantwoord</div>
