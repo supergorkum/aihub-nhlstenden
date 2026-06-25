@@ -123,6 +123,7 @@ export default function Linkjes({ linkjes, setLinkjes }) {
                     {cat?.icon} {cat?.label}
                   </div>
                   {link.nieuw && <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">Nieuw</span>}
+                  {link.intern && <span className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full font-medium">NHL Stenden</span>}
                 </div>
                 <div className="font-bold text-nhl-blauw mb-1 group-hover:text-nhl-roze transition-colors leading-snug flex items-center gap-1.5">
                   {link.titel}
