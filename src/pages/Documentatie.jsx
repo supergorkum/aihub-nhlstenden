@@ -154,7 +154,7 @@ export default function Documentatie({ docs, setDocs }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {gefilterd.map(doc => {
             const cat = CATEGORIEEN.find(c => c.id === doc.categorie)
-            const kanDownloaden = !!(doc.bestandData || doc.url)
+            const kanDownloaden = !!(doc.bestandData || doc.url || doc.bestand)
             return (
               <div key={doc.id} className="card card-hover p-5 flex flex-col">
                 <div className="flex items-start justify-between mb-3">

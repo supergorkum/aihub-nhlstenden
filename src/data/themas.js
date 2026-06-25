@@ -4,6 +4,7 @@
 export const THEMAS = [
   {
     id: 'leren',
+    spoorId: 1,
     label: 'AI & Leren',
     emoji: '🎓',
     kleur: '#1E3A8A',
@@ -17,6 +18,7 @@ export const THEMAS = [
   },
   {
     id: 'werken',
+    spoorId: 2,
     label: 'AI & Werken',
     emoji: '⚙️',
     kleur: '#0F766E',
@@ -30,6 +32,7 @@ export const THEMAS = [
   },
   {
     id: 'verantwoordelijkheid',
+    spoorId: 3,
     label: 'AI & Verantwoordelijkheid',
     emoji: '⚖️',
     kleur: '#E91E8C',
@@ -43,6 +46,7 @@ export const THEMAS = [
   },
   {
     id: 'geletterdheid',
+    spoorId: 4,
     label: 'AI & Geletterdheid',
     emoji: '📖',
     kleur: '#7C3AED',
@@ -56,6 +60,7 @@ export const THEMAS = [
   },
   {
     id: 'werkveld',
+    spoorId: 5,
     label: 'AI & Werkveld',
     emoji: '🏭',
     kleur: '#B45309',
@@ -69,6 +74,7 @@ export const THEMAS = [
   },
   {
     id: 'onderzoek',
+    spoorId: 6,
     label: 'AI & Onderzoek',
     emoji: '🔬',
     kleur: '#0E7490',

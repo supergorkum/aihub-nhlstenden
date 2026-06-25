@@ -111,7 +111,7 @@ export default function Themas() {
               {/* Acties */}
               <div className="flex gap-3">
                 <button
-                  onClick={() => navigate('/initiatieven?spoor=' + thema.id)}
+                  onClick={() => navigate('/initiatieven?spoor=' + thema.spoorId)}
                   className="flex-1 py-2.5 px-4 rounded-lg text-white text-sm font-medium transition-opacity hover:opacity-90"
                   style={{ backgroundColor: thema.kleur }}
                 >
