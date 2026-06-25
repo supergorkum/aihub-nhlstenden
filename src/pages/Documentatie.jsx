@@ -96,7 +96,9 @@ export default function Documentatie({ docs, setDocs }) {
   }
 
   const downloadDoc = (doc) => {
-    if (doc.bestandData) {
+    if (doc.bestand) {
+      window.open(doc.bestand, '_blank')
+    } else if (doc.bestandData) {
       const a = document.createElement('a')
       a.href = doc.bestandData
       a.download = doc.bestandNaam || `${doc.titel}.${doc.type}`
