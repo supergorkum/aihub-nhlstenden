@@ -237,6 +237,35 @@ export default function NVAO() {
           </div>
         </div>
 
+        {/* Naslag document */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="text-3xl">📄</div>
+            <div className="flex-1">
+              <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Naslag</div>
+              <div className="font-bold text-nhl-blauw text-base mb-1">NVAO Startverkenning Generatieve Artificiële Intelligentie</div>
+              <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg — januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
+              <div className="flex flex-wrap gap-3">
+                <a href="https://www.nvao.net/files/attachments/.14069/Startverkenning_Generatieve_Artificiele_Intelligentie.pdf"
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-nhl-roze text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-nhl-roze/90 transition-colors">
+                  ⬇️ Download PDF (NL)
+                </a>
+                <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-xs font-semibold px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+                  ⬇️ Download PDF (EN)
+                </a>
+                <a href="https://www.nvao.net/en/news/2026/2/nvao-netherlands-publishes-initial-exploration-of-generative-ai"
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-xs font-semibold px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+                  🌐 NVAO nieuwsbericht
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Bron */}
         <div className="text-center text-xs text-gray-400">
           Gebaseerd op: NVAO Nederland — Startverkenning Generatieve Artificiële Intelligentie, Thematische analyse kwaliteitszorg, januari 2026. &nbsp;
