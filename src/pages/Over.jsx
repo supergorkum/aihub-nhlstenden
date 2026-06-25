@@ -1,127 +1,215 @@
-import { useNavigate } from 'react-router-dom';
-import { THEMAS, SITE_SUBTITEL } from '../data/themas';
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import GradientHeader from '../components/GradientHeader'
+
+const kernteam = [
+  {
+    rol: 'Kwartiermaker Digitale Samenhang',
+    subtitel: 'Spil & Strategie',
+    omschrijving: 'De Kwartiermaker is de initiator, strateeg en bestuurlijk aanspreekpunt van het AI-Netwerk. Verbindt het AI-Netwerk aan de bredere digitaliseringsstrategie van NHL Stenden.',
+    taken: [
+      'Bewaakt de koers en samenhang van het AI-Netwerk als geheel',
+      'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma en directie',
+      'Verbindt het AI-Netwerk met het externe netwerk: SURF, NPULS, Vereniging Hogescholen',
+      'Bewaakt de vier thema's en zorgt voor aansluiting op de organisatiepraktijk',
+    ],
+    kleur: '#1E3A8A',
+    icon: '🧭',
+    contact: null,
+  },
+  {
+    rol: 'Informatiemanager',
+    subtitel: 'Inhoud & Netwerk',
+    omschrijving: 'De Informatiemanager is verantwoordelijk voor de inhoudelijke kwaliteit en actualiteit van het AI-Netwerk. Brug tussen de informatiearchitectuur en de praktijk van AI-gebruik.',
+    taken: [
+      'Beheert en actualiseert de inhoud: initiatieven, mensen, kaders en vraagstukken',
+      'Verbindt initiatieven aan het juiste thema en laag',
+      'Bewaakt de aansluiting op bestaande informatiestromen en governance-processen',
+      'Ondersteunt de AI-desk bij het beoordelen van nieuwe AI-initiatieven',
+    ],
+    kleur: '#0F766E',
+    icon: '🗂️',
+    contact: null,
+  },
+  {
+    rol: 'ICT Analist',
+    subtitel: 'Techniek & Instrument',
+    omschrijving: 'De ICT Analist is verantwoordelijk voor de technische realisatie en het beheer van het digitale AI-Netwerk instrument. Verbindt de inhoudelijke ambitie aan de technische mogelijkheden.',
+    taken: [
+      'Ontwikkelt en beheert het digitale AI-Netwerk instrument (webtool)',
+      'Analyseert technische vraagstukken rondom AI-inzet: platforms, API-koppelingen, datastromen',
+      'Ondersteunt de inrichting van sandbox-omgevingen en de AI-desk vanuit technisch perspectief',
+      'Volgt technische ontwikkelingen in het externe netwerk en vertaalt deze naar de interne context',
+    ],
+    kleur: '#7C3AED',
+    icon: '⚙️',
+    contact: null,
+  },
+]
+
+const techLaag = [
+  {
+    titel: 'Veiligheid & AVG',
+    omschrijving: 'Borgt dat AI-toepassingen voldoen aan privacywetgeving, informatiebeveiliging en het NHL Stenden beleidskader.',
+    icon: '🔒',
+    kleur: '#DC2626',
+  },
+  {
+    titel: 'Integratie & API',
+    omschrijving: 'Verbindt AI-tools aan de bestaande ICT-infrastructuur van NHL Stenden via veilige koppelingen en datastromen.',
+    icon: '🔗',
+    kleur: '#0E7490',
+  },
+  {
+    titel: 'Solution Partnership',
+    omschrijving: 'Denkt als sparringpartner mee met academies en diensten over hoe AI veilig en effectief geïntegreerd kan worden.',
+    icon: '🤝',
+    kleur: '#0F766E',
+  },
+  {
+    titel: 'Actuele kennis AI-landschap',
+    omschrijving: 'Volgt nieuwe ontwikkelingen in tools, modellen en infrastructuur en vertaalt dit naar kansen voor de organisatie.',
+    icon: '🔭',
+    kleur: '#7C3AED',
+  },
+]
+
+const themasTrekkers = [
+  { thema: 'AI & Leren', icon: '🎓', kleur: '#1E3A8A', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Werken', icon: '⚙️', kleur: '#0F766E', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Verantwoordelijkheid', icon: '⚖️', kleur: '#E91E8C', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Geletterdheid', icon: '📖', kleur: '#7C3AED', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Werkveld', icon: '🏢', kleur: '#B45309', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Onderzoek', icon: '🔬', kleur: '#0E7490', trekker: 'Volgt', contact: null },
+]
 
 export default function Over() {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen pt-16 bg-gray-50">
+      <GradientHeader
+        label="Over het AI-Netwerk"
+        title="Wie zijn wij?"
+        subtitle="Het AI-Netwerk is een initiatief van NHL Stenden dat AI-initiatieven, kennis en mensen verbindt. Klein van opzet, groot in ambitie."
+      />
 
-      {/* Hero */}
-      <div className="relative bg-gradient-to-br from-[#1E3A8A] via-[#1a3580] to-[#0f2060] text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-          }}
-        />
-        <div className="relative max-w-5xl mx-auto px-6 py-20">
-          <div className="inline-block bg-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6 border border-white/30">
-            Over het AI-Netwerk
-          </div>
-          <h1 className="text-5xl font-bold mb-4 tracking-tight">Wat is het AI-Netwerk?</h1>
-          <p className="text-xl text-white/80 max-w-2xl">{SITE_SUBTITEL}</p>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+
+        {/* Missie */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 shadow-sm">
+          <h2 className="font-bold text-nhl-blauw text-lg mb-3">Onze missie</h2>
+          <p className="text-gray-600 text-sm leading-relaxed mb-3">
+            Het AI-Netwerk brengt alle AI-initiatieven, pilots, thema's, kennis en mensen bij NHL Stenden samen op één plek. Het is geen structuur die van bovenaf wordt opgelegd, maar een netwerk dat groeit vanuit vertrouwen, eigenaarschap en gedeelde ambitie.
+          </p>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Het kernteam is de motor die dat proces op gang houdt. Licht en wendbaar, verbindend in plaats van controlerend, transparant over wat loopt — ook als iets nog niet af is.
+          </p>
         </div>
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 80 C360 20 1080 20 1440 80 L1440 80 L0 80Z" fill="white" />
-          </svg>
-        </div>
-      </div>
 
-      {/* Inhoud */}
-      <div className="max-w-4xl mx-auto px-6 py-16">
-
-        {/* Wat is het */}
-        <section className="mb-14">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Wat is het AI-Netwerk?</h2>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            Het AI-Netwerk is de centrale plek waar NHL Stenden alles rond AI samenhangt: initiatieven, beleid, kennis en samenwerking.
-            Het netwerk verbindt docenten, onderzoekers, medewerkers, studenten en externe partners die werken aan de verantwoorde
-            inzet van AI binnen en rondom de hogeschool.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Het AI-Netwerk is geen losstaand innovatieproject, maar een organisatievraagstuk. Cultuur, vaardigheden, governance en
-            technologie zijn met elkaar verbonden. Daarom organiseren we AI-beleid en AI-praktijk langs zes thema's: niet als
-            programmalijnen die worden afgevinkt, maar als thematafels waarlangs NHL Stenden AI bespreekt, ontwikkelt en verantwoordt.
-          </p>
-        </section>
-
-        {/* Zes thema's */}
-        <section className="mb-14">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Zes thema's</h2>
-          <p className="text-gray-500 mb-8">
-            Elk thema heeft een eigen kernambitie en verbindt initiatieven, kennis en mensen die op dat terrein actief zijn.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {THEMAS.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => navigate('/themas')}
-                className="text-left p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200 group"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center text-lg"
-                    style={{ backgroundColor: t.kleur + '18' }}
-                  >
-                    {t.emoji}
-                  </div>
-                  <span className="font-semibold text-gray-900 group-hover:underline">{t.label}</span>
+        {/* Kernteam */}
+        <h2 className="font-bold text-nhl-blauw text-xl mb-5">Het kernteam</h2>
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          {kernteam.map(lid => (
+            <div key={lid.rol} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: lid.kleur }}>
+                <span className="text-2xl">{lid.icon}</span>
+                <div>
+                  <div className="text-white font-bold text-sm leading-tight">{lid.rol}</div>
+                  <div className="text-white/70 text-xs">{lid.subtitel}</div>
                 </div>
-                <p className="text-xs text-gray-500 leading-snug ml-12 italic">"{t.kernambitie}"</p>
-              </button>
-            ))}
-          </div>
-        </section>
+              </div>
+              <div className="p-5">
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">{lid.omschrijving}</p>
+                <div className="space-y-1.5">
+                  {lid.taken.map((t, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-gray-500">
+                      <span className="mt-0.5 text-gray-300">→</span>
+                      <span>{t}</span>
+                    </div>
+                  ))}
+                </div>
+                {lid.contact && (
+                  <a href={`mailto:${lid.contact}`}
+                    className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-white px-3 py-1.5 rounded-lg transition-colors"
+                    style={{ backgroundColor: lid.kleur }}>
+                    ✉️ Neem contact op
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
 
-        {/* Aanpak */}
-        <section className="mb-14">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Onze aanpak</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                titel: 'Mensen centraal',
-                tekst: 'Digitale verandering begint bij mensen. Bij hoe zij werken, leren en samenwerken, en bij de mate waarin zij zich digitaal zeker en vaardig voelen.',
-              },
-              {
-                titel: 'Verantwoord en bewust',
-                tekst: 'NHL Stenden kiest bewust voor AI die uitlegbaar is, mensenrechten respecteert en voldoet aan de EU AI Act. Vertrouwen is geen vanzelfsprekendheid.',
-              },
-              {
-                titel: 'Samen en regionaal',
-                tekst: 'Als hogeschool in Noord-Nederland staan we midden in de regio. We verbinden onderwijs, onderzoek en werkveld om AI-innovatie samen te versnellen.',
-              },
-            ].map((item) => (
-              <div key={item.titel} className="bg-gray-50 rounded-xl p-5">
-                <h3 className="font-semibold text-gray-900 mb-2">{item.titel}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{item.tekst}</p>
+        {/* Techniek & Infrastructuur laag */}
+        <div className="bg-gray-900 rounded-2xl p-6 mb-10 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🏗️</span>
+            <div>
+              <div className="text-white font-bold text-base">Techniek & Infrastructuur</div>
+              <div className="text-gray-400 text-xs">Fundament van het AI-Netwerk — solution partners voor veilige AI-integratie</div>
+            </div>
+          </div>
+          <p className="text-gray-300 text-sm leading-relaxed mb-5">
+            Onder het kernteam staat een laag van mensen die technisch en functioneel bezig zijn met de AI-infrastructuur van NHL Stenden. Zij hebben de expertise om als solution partner mee te denken over hoe AI veilig en effectief geïntegreerd kan worden in de ICT-omgeving, alternatieve oplossingen te bedenken en thuis te zijn in het laatste applicatie- en technieklandschap van AI.
+          </p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {techLaag.map(t => (
+              <div key={t.titel} className="bg-gray-800 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">{t.icon}</span>
+                  <span className="text-white text-xs font-semibold">{t.titel}</span>
+                </div>
+                <p className="text-gray-400 text-xs leading-relaxed">{t.omschrijving}</p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+
+        {/* Kernteam groeit mee */}
+        <h2 className="font-bold text-nhl-blauw text-xl mb-2">Het kernteam groeit mee</h2>
+        <p className="text-gray-500 text-sm mb-5">Het AI-Netwerk groeit. Per thema zijn er vaste trekkers die het thema actief voeden en vertegenwoordigen.</p>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+          {themasTrekkers.map(t => (
+            <div key={t.thema} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+              <div className="px-4 py-2.5 flex items-center gap-2" style={{ backgroundColor: t.kleur }}>
+                <span>{t.icon}</span>
+                <span className="text-white text-xs font-bold">{t.thema}</span>
+              </div>
+              <div className="p-4">
+                <div className="text-xs text-gray-400 mb-1">Trekker</div>
+                <div className="text-sm font-semibold text-gray-700 mb-3">{t.trekker}</div>
+                {t.contact ? (
+                  <a href={`mailto:${t.contact}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1.5 rounded-lg"
+                    style={{ backgroundColor: t.kleur }}>
+                    ✉️ Contact
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-gray-100 px-3 py-1.5 rounded-lg">
+                    ✉️ Contact volgt
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* CTA */}
-        <section className="bg-[#1E3A8A] rounded-2xl p-8 text-white text-center">
-          <h2 className="text-2xl font-bold mb-3">Doe mee</h2>
-          <p className="text-white/80 mb-6 max-w-xl mx-auto">
-            Heb je een initiatief, een vraag of een idee rond AI bij NHL Stenden? Meld het via het netwerk en draag bij aan de gezamenlijke koers.
-          </p>
-          <div className="flex gap-3 justify-center flex-wrap">
-            <button
-              onClick={() => navigate('/initiatieven?modal=aanmelden')}
-              className="bg-white text-[#1E3A8A] font-semibold px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Initiatief aanmelden
-            </button>
-            <button
-              onClick={() => navigate('/meld', { state: { resetKey: Date.now() } })}
-              className="border border-white/50 text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition-colors"
-            >
-              Vraag of idee stellen
-            </button>
+        <div className="bg-nhl-blauw rounded-2xl p-8 text-center text-white">
+          <h3 className="font-bold text-xl mb-2">Doe mee aan het AI-Netwerk</h3>
+          <p className="text-white/80 text-sm mb-5">Jouw kennis, initiatief of vraag maakt het netwerk rijker.</p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link to="/meld" className="bg-nhl-roze hover:bg-nhl-roze/90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
+              + Meld een initiatief
+            </Link>
+            <Link to="/netwerk" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
+              Bekijk het netwerk
+            </Link>
+            <Link to="/themas" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
+              Ontdek de thema's
+            </Link>
           </div>
-        </section>
+        </div>
       </div>
     </div>
-  );
+  )
 }
