@@ -63,25 +63,24 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
     }
   }, [])
 
-  // Spoor filter activeren vanuit URL (?spoor=X of ?thema=X)
+  // Spoor/thema filter activeren vanuit URL
   useEffect(() => {
-    const spoorParam = searchParams.get('spoor')
-    const themaParam = searchParams.get('thema')
-    const param = spoorParam || themaParam
+    const p = new URLSearchParams(location.search)
+    const param = p.get('spoor') || p.get('thema')
     if (param) {
       setFilterSpoor(parseInt(param))
-      // Scroll naar de initiatieven sectie
       setTimeout(() => {
         const el = document.getElementById('initiatieven-filter')
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
+      }, 150)
+    } else {
+      setFilterSpoor(null)
     }
   }, [location.search])
 
   const [filterSpoor, setFilterSpoor] = useState(() => {
-    const spoorParam = new URLSearchParams(location.search).get('spoor')
-    const themaParam = new URLSearchParams(location.search).get('thema')
-    const param = spoorParam || themaParam
+    const p = new URLSearchParams(window.location.search)
+    const param = p.get('spoor') || p.get('thema')
     return param ? parseInt(param) : null
   })
   const [filterType, setFilterType] = useState(null)
