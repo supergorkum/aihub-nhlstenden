@@ -847,6 +847,15 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 </div>
                 <p className="text-gray-500 text-sm mb-4">Sla alle data op als JSON-bestand op jouw eigen laptop.</p>
                 <button onClick={handleExport} className="btn-primary w-full">⬇ Download als JSON</button>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Rapport</div>
+                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
+                  <button onClick={() => window.open('/.netlify/functions/rapport-genereren', '_blank')}
+                    className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
+                    📄 Genereer PDF-rapport
+                  </button>
+                  <p className="text-xs text-gray-400 mt-2">Opent in nieuw tabblad. Gebruik Afdrukken → Opslaan als PDF.</p>
+                </div>
               </div>
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
