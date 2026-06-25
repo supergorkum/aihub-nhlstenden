@@ -286,10 +286,10 @@ export default function Documentatie({ docs, setDocs }) {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Gerelateerd spoor</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Gerelateerd thema</label>
                     <select value={uploadForm.spoor} onChange={e => setUploadForm(f => ({ ...f, spoor: e.target.value }))}
                       className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw">
-                      <option value="">Kies een spoor...</option>
+                      <option value="">Kies een thema...</option>
                       {SPOREN_OPTIES.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
