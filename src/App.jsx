@@ -19,6 +19,7 @@ import Over from './pages/Over'
 import Beheer from './pages/Beheer'
 import Geletterdheid from './pages/Geletterdheid'
 import Beleid from './pages/Beleid'
+import NVAO from './pages/NVAO'
 import {
   INIT_VIDEOS, INIT_PILOTS, INIT_DOCS,
   INIT_EVENEMENTEN, INIT_LINKJES, INIT_INSPIRATIES
@@ -128,6 +129,7 @@ function AppInner() {
           <Route path="/over" element={<Over />} />
           <Route path="/geletterdheid" element={<Geletterdheid />} />
           <Route path="/beleid" element={<Beleid />} />
+          <Route path="/nvao" element={<NVAO />} />
           <Route path="/beheer" element={
             <Beheer
               berichten={berichten} setBerichten={setBerichten_}
