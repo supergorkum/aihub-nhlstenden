@@ -140,25 +140,25 @@ export default function Over() {
         </div>
 
         {/* Techniek & Infrastructuur laag */}
-        <div className="bg-gray-900 rounded-2xl p-6 mb-10 shadow-sm">
+        <div className="bg-nhl-blauw/8 border border-nhl-blauw/15 rounded-2xl p-6 mb-10 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl">🏗️</span>
             <div>
-              <div className="text-white font-bold text-base">Techniek & Infrastructuur</div>
-              <div className="text-gray-400 text-xs">Fundament van het AI-Netwerk — solution partners voor veilige AI-integratie</div>
+              <div className="text-nhl-blauw font-bold text-base">Techniek & Infrastructuur</div>
+              <div className="text-gray-500 text-xs">Fundament van het AI-Netwerk — solution partners voor veilige AI-integratie</div>
             </div>
           </div>
-          <p className="text-gray-300 text-sm leading-relaxed mb-5">
+          <p className="text-gray-600 text-sm leading-relaxed mb-5">
             Onder het kernteam staat een laag van mensen die technisch en functioneel bezig zijn met de AI-infrastructuur van NHL Stenden. Zij hebben de expertise om als solution partner mee te denken over hoe AI veilig en effectief geïntegreerd kan worden in de ICT-omgeving, alternatieve oplossingen te bedenken en thuis te zijn in het laatste applicatie- en technieklandschap van AI.
           </p>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
             {techLaag.map(t => (
-              <div key={t.titel} className="bg-gray-800 rounded-xl p-4">
+              <div key={t.titel} className="bg-white border border-nhl-blauw/15 rounded-xl p-4 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">{t.icon}</span>
-                  <span className="text-white text-xs font-semibold">{t.titel}</span>
+                  <span className="text-nhl-blauw text-xs font-semibold">{t.titel}</span>
                 </div>
-                <p className="text-gray-400 text-xs leading-relaxed">{t.omschrijving}</p>
+                <p className="text-gray-500 text-xs leading-relaxed">{t.omschrijving}</p>
               </div>
             ))}
           </div>
