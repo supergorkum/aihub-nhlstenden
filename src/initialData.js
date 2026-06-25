@@ -49,6 +49,8 @@ export const INIT_PILOTS = [
     contactNaam: 'Projectteam Academie Educatie',
     contactEmail: '',
     startDatum: '2026-09',
+    bronUrl: 'https://www.surf.nl/online-onderwijs',
+    bronLabel: 'SURF — AVG en AI-tools in het onderwijs',
     updates: [
       { id: 1, datum: '15 juni 2026', tekst: 'Eerste tests met drie docenten afgerond. Studenten reageren positief op de snelheid van feedback. Aandachtspunt: de feedback is soms te generiek.', auteur: 'Projectteam' },
     ],
@@ -70,6 +72,8 @@ export const INIT_PILOTS = [
     contactNaam: 'AI Compliance Team',
     contactEmail: '',
     startDatum: '2026-09',
+    bronUrl: 'https://pec.surf.nl/vernieuwde-surf-modelverwerkersovereenkomst-beschikbaar/',
+    bronLabel: 'SURF — Model Verwerkersovereenkomst 4.0 (november 2024)',
     updates: [],
   },
   {
@@ -89,6 +93,8 @@ export const INIT_PILOTS = [
     contactNaam: 'Frisius MC en NHL Stenden Werkveld',
     contactEmail: '',
     startDatum: '2026-10',
+    bronUrl: 'https://www.nhlstenden.com/nieuws-en-artikelen/met-het-frisiuslab-zetten-nhl-stenden-en-frisius-mc-vol-in-op-innovatie',
+    bronLabel: 'NHL Stenden — FrisiusLab: zorg, onderwijs en onderzoek samen',
     updates: [],
   },
 ]

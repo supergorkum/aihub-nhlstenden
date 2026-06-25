@@ -256,9 +256,18 @@ export default function Pilots({ pilots, setPilots }) {
                       onClick={() => navigate(`/meld?initiatief=${encodeURIComponent(pilot.naam)}`)}
                       className="inline-flex items-center gap-2 bg-nhl-blauw/5 hover:bg-nhl-blauw/10 border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
                     >
-                      ✉️ Neem contact op via de AI-HUB
+                      ✉️ Neem contact op via het AI-Netwerk
                     </button>
-                    <div className="text-xs text-gray-400 mt-1.5">De AI-HUB brengt je in contact met het team achter deze pilot.</div>
+                    <div className="text-xs text-gray-400 mt-1.5">Het AI-Netwerk brengt je in contact met het team achter deze pilot.</div>
+                  </div>
+                )}
+                {pilot.bronUrl && (
+                  <div className="mt-2">
+                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Meer informatie</div>
+                    <a href={pilot.bronUrl} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-nhl-roze text-sm font-medium hover:underline">
+                      🔗 {pilot.bronLabel || 'Bekijk bron'}
+                    </a>
                   </div>
                 )}
                 {pilot.trefwoorden?.length > 0 && (
