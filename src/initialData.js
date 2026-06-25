@@ -53,8 +53,6 @@ export const INIT_PILOTS = [
       { id: 1, datum: '15 juni 2026', tekst: 'Eerste tests met drie docenten afgerond. Studenten reageren positief op de snelheid van feedback. Aandachtspunt: de feedback is soms te generiek.', auteur: 'Projectteam' },
     ],
   },
-]
-
   {
     id: 2,
     naam: 'AI-Feedback ChatGPT op scripties',
@@ -92,31 +90,36 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-10',
     updates: [],
-  }
+  },
 ]
 
 export const INIT_DOCS = [
   { id: 1, titel: 'AI Kompas NHL Stenden', categorie: 'strategie', spoor: null, type: 'pdf', datum: 'Juni 2026', omschrijving: 'Strategisch overzicht van de AI-architectuur en het vijflagenmodel.', icon: '📄' },
-  { id: 2, titel: 'AI-HUB Fundament v1.2', categorie: 'strategie', spoor: null, type: 'pdf', datum: 'Juni 2026', omschrijving: 'Fundament document met opzet, sporen en netwerkorganisatie.', icon: '📄' },
+  { id: 2, titel: 'AI-HUB Fundament v1.2', categorie: 'strategie', spoor: null, type: 'pdf', datum: 'Juni 2026', omschrijving: 'Fundament document met opzet, themas en netwerkorganisatie.', icon: '📄' },
   { id: 3, titel: 'Blueprint AI-HUB presentatie', categorie: 'strategie', spoor: null, type: 'pptx', datum: 'Juni 2026', omschrijving: 'Visuele presentatie van de architectuur en werking van de AI-HUB.', icon: '📊' },
+  { id: 10, titel: 'NVAO Startverkenning Generatieve AI', categorie: 'onderzoek', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Thematische analyse van generatieve AI in visitatierapporten. Conclusie: focus op toetsing, integrale aanpak ontbreekt. Aanbeveling: instellingsbrede richtlijnen en expliciete aandacht in kwaliteitszorg.', icon: '📊' },
+  { id: 11, titel: 'AI Compliance Voortgangsrapportage', categorie: 'governance', spoor: 3, type: 'pdf', datum: 'Februari 2026', omschrijving: 'Rapportage AI Compliance Team aan CvB. Kernboodschap: AI leeft sterk maar centrale regie ontbreekt. Zeven aanbevelingen waaronder AI-visie, programmatische aanpak en formalisering van het AI-team.', icon: '📋' },
+  { id: 12, titel: 'Programmavoorstel Bach - Digitale Autonomie', categorie: 'strategie', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale soevereiniteit. Vier programmalijnen, investering 94 miljoen euro, geinitieerd vanuit de Universiteit van het Noorden.', icon: '🏛️' },
+  { id: 13, titel: 'AI Regulatory Sandbox Praktijkgids', categorie: 'governance', spoor: 3, type: 'pdf', datum: '2026', omschrijving: 'Praktijkgids voor NHL Stenden: wanneer wel en niet een regulatory sandbox aanvragen. Inclusief beslisboom en stappenplan. Sandbox operationeel augustus 2026 via RDI.', icon: '⚖️' },
+  { id: 14, titel: 'Friese AI-behoeften werksessie', categorie: 'samenwerking', spoor: 5, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Uitwerking werksessie Friese AI-propositie met Frisius MC, NHL Stenden en Firda. Acht propositierichtingen voor zorg, onderwijs en maakindustrie.', icon: '🤝' },
 ]
 
 export const INIT_EVENEMENTEN = [
   {
     id: 1,
-    naam: 'AI-HUB Kick-off Bijeenkomst',
+    naam: 'AI-Netwerk Kick-off Bijeenkomst',
     locatie: 'NHL Stenden Leeuwarden, Rengerslaan 8',
     datum: '2026-09-10',
     startTijd: '13:00',
     eindTijd: '16:00',
-    omschrijving: 'Officiële lancering van de AI-HUB. Kennismaking met het kernteam en netwerken.',
-    organisator: 'Kernteam AI-HUB',
+    omschrijving: 'Officiele lancering van het AI-Netwerk. Kennismaking met het kernteam en netwerken.',
+    organisator: 'Kernteam AI-Netwerk',
     sporen: [1, 2, 3, 4],
     kleur: '#1E3A8A',
   },
   {
     id: 2,
-    naam: 'SURF Denktank — AI in Onderwijs',
+    naam: 'SURF Denktank - AI in Onderwijs',
     locatie: 'SURF Utrecht',
     datum: '2026-09-24',
     startTijd: '10:00',
@@ -131,6 +134,10 @@ export const INIT_EVENEMENTEN = [
 export const INIT_LINKJES = [
   { id: 1, titel: 'Intranet NHL Stenden', url: 'https://nhlstenden.sharepoint.com', omschrijving: 'Het centrale intranet voor medewerkers.', categorie: 'intranet', spoor: null, laag: null, trefwoorden: ['Intranet', 'Medewerkers'], toegevoegdDoor: 'Kernteam AI-HUB', datum: 'Juni 2026' },
   { id: 2, titel: 'SURF AI-HUB', url: 'https://www.surf.nl/aihub', omschrijving: 'Veilige toegang tot AI-modellen voor het hoger onderwijs.', categorie: 'extern', spoor: 3, laag: 3, trefwoorden: ['SURF', 'AI', 'Soevereiniteit'], toegevoegdDoor: 'Kernteam AI-HUB', datum: 'Juni 2026' },
+  { id: 3, titel: 'RDI - AI Regulatory Sandbox', url: 'https://www.rdi.nl', omschrijving: 'Rijksinspectie Digitale Infrastructuur. Beheerder van de Nederlandse AI Regulatory Sandbox, operationeel augustus 2026.', categorie: 'extern', spoor: 3, laag: 4, trefwoorden: ['AI Act', 'Compliance', 'Overheid'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 4, titel: 'Autoriteit Persoonsgegevens - AI', url: 'https://www.autoriteitpersoonsgegevens.nl', omschrijving: 'AP co-beheert de Nederlandse Regulatory Sandbox. Informatie over DPIA, AVG en AI-toepassingen met persoonsgegevens.', categorie: 'extern', spoor: 3, laag: 4, trefwoorden: ['Privacy', 'AVG', 'DPIA'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 5, titel: 'Npuls Expeditie AI', url: 'https://npuls.nl', omschrijving: 'Nationaal programma van mbo, hbo, wo en SURF voor AI in het onderwijs. Bundelt initiatieven rond AI in toetsing, curriculum en docentprofessionalisering.', categorie: 'extern', spoor: 1, laag: 5, trefwoorden: ['Nationaal', 'Onderwijs', 'Samenwerking'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 6, titel: 'Programma Bach - Universiteit van het Noorden', url: 'https://www.uvan.nl', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale autonomie en soevereiniteit. Geinitieerd vanuit Noord-Nederland, nationaal opschaalbaar.', categorie: 'extern', spoor: 6, laag: 3, trefwoorden: ['Soevereiniteit', 'Bach', 'Onderwijs'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
 ]
 
 export const INIT_INSPIRATIES = [
@@ -140,13 +147,6 @@ export const INIT_INSPIRATIES = [
 ]
 
 // NHL Stenden organisatiestructuur (uit organogram)
-  { id: 10, titel: 'NVAO Startverkenning Generatieve AI', categorie: 'onderzoek', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Thematische analyse van generatieve AI in visitatierapporten. Conclusie: focus op toetsing, integrale aanpak ontbreekt. Aanbeveling: instellingsbrede richtlijnen en expliciete aandacht in kwaliteitszorg.', icon: '📊' },
-  { id: 11, titel: 'AI Compliance Voortgangsrapportage', categorie: 'governance', spoor: 3, type: 'pdf', datum: 'Februari 2026', omschrijving: 'Rapportage AI Compliance Team aan CvB. Kernboodschap: AI leeft sterk maar centrale regie ontbreekt. Zeven aanbevelingen waaronder AI-visie, programmatische aanpak en formalisering van het AI-team.', icon: '📋' },
-  { id: 12, titel: 'Programmavoorstel Bach - Digitale Autonomie', categorie: 'strategie', spoor: 6, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale soevereiniteit. Vier programmalijnen, investering 94 miljoen euro, geïnitieerd vanuit de Universiteit van het Noorden.', icon: '🏛️' },
-  { id: 13, titel: 'AI Regulatory Sandbox Praktijkgids', categorie: 'governance', spoor: 3, type: 'pdf', datum: '2026', omschrijving: 'Praktijkgids voor NHL Stenden: wanneer wel en niet een regulatory sandbox aanvragen. Inclusief beslisboom en stappenplan. Sandbox operationeel augustus 2026 via RDI.', icon: '⚖️' },
-  { id: 14, titel: 'Friese AI-behoeften werksessie', categorie: 'samenwerking', spoor: 5, type: 'pdf', datum: 'Januari 2026', omschrijving: 'Uitwerking werksessie Friese AI-propositie met Frisius MC, NHL Stenden en Firda. Acht propositierichtingen voor zorg, onderwijs en maakindustrie.', icon: '🤝' }
-]
-
 export const NHL_DIENSTEN = [
   'Onderwijs, Onderzoek & Internationalisering (OO&I)',
   'Onderwijslogistiek & Studentondersteuning',
