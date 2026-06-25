@@ -11,7 +11,7 @@ const kernteam = [
       'Bewaakt de koers en samenhang van het AI-Netwerk als geheel',
       'Bestuurlijk aanspreekpunt richting Stuurgroep Transitieprogramma en directie',
       'Verbindt het AI-Netwerk met het externe netwerk: SURF, NPULS, Vereniging Hogescholen',
-      'Bewaakt de vier thema's en zorgt voor aansluiting op de organisatiepraktijk',
+      'Bewaakt de vier thema\u2019s en zorgt voor aansluiting op de organisatiepraktijk',
     ],
     kleur: '#1E3A8A',
     icon: '🧭',
