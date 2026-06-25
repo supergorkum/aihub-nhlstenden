@@ -25,7 +25,7 @@ export default function Footer() {
           {/* Branding */}
           <div>
             <div className="flex items-center gap-4 mb-5">
-              <img src="/logo-AIHUB.png" alt="AI-Netwerk" className="h-10 w-10 bg-white rounded-xl p-1 object-contain shadow" />
+              <img src="/AILOGO-Netwerk.png" alt="AI-Netwerk" className="h-12 w-12 rounded-xl object-contain shadow" />
               <div className="h-10 w-px bg-white/20" />
               <img src="/nhl-logo.png" alt="NHL Stenden" className="h-9 object-contain" />
             </div>
