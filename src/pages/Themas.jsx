@@ -1,160 +1,134 @@
-import GradientHeader from '../components/GradientHeader'
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { sporen } from '../data'
-import PageHeader from '../components/PageHeader'
-
-const KERNAMBITIES = {
-  1: 'De inzet van AI moet leiden tot meer studiesucces, minder uitval en minder voortijdig vertrek.',
-  2: 'NHL Stenden zet AI in om de efficiency van werkprocessen te verhogen, zodat medewerkers hun expertise voluit kunnen richten op onderwijs, begeleiding en samenwerking.',
-  3: 'NHL Stenden gebruikt AI alleen op een manier die transparant, controleerbaar en eerlijk is, en die past binnen de waarden van de instelling en de eisen van wet en samenleving.',
-  4: 'NHL Stenden zorgt ervoor dat AI-geletterdheid een basisvaardigheid is voor alle studenten en medewerkers, zodat niemand afhankelijk is van AI zonder het te begrijpen.',
-}
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { THEMAS, SITE_SUBTITEL } from '../data/themas';
 
 export default function Themas() {
-  const location = useLocation()
-  const [actief, setActief] = useState(() => {
-    const spoor = new URLSearchParams(location.search).get('spoor')
-    return spoor ? parseInt(spoor) : 1
-  })
-
-  useEffect(() => {
-    const spoor = new URLSearchParams(location.search).get('spoor')
-    if (spoor) setActief(parseInt(spoor))
-  }, [location.search])
-  const thema = sporen.find(s => s.id === actief)
+  const [actief, setActief] = useState(0);
+  const navigate = useNavigate();
+  const thema = THEMAS[actief];
 
   return (
-    <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Vier thema's" title="AI Thema's" subtitle="De vier sporen waarlangs NHL Stenden AI aanpakt." />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          {/* Thema kiezer */}
-          <div className="space-y-3">
-            {sporen.map(s => (
+    <div className="min-h-screen bg-white">
+
+      {/* Hero */}
+      <div className="relative bg-gradient-to-br from-[#1E3A8A] via-[#1a3580] to-[#0f2060] text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.2) 0%, transparent 40%)',
+            }}
+          />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-6 py-20">
+          <div className="inline-block bg-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6 border border-white/30">
+            Zes thema's
+          </div>
+          <h1 className="text-5xl font-bold mb-4 tracking-tight">AI Thema's</h1>
+          <p className="text-xl text-white/80 max-w-2xl">{SITE_SUBTITEL}</p>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full">
+          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 80 C360 20 1080 20 1440 80 L1440 80 L0 80Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Twee kolommen */}
+      <div className="max-w-5xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+          {/* Linkerkolom: themalijst */}
+          <div className="lg:col-span-2 flex flex-col gap-3">
+            {THEMAS.map((t, i) => (
               <button
-                key={s.id}
-                onClick={() => setActief(s.id)}
-                className={`w-full text-left rounded-2xl p-5 border-2 transition-all duration-200 ${
-                  actief === s.id
-                    ? 'border-transparent text-white shadow-lg'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                key={t.id}
+                onClick={() => setActief(i)}
+                className={`text-left p-4 rounded-xl border-2 transition-all duration-200 ${
+                  actief === i
+                    ? 'border-transparent text-white shadow-lg scale-[1.01]'
+                    : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
                 }`}
-                style={actief === s.id ? { backgroundColor: s.kleur } : {}}
+                style={actief === i ? { backgroundColor: t.kleur } : {}}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">{s.icon}</span>
-                  <span className={`font-bold text-base ${actief === s.id ? 'text-white' : 'text-nhl-blauw'}`}>{s.titel}</span>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="text-xl">{t.emoji}</span>
+                  <span className={`font-semibold text-sm ${actief === i ? 'text-white' : 'text-gray-900'}`}>
+                    {t.label}
+                  </span>
                 </div>
-                <p className={`text-sm leading-relaxed ${actief === s.id ? 'text-white/80' : 'text-gray-500'}`}>{s.kort}</p>
-                <div className={`mt-3 text-xs font-medium ${actief === s.id ? 'text-white/60' : 'text-nhl-roze'}`}>
-                  {actief === s.id ? 'Geselecteerd ✓' : 'Bekijk thema →'}
-                </div>
+                <p className={`text-xs leading-snug ml-8 ${actief === i ? 'text-white/80' : 'text-gray-500'}`}>
+                  {t.subtitel}
+                </p>
+                {actief === i ? (
+                  <p className="text-xs ml-8 mt-2 text-white/70 font-medium">Geselecteerd ✓</p>
+                ) : (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActief(i); }}
+                    className="text-xs ml-8 mt-2 font-medium hover:underline"
+                    style={{ color: t.kleur }}
+                  >
+                    Bekijk thema →
+                  </button>
+                )}
               </button>
             ))}
           </div>
 
-          {/* Detail */}
-          {thema && (
-            <div className="lg:col-span-2 animate-slide-up">
-              <div className="card p-8 h-full flex flex-col">
-                <div className="flex items-start gap-4 mb-5">
-                  <div className="text-4xl">{thema.icon}</div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-nhl-blauw mb-1">{thema.titel}</h2>
-                    <div className="w-14 h-1.5 rounded-full" style={{ backgroundColor: thema.kleur }} />
-                  </div>
+          {/* Rechterkolom: detailpanel */}
+          <div className="lg:col-span-3">
+            <div className="sticky top-6">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-3">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
+                  style={{ backgroundColor: thema.kleur + '20' }}
+                >
+                  {thema.emoji}
                 </div>
-
-                {/* Kernambitie */}
-                {KERNAMBITIES[thema.id] && (
-                  <div className="rounded-xl p-4 mb-5 border-l-4" style={{ borderColor: thema.kleur, backgroundColor: thema.kleur + '10' }}>
-                    <div className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: thema.kleur }}>Kernambitie</div>
-                    <p className="text-gray-700 text-sm leading-relaxed italic">"{KERNAMBITIES[thema.id]}"</p>
-                  </div>
-                )}
-
-                <p className="text-gray-600 leading-relaxed mb-4 text-base">{thema.waarom}</p>
-                {thema.uitleg && (
-                  <div className="bg-gray-50 rounded-xl p-4 mb-4 border border-gray-100">
-                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Wat valt hieronder?</div>
-                    <p className="text-gray-600 text-sm leading-relaxed">{thema.uitleg}</p>
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Vraagstukken binnen dit thema</div>
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    {thema.themas.map(t => (
-                      <div key={t} className="flex items-center gap-2.5 bg-gray-50 rounded-xl px-4 py-3 text-sm text-gray-700 border border-gray-100">
-                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: thema.kleur }} />
-                        {t}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-auto pt-4 border-t border-gray-100">
-                  <div className="flex flex-wrap gap-3">
-                    <Link to="/initiatieven" className="btn-primary text-sm">
-                      Initiatieven in dit thema →
-                    </Link>
-                    <Link to="/meld" className="btn-ghost text-sm border border-gray-200">
-                      Bijdrage melden
-                    </Link>
-                    <Link to="/netwerk" className="btn-ghost text-sm border border-gray-200">
-                      Bekijk in netwerk
-                    </Link>
-                  </div>
+                <div>
+                  <h2 className="text-2xl font-bold" style={{ color: thema.kleur }}>
+                    {thema.label}
+                  </h2>
+                  <div className="h-0.5 w-12 rounded-full mt-1" style={{ backgroundColor: thema.kleur }} />
                 </div>
               </div>
-            </div>
-          )}
-        </div>
 
-        {/* AI & Geletterdheid basis */}
-        <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6 mb-10">
-          <div className="flex gap-4 items-start">
-            <span className="text-3xl">📖</span>
-            <div>
-              <div className="font-bold text-purple-900 mb-2 text-lg">AI & Geletterdheid: de basis onder alles</div>
-              <p className="text-purple-700 text-sm leading-relaxed mb-3">
-                Geen enkel ander thema werkt zonder mensen die begrijpen wat AI is en wat het van hen vraagt.
-                Geletterdheid is geen eenmalige training maar een doorlopend fundament — voor bestuurders,
-                docenten, studenten en medewerkers. Het is de sleutel tot eigenaarschap, en eigenaarschap
-                is de sleutel tot duurzame verandering.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href="https://npuls.nl/onderwerpen/digitale-geletterdheid" target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-purple-700 text-sm font-medium hover:text-purple-900 underline">
-                  NPULS Digitale Geletterdheid ↗
-                </a>
-                <Link to="/meld" className="inline-flex items-center gap-1.5 text-purple-700 text-sm font-medium hover:text-purple-900 underline">
-                  Meld een geletterdheidsactiviteit →
-                </Link>
+              {/* Kernambitie */}
+              <div className="bg-gray-50 border-l-4 rounded-r-xl p-4 mb-5" style={{ borderColor: thema.kleur }}>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">Kernambitie</p>
+                <p className="text-gray-700 italic text-sm leading-relaxed">"{thema.kernambitie}"</p>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Verbinding met fundament */}
-        <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-          <div className="flex items-start gap-4">
-            <div className="text-2xl">🏗️</div>
-            <div className="flex-1">
-              <div className="font-bold text-nhl-blauw mb-1">De thema's bouwen op het fundament</div>
-              <p className="text-gray-600 text-sm leading-relaxed mb-3">
-                Elk thema staat niet op zichzelf. Achter de thema's ligt het vijflagenmodel als technisch
-                en organisatorisch fundament. Van energie en infrastructuur tot de toepassingen die
-                iedereen dagelijks ziet. Elke laag heeft een eigen eigenaar en verantwoordelijkheid.
-              </p>
-              <Link to="/fundament" className="inline-flex items-center gap-1.5 text-nhl-blauw text-sm font-semibold hover:underline">
-                Bekijk het fundament →
-              </Link>
+              {/* Toelichting */}
+              <p className="text-gray-600 leading-relaxed mb-5 text-sm">{thema.toelichting}</p>
+
+              {/* Wat valt hieronder */}
+              <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Wat valt hieronder?</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{thema.watValtHieronder}</p>
+              </div>
+
+              {/* Acties */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => navigate('/initiatieven?thema=' + thema.id)}
+                  className="flex-1 py-2.5 px-4 rounded-lg text-white text-sm font-medium transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: thema.kleur }}
+                >
+                  Bekijk initiatieven →
+                </button>
+                <button
+                  onClick={() => navigate('/meld', { state: { resetKey: Date.now(), thema: thema.id } })}
+                  className="flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-colors hover:bg-gray-50"
+                  style={{ borderColor: thema.kleur, color: thema.kleur }}
+                >
+                  Vraag of idee indienen
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
