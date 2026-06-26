@@ -800,7 +800,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     try {
                       /* geen data via URL */
                     } catch(e) {}
-                    window.open('/.netlify/functions/rapport-genereren', '_blank')
+                    window.open('/rapport', '_blank')
                   })()}
                     className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors mb-2">
                     📄 Genereer en open PDF-rapport
@@ -887,7 +887,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     try {
                       /* geen data via URL */
                     } catch(e) {}
-                    window.open('/.netlify/functions/rapport-genereren', '_blank')
+                    window.open('/rapport', '_blank')
                   })()}
                     className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
                     📄 Genereer PDF-rapport
