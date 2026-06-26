@@ -768,18 +768,6 @@ export default async (req, context) => {
     if (dataParam) {
       const parsed = JSON.parse(decodeURIComponent(dataParam))
       data = { ...data, ...parsed }
-    } else {
-      // Probeer Netlify Blobs
-      try {
-        const { getStore } = await import('@netlify/blobs')
-        const store = getStore('aihub-data')
-        const pilotsRaw = await store.get('pilots')
-        const initRaw = await store.get('alleInitiatieven')
-        const inspiratiesRaw = await store.get('inspiraties')
-        if (pilotsRaw) data.pilots = JSON.parse(pilotsRaw)
-        if (initRaw) data.alleInitiatieven = JSON.parse(initRaw)
-        if (inspiratiesRaw) data.inspiraties = JSON.parse(inspiratiesRaw)
-      } catch(e) { /* fallback naar lege data */ }
     }
   } catch (e) { /* fallback */ }
 
