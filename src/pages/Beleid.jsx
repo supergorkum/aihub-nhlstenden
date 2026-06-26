@@ -206,7 +206,7 @@ export default function Beleid({ docs }) {
         <div className="nhl-gradient-deep rounded-2xl p-8 text-white">
           <h2 className="text-xl font-extrabold mb-3">📄 Document downloaden</h2>
           <p className="text-blue-100 text-sm mb-5">
-            Het volledige AI Compliance Beleid NHL Stenden v2.0 is beschikbaar als PDF via de Documentatie-sectie van de AI-HUB.
+            Het volledige AI Compliance Beleid NHL Stenden v2.0 is beschikbaar als PDF via de Documentatie-sectie van het AI-Netwerk.
             Het Engelstalige beleid (AI compliance policy v2.0) is ook beschikbaar.
           </p>
           <div className="flex flex-wrap gap-3">

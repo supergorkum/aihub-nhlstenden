@@ -797,8 +797,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">PDF Rapport genereren</div>
                   <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Live gegenereerd met de meest actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
-                    const d = encodeURIComponent(JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
-                    window.open('/.netlify/functions/rapport-genereren?data=' + d, '_blank')
+                    try {
+                      sessionStorage.setItem('rapport_data', JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                    } catch(e) {}
+                    window.open('/.netlify/functions/rapport-genereren', '_blank')
                   })()}
                     className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors mb-2">
                     📄 Genereer en open PDF-rapport
@@ -882,8 +884,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Rapport</div>
                   <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
-                    const d = encodeURIComponent(JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
-                    window.open('/.netlify/functions/rapport-genereren?data=' + d, '_blank')
+                    try {
+                      sessionStorage.setItem('rapport_data', JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                    } catch(e) {}
+                    window.open('/.netlify/functions/rapport-genereren', '_blank')
                   })()}
                     className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
                     📄 Genereer PDF-rapport
@@ -930,7 +934,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           <div className="p-6 space-y-6">
             {[
               {
-                versie: 'v1.6', datum: 'Juni 2026',
+                versie: 'v2.0', datum: 'Juni 2026',
                 label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
                 items: [
                   'Netwerk.jsx: extern klikgedrag hersteld. Groene knop blijft zichtbaar na klik op externe bollen.',
@@ -940,8 +944,17 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   'Beheer.jsx: tabs in twee rijen zodat alles past zonder horizontale scroll.',
                   'Beheer.jsx: "Nieuws ophalen" knop in header verwees naar verkeerde tab. Nu gecorrigeerd.',
                   'Em-dashes en koppeltekens als stijlverbinder verwijderd uit alle paginateksten.',
+                  'Hernoemd van AI-HUB naar AI-Netwerk: GitHub repo, Netlify site, alle paginateksten.',
+                  'NVAO pagina toegevoegd: vier standaarden, bronverwijzingen, vervolgstappen.',
+                  'Over pagina hersteld: kernteam drie rollen, techniek infrastructuur laag, thema trekkers.',
+                  'Documentatie: toegangscode vereist voor downloaden van documenten.',
+                  'Beheer: PDF rapport generator toegevoegd met live data.',
+                  'Footer: AI-Netwerk logo, NHL Stenden wit logo met link naar nhlstenden.com.',
+                  'Bronnen en inspiratie: bronLabel systeem, NHL Stenden badges, intern veld.',
+                  'NVAO rapport PDF link gecorrigeerd naar nvao.net.',
                 ],
               },
+
               {
                 versie: 'v1.5', datum: 'Juni 2026',
                 label: null, labelKleur: '',
