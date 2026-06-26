@@ -109,6 +109,11 @@ function AppInner() {
   const [inspiraties, setInspiraties] = useState(INIT_INSPIRATIES)
   const [roadmap, setRoadmap] = useState(INIT_ROADMAP)
 
+  const location = useLocation()
+  if (location.pathname === '/rapport') {
+    return <Rapport pilots={pilots} inspiraties={inspiraties} />
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Nav />
