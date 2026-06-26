@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs'
+// Geen externe dependencies nodig
 
 const DATUM = () => new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -760,21 +760,28 @@ export default async (req, context) => {
     return new Response('', { status: 200, headers })
   }
 
-  // Haal live data op uit Netlify Blobs
+  // Data ophalen uit URL parameters of lege fallback
   let data = { pilots: [], alleInitiatieven: [], inspiraties: [], docs: [] }
   try {
-    const store = getStore('aihub-data')
-    const pilotsRaw = await store.get('pilots')
-    const initRaw = await store.get('alleInitiatieven')
-    const inspiratiesRaw = await store.get('inspiraties')
-    const docsRaw = await store.get('docs')
-    if (pilotsRaw) data.pilots = JSON.parse(pilotsRaw)
-    if (initRaw) data.alleInitiatieven = JSON.parse(initRaw)
-    if (inspiratiesRaw) data.inspiraties = JSON.parse(inspiratiesRaw)
-    if (docsRaw) data.docs = JSON.parse(docsRaw)
-  } catch (e) {
-    // Gebruik lege arrays als fallback
-  }
+    const url = new URL(req.url)
+    const dataParam = url.searchParams.get('data')
+    if (dataParam) {
+      const parsed = JSON.parse(decodeURIComponent(dataParam))
+      data = { ...data, ...parsed }
+    } else {
+      // Probeer Netlify Blobs
+      try {
+        const { getStore } = await import('@netlify/blobs')
+        const store = getStore('aihub-data')
+        const pilotsRaw = await store.get('pilots')
+        const initRaw = await store.get('alleInitiatieven')
+        const inspiratiesRaw = await store.get('inspiraties')
+        if (pilotsRaw) data.pilots = JSON.parse(pilotsRaw)
+        if (initRaw) data.alleInitiatieven = JSON.parse(initRaw)
+        if (inspiratiesRaw) data.inspiraties = JSON.parse(inspiratiesRaw)
+      } catch(e) { /* fallback naar lege data */ }
+    }
+  } catch (e) { /* fallback */ }
 
   const html = generateHTML(data)
   return new Response(html, { status: 200, headers })

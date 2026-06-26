@@ -479,6 +479,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'docs', label: 'Documenten', n: (docs || []).length },
     { id: 'nieuws', label: '📰 Nieuws ophalen', n: null },
     { id: 'backup', label: '☁️ Backup en Restore', n: null },
+    { id: 'rapport', label: '📄 Rapport', n: null },
   ]
 
   function TabBalk({ tabs }) {
@@ -790,7 +791,37 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           </div>
         )}
 
-        {actieveTab === 'backup' && (
+        {actieveTab === 'rapport' && (
+              <div className="space-y-4">
+                <div>
+                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">PDF Rapport genereren</div>
+                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Live gegenereerd met de meest actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
+                  <button onClick={() => (() => {
+                    const d = encodeURIComponent(JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                    window.open('/.netlify/functions/rapport-genereren?data=' + d, '_blank')
+                  })()}
+                    className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors mb-2">
+                    📄 Genereer en open PDF-rapport
+                  </button>
+                  <p className="text-xs text-gray-400">Opent in nieuw tabblad. Gebruik Bestand → Afdrukken → Opslaan als PDF.</p>
+                </div>
+                <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                  <div className="text-xs font-semibold text-nhl-blauw mb-3">Inhoud van het rapport</div>
+                  <div className="space-y-1.5 text-xs text-gray-600">
+                    <div>✓ Inleiding — wat is het AI-Netwerk en het doel</div>
+                    <div>✓ Fundament — strategie, beleid en externe verbindingen</div>
+                    <div>✓ Zes themas met kerndoelstellingen</div>
+                    <div>✓ Initiatieven overzicht intern en extern</div>
+                    <div>✓ Pilots — lopende experimenten met resultaten</div>
+                    <div>✓ NVAO — invulling per accreditatiestandaard</div>
+                    <div>✓ Netwerk visualisatie</div>
+                    <div>✓ Governance en overlegstructuur</div>
+                    <div>✓ Bijlage — volledig overzicht pilots, initiatieven en inspiratie</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {actieveTab === 'backup' && (
           <div className="space-y-6">
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="nhl-gradient-deep px-6 py-5">
@@ -850,7 +881,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Rapport</div>
                   <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
-                  <button onClick={() => window.open('/.netlify/functions/rapport-genereren', '_blank')}
+                  <button onClick={() => (() => {
+                    const d = encodeURIComponent(JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                    window.open('/.netlify/functions/rapport-genereren?data=' + d, '_blank')
+                  })()}
                     className="w-full flex items-center justify-center gap-2 bg-nhl-blauw hover:bg-nhl-blauw/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
                     📄 Genereer PDF-rapport
                   </button>
