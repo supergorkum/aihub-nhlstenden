@@ -131,6 +131,7 @@ function AppInner() {
           <Route path="/geletterdheid" element={<Geletterdheid />} />
           <Route path="/beleid" element={<Beleid />} />
           <Route path="/nvao" element={<NVAO />} />
+          <Route path="/rapport" element={<Rapport pilots={pilots} inspiraties={inspiraties} />} />
           <Route path="/beheer" element={
             <Beheer
               berichten={berichten} setBerichten={setBerichten_}
