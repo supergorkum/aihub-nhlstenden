@@ -798,7 +798,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Live gegenereerd met de meest actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
                     try {
-                      sessionStorage.setItem('rapport_data', JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                      /* geen data via URL */
                     } catch(e) {}
                     window.open('/.netlify/functions/rapport-genereren', '_blank')
                   })()}
@@ -885,7 +885,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
                     try {
-                      sessionStorage.setItem('rapport_data', JSON.stringify({ pilots, alleInitiatieven, inspiraties }))
+                      /* geen data via URL */
                     } catch(e) {}
                     window.open('/.netlify/functions/rapport-genereren', '_blank')
                   })()}
