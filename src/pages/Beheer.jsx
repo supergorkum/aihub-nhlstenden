@@ -42,7 +42,7 @@ function HerstellModal({ data, bron, onHerstel, onSluiten }) {
   const categorieën = [
     { key: 'alleInitiatieven', label: 'Initiatieven', icon: '🚀' },
     { key: 'berichten', label: 'Vragen en ideeën', icon: '💬' },
-    { key: 'inspiraties', label: 'Inspiratie', icon: '💡' },
+    { key: 'inspiraties', label: 'Inzichten', icon: '💡' },
     { key: 'videos', label: "Video's", icon: '🎬' },
     { key: 'pilots', label: 'Pilots', icon: '🧪' },
     { key: 'docs', label: 'Documenten', icon: '📁' },
@@ -198,7 +198,7 @@ function NieuwsOphalen({ onNieuwItems, inspiraties = [] }) {
         <p className="text-sm text-gray-600">
           Haalt nieuws op van <strong>The Gradient</strong>, <strong>MIT Tech Review</strong>, <strong>VentureBeat</strong>, <strong>Import AI</strong> en anderen.
           De Anthropic AI beoordeelt elk artikel op relevantie voor NHL Stenden en schrijft een Nederlandse samenvatting.
-          Relevante items worden direct toegevoegd aan <strong>Inspiratie</strong>.
+          Relevante items worden direct toegevoegd aan <strong>Inzichten</strong>.
         </p>
         <p className="text-xs text-gray-400 mt-1">
           Vereist: <code className="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> als Netlify environment variable.
@@ -211,7 +211,7 @@ function NieuwsOphalen({ onNieuwItems, inspiraties = [] }) {
               {resultaat.aantalNieuw > 0 ? (
                 <>
                   <div className="flex items-center gap-2 text-sm font-semibold text-green-700">
-                    <span>✓</span><span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inspiratie</span>
+                    <span>✓</span><span>{resultaat.aantalNieuw} nieuwe relevante items toegevoegd aan Inzichten</span>
                   </div>
                   {resultaat.items?.slice(0, 3).map((item, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
@@ -233,7 +233,7 @@ function NieuwsOphalen({ onNieuwItems, inspiraties = [] }) {
                     <div className="text-sm font-semibold text-nhl-blauw mb-0.5">Geen nieuw nieuws</div>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       {resultaat.aantalGefilterd > 0
-                        ? `Alle ${resultaat.aantalGefilterd} opgehaalde items staan al in Inspiratie. Kom later terug voor nieuwe berichten.`
+                        ? `Alle ${resultaat.aantalGefilterd} opgehaalde items staan al in Inzichten. Kom later terug voor nieuwe berichten.`
                         : 'Er zijn geen relevante berichten gevonden voor NHL Stenden. Kom later terug.'}
                     </p>
                   </div>
@@ -471,7 +471,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
   const tabsRij1 = [
     { id: 'initiatieven', label: 'Initiatieven', n: alleInitiatieven.length },
     { id: 'berichten', label: 'Vragen en ideeën', n: berichten.length },
-    { id: 'inspiraties', label: 'Inspiratie', n: (inspiraties || []).length },
+    { id: 'inspiraties', label: 'Inzichten', n: (inspiraties || []).length },
     { id: 'video', label: "Video's", n: (videos || []).filter(v => v.status === 'wachtrij').length > 0 ? `${(videos || []).filter(v => v.status === 'wachtrij').length} wachtrij` : (videos || []).length },
   ]
   const tabsRij2 = [
@@ -639,7 +639,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
         {actieveTab === 'inspiraties' && (
           <div>
             {(inspiraties || []).length === 0 ? (
-              <div className="text-center py-12 text-gray-400"><div className="text-4xl mb-3">💡</div><div>Nog geen inspiraties.</div></div>
+              <div className="text-center py-12 text-gray-400"><div className="text-4xl mb-3">💡</div><div>Nog geen inzichten.</div></div>
             ) : (
               <div className="space-y-3">
                 {(inspiraties || []).map(b => (
@@ -748,7 +748,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
               <div className="px-6 py-5 border-b border-gray-100" style={{background: 'linear-gradient(135deg, #0E7490 0%, #0F766E 100%)'}}>
                 <div className="text-white font-bold text-base flex items-center gap-2 mb-1">📰 Nieuws ophalen</div>
-                <div className="text-white/80 text-sm">Actuele AI-berichten worden opgehaald, beoordeeld op relevantie voor NHL Stenden, en toegevoegd aan Inspiratie.</div>
+                <div className="text-white/80 text-sm">Actuele AI-berichten worden opgehaald, beoordeeld op relevantie voor NHL Stenden, en toegevoegd aan Inzichten.</div>
               </div>
               <div className="p-6">
                 <div className="grid sm:grid-cols-2 gap-5 mb-6">
@@ -757,7 +757,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <ol className="space-y-2 text-sm text-gray-600">
                       <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">1</span><span>Het systeem haalt berichten op uit RSS-feeds van relevante bronnen.</span></li>
                       <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">2</span><span>Claude AI beoordeelt elk bericht op relevantie voor NHL Stenden en AI in onderwijs.</span></li>
-                      <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span><span>Relevante items worden automatisch vertaald naar het Nederlands en toegevoegd aan Inspiratie.</span></li>
+                      <li className="flex gap-2"><span className="w-5 h-5 rounded-full bg-nhl-blauw text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span><span>Relevante items worden automatisch vertaald naar het Nederlands en toegevoegd aan Inzichten.</span></li>
                     </ol>
                   </div>
                   <div className="rounded-xl border border-gray-100 p-4 bg-gray-50">
@@ -796,7 +796,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               <div className="space-y-4">
                 <div>
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">PDF Rapport genereren</div>
-                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Live gegenereerd met de meest actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
+                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Live gegenereerd met de meest actuele data: initiatieven, pilots, inzichten, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
                     try {
                       /* geen data via URL */
@@ -819,7 +819,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <div>✓ NVAO — invulling per accreditatiestandaard</div>
                     <div>✓ Netwerk visualisatie</div>
                     <div>✓ Governance en overlegstructuur</div>
-                    <div>✓ Bijlage — volledig overzicht pilots, initiatieven en inspiratie</div>
+                    <div>✓ Bijlage — volledig overzicht pilots, initiatieven en inzichten</div>
                   </div>
                 </div>
               </div>
@@ -905,7 +905,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <button onClick={handleExport} className="btn-primary w-full">⬇ Download als JSON</button>
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Rapport</div>
-                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inspiratie, NVAO-kaders en governance.</p>
+                  <p className="text-gray-500 text-sm mb-3">Genereer een volledig professioneel rapport van het AI-Netwerk als PDF. Het rapport bevat alle actuele data: initiatieven, pilots, inzichten, NVAO-kaders en governance.</p>
                   <button onClick={() => (() => {
                     try {
                       /* geen data via URL */
@@ -973,7 +973,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   'Documentatie: toegangscode vereist voor downloaden van documenten.',
                   'Beheer: PDF rapport generator toegevoegd met live data.',
                   'Footer: AI-Netwerk logo, NHL Stenden wit logo met link naar nhlstenden.com.',
-                  'Bronnen en inspiratie: bronLabel systeem, NHL Stenden badges, intern veld.',
+                  'Bronnen en inzichten: bronLabel systeem, NHL Stenden badges, intern veld.',
                   'NVAO rapport PDF link gecorrigeerd naar nvao.net.',
                 ],
               },
@@ -1002,7 +1002,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               {
                 versie: 'v1.2', datum: 'Juni 2026', label: null, items: ['Impact dashboard', 'Cloud backup', 'Changelog', 'Logo en gradient headers', 'Dropdown nav'] },
               {
-                versie: 'v1.1', datum: 'Juni 2026', label: null, items: ["Video, Evenementen, Bronnen, Pilots, Inspiratie, Fundament, Over", 'Bestandsupload', 'Beheer tabs'] },
+                versie: 'v1.1', datum: 'Juni 2026', label: null, items: ["Video, Evenementen, Bronnen, Pilots, Inzichten, Fundament, Over", 'Bestandsupload', 'Beheer tabs'] },
               {
                 versie: 'v1.0', datum: 'Mei 2026', label: null, items: ["Eerste versie AI-HUB", "Startpagina, Netwerk, Thema's, Initiatieven", 'Netlify deployment'] },
             ].map(v => (

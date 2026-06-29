@@ -211,7 +211,7 @@ export default function Netwerk() {
                   <div className="space-y-2">
                     <a href="#initiatieven" className="block text-sm text-nhl-teal hover:underline">→ Alle initiatieven bekijken</a>
                     <a href="#meld" className="block text-sm text-nhl-teal hover:underline">→ Initiatief aanmelden</a>
-                    <a href="#inspiratie" className="block text-sm text-nhl-teal hover:underline">→ Inspiratie & vragen</a>
+                    <a href="#inspiratie" className="block text-sm text-nhl-teal hover:underline">→ Inzichten & vragen</a>
                   </div>
                 </div>
               </div>

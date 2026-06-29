@@ -430,13 +430,13 @@ export default function Rapport({ pilots: pilotsProp, inspiraties: inspiratiesPr
           </div>
         </div>
 
-        {/* Inspiratie */}
+        {/* Inzichten */}
         {inspiraties.length > 0 && (
           <div className="section page-break">
             <div className="chapter-label">Hoofdstuk 9</div>
-            <div className="chapter-title">Inspiratie en beweging</div>
+            <div className="chapter-title">Inzichten en beweging</div>
             <div className="chapter-line"></div>
-            <div className="lead">Het AI-Netwerk haalt ook buiten de muren van NHL Stenden inspiratie op. Onderstaande items geven een beeld van wat medewerkers, docenten en studenten delen en relevant vinden voor de NHL Stenden context.</div>
+            <div className="lead">Het AI-Netwerk haalt ook buiten de muren van NHL Stenden inzichten op. Onderstaande items geven een beeld van wat medewerkers, docenten en studenten delen en relevant vinden voor de NHL Stenden context.</div>
 
             <table>
               <thead><tr><th>Titel</th><th>Type</th><th>Datum</th></tr></thead>

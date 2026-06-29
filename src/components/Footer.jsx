@@ -47,7 +47,7 @@ export default function Footer() {
                 ['/evenementen', 'Evenementen'],
                 ['/fundament', 'Fundament'],
                 ['/initiatieven', 'Initiatieven'],
-                ['/inspiratie', 'Inspiratie'],
+                ['/inspiratie', 'Inzichten'],
                 ['/meld', 'Vraag of idee'],
                 ['/netwerk', 'Netwerk'],
                 ['/over', 'Over het Netwerk'],

@@ -373,7 +373,7 @@ function generateHTML(data) {
     </div>
     <div class="stat-box">
       <div class="stat-number">${inspiraties.length}</div>
-      <div class="stat-label">Inspiratie-items</div>
+      <div class="stat-label">Inzichten</div>
     </div>
     <div class="stat-box">
       <div class="stat-number">6</div>
@@ -712,7 +712,7 @@ function generateHTML(data) {
     </tbody>
   </table>` : '<p style="color:#9CA3AF;">Geen initiatieven geregistreerd.</p>'}
 
-  <div style="font-size:11pt;font-weight:700;color:#0F1E52;margin-bottom:12px;margin-top:24px;">Inspiratie (${inspiraties.length})</div>
+  <div style="font-size:11pt;font-weight:700;color:#0F1E52;margin-bottom:12px;margin-top:24px;">Inzichten (${inspiraties.length})</div>
   ${inspiraties.length > 0 ? `<table>
     <thead><tr><th>Titel</th><th>Type</th><th>Datum</th></tr></thead>
     <tbody>
@@ -722,7 +722,7 @@ function generateHTML(data) {
         <td>${b.datum || '—'}</td>
       </tr>`).join('')}
     </tbody>
-  </table>` : '<p style="color:#9CA3AF;">Geen inspiratie-items geregistreerd.</p>'}
+  </table>` : '<p style="color:#9CA3AF;">Geen inzichten geregistreerd.</p>'}
 </div>
 
 <!-- FOOTER -->

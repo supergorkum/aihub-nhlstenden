@@ -203,7 +203,7 @@ export default function NVAO() {
             <Link to="/pilots" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">🧪 Pilots</Link>
             <Link to="/initiatieven" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">🚀 Initiatieven</Link>
             <Link to="/documentatie" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">📁 Documenten</Link>
-            <Link to="/inspiratie" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">💡 Inspiratie</Link>
+            <Link to="/inspiratie" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">💡 Inzichten</Link>
             <Link to="/geletterdheid" className="inline-flex items-center gap-1.5 bg-white border border-nhl-blauw/20 text-nhl-blauw text-xs font-semibold px-3 py-2 rounded-xl hover:bg-nhl-blauw/5 transition-colors">📖 Geletterdheid</Link>
           </div>
         </div>

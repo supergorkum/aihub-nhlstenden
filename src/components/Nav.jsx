@@ -17,7 +17,7 @@ const navGroepen = [
     { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
     { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
     { label: 'Documentatie', to: '/documentatie', icon: '📁' },
-    { label: 'Inspiratie', to: '/inspiratie', icon: '💡' },
+    { label: 'Inzichten', to: '/inspiratie', icon: '💡' },
     { label: "Video's", to: '/video', icon: '🎬' },
   ]},
   { label: 'Beleid', items: [

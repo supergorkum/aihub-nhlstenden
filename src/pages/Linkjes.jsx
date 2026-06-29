@@ -75,7 +75,7 @@ export default function Linkjes({ linkjes, setLinkjes }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Bronnen & referenties" title="Bronnen" subtitle="Handige links naar tools, onderzoek, beleid en inspiratie rondom AI.">
+      <GradientHeader label="Bronnen & referenties" title="Bronnen" subtitle="Handige links naar tools, onderzoek, beleid en inzichten rondom AI.">
         <div className="mt-5">
           <button
             onClick={() => setAddOpen(true)}

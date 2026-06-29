@@ -45,7 +45,7 @@ export default function MeldJeIn({ onNieuwBericht }) {
           <div className="text-6xl mb-6">🎉</div>
           <h2 className="text-3xl font-bold text-white mb-4">Bedankt voor je bijdrage!</h2>
           <p className="text-blue-200 text-lg mb-8">
-            Je bijdrage is ontvangen en verschijnt binnenkort in het inspiratieoverzicht. 
+            Je bijdrage is ontvangen en verschijnt binnenkort in het inzichtenoverzicht. 
             Samen bouwen we de AI-HUB.
           </p>
           <button
@@ -64,7 +64,7 @@ export default function MeldJeIn({ onNieuwBericht }) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <span className="text-nhl-oranje font-semibold text-sm uppercase tracking-wider">Doe mee</span>
-          <h2 className="text-3xl font-bold text-white mt-2 mb-4">Meld je vraag of inspiratie</h2>
+          <h2 className="text-3xl font-bold text-white mt-2 mb-4">Meld je vraag of inzicht</h2>
           <p className="text-blue-200">
             Heb je een vraag, een idee, een zorg of een interessante ontwikkeling? 
             Deel het hier. Jouw input maakt de AI-HUB rijker.

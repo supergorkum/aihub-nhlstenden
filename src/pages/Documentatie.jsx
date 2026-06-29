@@ -6,7 +6,7 @@ const CATEGORIEEN = [
   { id: 'onderwijs', label: 'Onderwijs & Didactiek', icon: '🎓', kleur: '#0F766E' },
   { id: 'techniek', label: 'Techniek & Infrastructuur', icon: '⚙️', kleur: '#7C3AED' },
   { id: 'governance', label: 'Governance & Compliance', icon: '⚖️', kleur: '#E91E8C' },
-  { id: 'inspiratie', label: 'Inspiratie & Onderzoek', icon: '💡', kleur: '#D97706' },
+  { id: 'inspiratie', label: 'Inzichten & Onderzoek', icon: '💡', kleur: '#D97706' },
   { id: 'overig', label: 'Overig', icon: '📁', kleur: '#64748B' },
 ]
 

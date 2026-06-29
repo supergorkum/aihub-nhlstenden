@@ -24,7 +24,7 @@ const navGroepen = [
       { label: "Video's", to: '/video', icon: '🎬' },
       { label: 'Documentatie', to: '/documentatie', icon: '📁' },
       { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
-      { label: 'Inspiratie', to: '/inspiratie', icon: '💡', nieuw: true },
+      { label: 'Inzichten', to: '/inspiratie', icon: '💡', nieuw: true },
     ]
   },
 ]

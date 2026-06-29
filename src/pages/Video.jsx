@@ -104,7 +104,7 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
       <GradientHeader
-        label="Kennis & inspiratie"
+        label="Kennis & inzichten"
         title="AI Video's"
         subtitle="Relevante video's over AI in het onderwijs en de organisatie, samengesteld door en voor NHL Stenden."
       >

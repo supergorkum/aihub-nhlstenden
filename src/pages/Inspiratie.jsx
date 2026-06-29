@@ -80,7 +80,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
       id: Date.now(),
       type: form.type,
       icon: typeDef?.icon || '💡',
-      typelabel: typeDef?.label || 'Inspiratie',
+      typelabel: typeDef?.label || 'Inzicht',
       rol: form.rol || 'Onbekend',
       naam: form.naam || 'Anoniem',
       spoor: parseInt(form.spoor) || null,
@@ -117,13 +117,13 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Inspiratie & initiatieven" title="Inspiratie" subtitle="Deel wat jou inspireert op het gebied van AI.">
+      <GradientHeader label="Inzichten & initiatieven" title="Inzichten" subtitle="Deel wat jou inspireert op het gebied van AI.">
         <div className="mt-5">
           <button
             onClick={() => setAddOpen(true)}
             className="inline-flex items-center gap-2 bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
           >
-            + Deel jouw inspiratie
+            + Deel een inzicht
           </button>
         </div>
       </GradientHeader>
@@ -264,7 +264,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
             <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white">
-              <h2 className="font-bold text-nhl-blauw text-lg">Inspiratie delen</h2>
+              <h2 className="font-bold text-nhl-blauw text-lg">Inzicht delen</h2>
               <button onClick={() => setAddOpen(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">✕</button>
             </div>
 
@@ -272,7 +272,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
               <div className="p-8 text-center">
                 <div className="text-5xl mb-4">🎉</div>
                 <h3 className="font-bold text-nhl-blauw text-xl mb-2">Gedeeld!</h3>
-                <p className="text-gray-600 text-sm mb-4">Je bijdrage verschijnt direct in het inspiratieoverzicht.</p>
+                <p className="text-gray-600 text-sm mb-4">Je bijdrage verschijnt direct in het inzichtenoverzicht.</p>
                 {(parseInt(form.spoor) === 3 || form.trefwoorden.some(t => t.toLowerCase().includes('ai act'))) && (
                   <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 text-left">
                     <div className="text-xs font-semibold text-nhl-blauw mb-1">⚖️ AI Act gerelateerd</div>
@@ -298,7 +298,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
 
                 {stap === 0 && (
                   <div className="space-y-3">
-                    <p className="text-gray-500 text-sm mb-4">Wat voor soort inspiratie wil je delen?</p>
+                    <p className="text-gray-500 text-sm mb-4">Wat voor soort inzicht wil je delen?</p>
                     {INSPIRATIE_TYPES.map(t => (
                       <button key={t.id} onClick={() => upd('type', t.id)}
                         className={`w-full px-4 py-3 rounded-xl text-left border-2 transition-colors ${form.type === t.id ? 'border-nhl-blauw bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>

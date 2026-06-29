@@ -56,7 +56,7 @@ export default function Inspiratie({ berichten }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <span className="text-nhl-oranje font-semibold text-sm uppercase tracking-wider">Van de organisatie</span>
-          <h2 className="text-3xl font-bold text-nhl-blauw mt-2 mb-4">Vragen & inspiratie</h2>
+          <h2 className="text-3xl font-bold text-nhl-blauw mt-2 mb-4">Vragen & inzichten</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Wat leeft er in de organisatie? Hier zie je vragen, ideeën en signalen van collega's 
             en studenten. Herken je iets? Voeg jouw eigen bijdrage toe.
