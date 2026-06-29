@@ -357,7 +357,7 @@ export default function Geletterdheid() {
                   { to: '/video', icon: '🎬', titel: "Video's over AI", tekst: 'Curated video\'s over AI in het onderwijs' },
                   { to: '/initiatieven', icon: '🚀', titel: 'Initiatieven', tekst: 'Wat loopt er al op het gebied van AI & Geletterdheid?' },
                   { to: '/pilots', icon: '🧪', titel: 'Pilots', tekst: 'AI & Geletterdheid in de praktijk testen' },
-                  { to: '/inspiratie', icon: '💡', titel: 'Inzichten', tekst: 'Delen wat anderen inspireert' },
+                  { to: '/inspiratie', icon: '💡', titel: 'Inzichten', tekst: 'Artikelen en ontwikkelingen uit het netwerk' },
                   { to: '/linkjes', icon: '🔗', titel: 'Bronnen', tekst: 'Externe links en referenties' },
                 ].map(item => (
                   <Link key={item.to} to={item.to}

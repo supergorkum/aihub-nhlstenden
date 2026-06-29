@@ -117,7 +117,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
-      <GradientHeader label="Inzichten & initiatieven" title="Inzichten" subtitle="Deel wat jou inspireert op het gebied van AI.">
+      <GradientHeader label="Inzichten & initiatieven" title="Inzichten" subtitle="Artikelen, ontwikkelingen en initiatieven gedeeld door mensen uit het netwerk.">
         <div className="mt-5">
           <button
             onClick={() => setAddOpen(true)}
