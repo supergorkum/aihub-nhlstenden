@@ -480,6 +480,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'nieuws', label: '📰 Nieuws ophalen', n: null },
     { id: 'backup', label: '☁️ Backup en Restore', n: null },
     { id: 'rapport', label: '📄 Rapport', n: null },
+    { id: 'nvao', label: '🧪 NVAO & GenAI — Beta', n: null },
   ]
 
   function TabBalk({ tabs }) {
@@ -821,6 +822,28 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <div>✓ Bijlage — volledig overzicht pilots, initiatieven en inspiratie</div>
                   </div>
                 </div>
+              </div>
+            )}
+            {actieveTab === 'nvao' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🧪</span>
+                  <div>
+                    <h2 className="text-lg font-bold text-nhl-blauw">NVAO & GenAI</h2>
+                    <span className="inline-flex items-center gap-1 bg-pink-50 text-nhl-roze px-2.5 py-0.5 rounded-full text-xs font-medium">Beta — alleen zichtbaar voor beheerders</span>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+                  <iframe
+                    src="/nvao"
+                    title="NVAO & GenAI"
+                    className="w-full"
+                    style={{ height:"70vh", border:"none" }}
+                  />
+                </div>
+                <p className="text-xs text-gray-400 text-center">
+                  Deze pagina is verborgen voor gewone gebruikers en alleen toegankelijk via de beheeromgeving.
+                </p>
               </div>
             )}
             {actieveTab === 'backup' && (
