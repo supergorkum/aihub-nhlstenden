@@ -75,12 +75,12 @@ const techLaag = [
 ]
 
 const themasTrekkers = [
-  { thema: 'AI & Leren', icon: '🎓', kleur: '#1E3A8A', trekker: 'Volgt', contact: null },
-  { thema: 'AI & Werken', icon: '⚙️', kleur: '#0F766E', trekker: 'Volgt', contact: null },
-  { thema: 'AI & Verantwoordelijkheid', icon: '⚖️', kleur: '#E91E8C', trekker: 'Volgt', contact: null },
-  { thema: 'AI & Geletterdheid', icon: '📖', kleur: '#7C3AED', trekker: 'Volgt', contact: null },
-  { thema: 'AI & Werkveld', icon: '🏢', kleur: '#B45309', trekker: 'Volgt', contact: null },
-  { thema: 'AI & Onderzoek', icon: '🔬', kleur: '#0E7490', trekker: 'Volgt', contact: null },
+  { thema: 'AI & Leren', icon: '🎓', kleur: '#1E3A8A', trekker: 'Volgt', afdeling: 'OO&I', contact: null },
+  { thema: 'AI & Werken', icon: '⚙️', kleur: '#0F766E', trekker: 'Volgt', afdeling: 'DLWO', contact: null },
+  { thema: 'AI & Verantwoordelijkheid', icon: '⚖️', kleur: '#E91E8C', trekker: 'Volgt', afdeling: 'Concernstaf', contact: null },
+  { thema: 'AI & Geletterdheid', icon: '📖', kleur: '#7C3AED', trekker: 'Volgt', afdeling: 'OO&I, HRM & DLWO', contact: null },
+  { thema: 'AI & Werkveld', icon: '🏢', kleur: '#B45309', trekker: 'Volgt', afdeling: 'Academie', contact: null },
+  { thema: 'AI & Onderzoek', icon: '🔬', kleur: '#0E7490', trekker: 'Volgt', afdeling: 'OO&I & Lectoraat', contact: null },
 ]
 
 export default function Over() {
@@ -176,7 +176,13 @@ export default function Over() {
               </div>
               <div className="p-4">
                 <div className="text-xs text-gray-400 mb-1">Trekker</div>
-                <div className="text-sm font-semibold text-gray-700 mb-3">{t.trekker}</div>
+                <div className="text-sm font-semibold text-gray-700 mb-2">{t.trekker}</div>
+                {t.afdeling && (
+                  <div className="text-xs text-gray-400 mb-3">
+                    <span className="text-gray-400">Afdeling: </span>
+                    <span className="text-gray-500 font-medium">{t.afdeling}</span>
+                  </div>
+                )}
                 {t.contact ? (
                   <a href={`mailto:${t.contact}`}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1.5 rounded-lg"
