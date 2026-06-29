@@ -21,6 +21,8 @@ import Geletterdheid from './pages/Geletterdheid'
 import Beleid from './pages/Beleid'
 import NVAO from './pages/NVAO'
 import Rapport from './pages/Rapport'
+import Governance from './pages/Governance'
+import WatLeverHetOp from './pages/WatLeverHetOp'
 import {
   INIT_VIDEOS, INIT_PILOTS, INIT_DOCS,
   INIT_EVENEMENTEN, INIT_LINKJES, INIT_INSPIRATIES

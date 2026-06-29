@@ -22,6 +22,8 @@ const navGroepen = [
   { label: 'Beleid', items: [
     { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },
     { label: 'Beleid & Kaders', to: '/beleid', icon: '📋' },
+    { label: 'AI-Governance', to: '/governance', icon: '🏛️' },
+    { label: 'Wat levert het op?', to: '/wat-levert-het-op', icon: '✨' },
     { label: 'Roadmap', to: '/initiatieven?tab=roadmap', icon: '🗺️' },
   ]},
 ]
