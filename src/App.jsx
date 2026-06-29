@@ -164,6 +164,11 @@ function LoginScherm({ onLogin }) {
             <p className="text-xs text-center mt-5" style={{ color:"#94a3b8" }}>
               Neem contact op met de beheerder van het AI-Netwerk voor de toegangscode.
             </p>
+            <div className="mt-5 pt-4" style={{ borderTop:"1px solid #f1f5f9" }}>
+              <p className="text-xs text-center leading-relaxed" style={{ color:"#cbd5e1" }}>
+                🚧 <em>Werkend prototype</em> — ontwikkeld ter inspiratie en visualisatie van wat digitaal mogelijk is. Gebruik de inzichten als vertrekpunt, niet als definitieve conclusie.
+              </p>
+            </div>
           </div>
         </div>
 
