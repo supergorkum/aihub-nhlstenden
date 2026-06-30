@@ -22,6 +22,7 @@ import NVAO from './pages/NVAO'
 import Rapport from './pages/Rapport'
 import Governance from './pages/Governance'
 import Kader from './pages/Kader'
+import AgenticAI from './pages/AgenticAI'
 import Dashboard from './pages/Dashboard'
 import WatLeverHetOp from './pages/WatLeverHetOp'
 import {
@@ -304,6 +305,7 @@ function AppInner() {
           <Route path="/beleid" element={<Beleid />} />
           <Route path="/governance" element={<Governance />} />
           <Route path="/kader" element={<Kader />} />
+          <Route path="/agentic-ai" element={<AgenticAI />} />
           <Route path="/dashboard" element={<Dashboard pilots={pilots} evenementen={evenementen} />} />
           <Route path="/wat-levert-het-op" element={<WatLeverHetOp />} />
           <Route path="/nvao" element={<NVAO />} />
