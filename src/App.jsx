@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
@@ -14,7 +14,6 @@ import Video from './pages/Video'
 import Evenementen from './pages/Evenementen'
 import Linkjes from './pages/Linkjes'
 import Meld from './pages/Meld'
-import Inspiratie from './pages/Inspiratie'
 import Over from './pages/Over'
 import Beheer from './pages/Beheer'
 import Geletterdheid from './pages/Geletterdheid'
@@ -292,14 +291,14 @@ function AppInner() {
           <Route path="/themas" element={<Themas />} />
           <Route path="/fundament" element={<Fundament />} />
           <Route path="/netwerk" element={<Netwerk />} />
-          <Route path="/initiatieven" element={<Initiatieven roadmap={roadmap} setRoadmap={setRoadmap} />} />
+          <Route path="/initiatieven" element={<Initiatieven roadmap={roadmap} setRoadmap={setRoadmap} inspiraties={inspiraties} setInspiraties={setInspiraties} />} />
           <Route path="/pilots" element={<Pilots pilots={pilots} setPilots={setPilots} />} />
           <Route path="/documentatie" element={<Documentatie docs={docs} setDocs={setDocs} />} />
           <Route path="/video" element={<Video videos={videos} setVideos={setVideos_} actiefVideoId={actiefVideoId} setActiefVideoId={setActiefVideoId} />} />
           <Route path="/evenementen" element={<Evenementen evenementen={evenementen} setEvenementen={setEvenementen} />} />
           <Route path="/linkjes" element={<Linkjes linkjes={linkjes} setLinkjes={setLinkjes} />} />
           <Route path="/meld" element={<Meld onNieuwBericht={(b) => setBerichten_(prev => [b, ...prev])} berichten={berichten} />} />
-          <Route path="/inspiratie" element={<Inspiratie inspiraties={inspiraties} setInspiraties={setInspiraties} />} />
+          <Route path="/inspiratie" element={<Navigate to="/initiatieven?tab=inzichten" replace />} />
           <Route path="/over" element={<Over />} />
           <Route path="/geletterdheid" element={<Geletterdheid />} />
           <Route path="/beleid" element={<Beleid />} />

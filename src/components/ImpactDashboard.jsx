@@ -77,8 +77,8 @@ function ThemaDashboard({ config, alleItems, pilots, evenementen, spoor }) {
   const themaEvenementen = evenementen.filter(e => e.spoor === config.spoorId || (e.themas && e.themas.includes(config.spoorId))).slice(0, 2)
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
+    <div className="w-full min-h-[480px] sm:min-h-[420px]">
+      <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-5">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-3xl">{spoor?.icon}</span>
@@ -100,7 +100,7 @@ function ThemaDashboard({ config, alleItems, pilots, evenementen, spoor }) {
       </div>
 
       {/* Impactdimensies */}
-      <div className="grid sm:grid-cols-3 gap-3 mb-6">
+      <div className="grid sm:grid-cols-3 gap-3 mb-4">
         {config.impactDimensies.map(dim => {
           const rel = themaInitiatieven.filter(i =>
             (i.ambities || []).includes(dim) || (i.tags || []).some(t => t.toLowerCase().includes(dim.toLowerCase()))
@@ -248,10 +248,10 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [], evenem
   return (
     <section className="py-0">
       <div className="text-white" style={{ background: `linear-gradient(135deg, ${config.kleur}EE 0%, ${config.kleur}AA 100%)`, transition: 'background 0.4s ease' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
           {/* Overkoepelende ambitie */}
-          <div className="mb-8 pb-6 border-b border-white/20">
+          <div className="mb-5 pb-4 border-b border-white/20">
             <div className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-1">NHL Stenden · Overkoepelende kernambitie</div>
             <p className="text-white/80 text-sm max-w-2xl leading-relaxed italic">
               "NHL Stenden benut AI om studiesucces te vergroten, werkprocessen te versterken en een verantwoorde digitale cultuur te bouwen, gedragen door iedereen die hier werkt en leert."
@@ -259,7 +259,7 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [], evenem
           </div>
 
           {/* Thema tabs: alle zes */}
-          <div className="flex gap-2 mb-8 flex-wrap">
+          <div className="flex gap-2 mb-5 flex-wrap">
             {THEMA_CONFIG.map((t, i) => {
               const s = sporen.find(sp => sp.id === t.spoorId)
               return (
@@ -278,7 +278,7 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [], evenem
           <ThemaDashboard key={config.id} config={config} alleItems={alleItems} pilots={pilots} evenementen={evenementen} spoor={spoor} />
 
           {/* Navigatie */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/20">
+          <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/20">
             <button onClick={gaLinks} className="flex items-center gap-2 bg-white/10 hover:bg-white/25 border border-white/20 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all">
               ← {sporen.find(s => s.id === THEMA_CONFIG[(actiefThema - 1 + THEMA_CONFIG.length) % THEMA_CONFIG.length].spoorId)?.icon}{' '}
               <span className="hidden sm:inline">{THEMA_CONFIG[(actiefThema - 1 + THEMA_CONFIG.length) % THEMA_CONFIG.length].sectieLabel}</span>
@@ -296,7 +296,7 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [], evenem
           </div>
 
           {/* CTA */}
-          <div className="flex flex-wrap items-center gap-4 mt-6">
+          <div className="flex flex-wrap items-center gap-4 mt-4">
             <p className="text-white/70 text-sm flex-1">Draagt jouw initiatief bij aan {config.sectieLabel}? Meld het en koppel het aan het juiste thema.</p>
             <Link to="/meld" className="bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors flex-shrink-0">+ Meld initiatief</Link>
             <Link to={`/themas?spoor=${config.spoorId}`} className="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex-shrink-0">Verdiep in thema →</Link>

@@ -397,7 +397,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             {[
               { icon: '🚀', titel: 'Initiatief aanmelden', tekst: 'Werk jij aan iets rond AI?', label: 'Aanmelden', onClick: () => setInitiatiefModalOpen(true), to: null },
               { icon: '📁', titel: 'Documentatie', tekst: 'Presentaties, rapporten en materiaal.', label: 'Bekijken', to: '/documentatie', onClick: null },
-              { icon: '💡', titel: 'Inzichten', tekst: 'Artikelen, ontwikkelingen en initiatieven uit het netwerk.', label: 'Ontdekken', to: '/inspiratie', onClick: null },
+              { icon: '💡', titel: 'Inzichten', tekst: 'Artikelen, ontwikkelingen en initiatieven uit het netwerk.', label: 'Ontdekken', to: '/initiatieven?tab=inzichten', onClick: null },
             ].map(item => (
               <div key={item.titel} className="bg-white/10 border border-white/20 rounded-2xl p-6">
                 <div className="text-3xl mb-2">{item.icon}</div>

@@ -2,6 +2,7 @@ import GradientHeader from '../components/GradientHeader'
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
+import InzichtenTab from '../components/InzichtenTab'
 
 const statusConfig = {
   actief:            { label: 'Actief',          kleur: 'bg-green-100 text-green-700' },
@@ -35,7 +36,7 @@ const ROADMAP_STATUS = {
 
 const STATUS_CYCLUS = ['te-starten', 'in-ontwikkeling', 'lopend']
 
-export default function Initiatieven({ roadmap, setRoadmap }) {
+export default function Initiatieven({ roadmap, setRoadmap, inspiraties, setInspiraties }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -210,13 +211,14 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex gap-1 overflow-x-auto">
             {[
-              { id: 'initiatieven', label: '🚀 Initiatieven', n: alleInitiatieven.length },
-              { id: 'roadmap', label: '🗺️ Roadmap', n: (roadmap || []).length },
-              { id: 'aiact', label: '⚖️ AI Act compliance', n: AI_ACT_ITEMS.filter(a => a.status === 'te-starten').length + ' open' },
+              { id: 'initiatieven', label: '🚀 Initiatieven', n: alleInitiatieven.length, kleur: 'border-nhl-blauw text-nhl-blauw' },
+              { id: 'roadmap', label: '🗺️ Roadmap', n: (roadmap || []).length, kleur: 'border-nhl-blauw text-nhl-blauw' },
+              { id: 'aiact', label: '⚖️ AI Act compliance', n: AI_ACT_ITEMS.filter(a => a.status === 'te-starten').length + ' open', kleur: 'border-nhl-blauw text-nhl-blauw' },
+              { id: 'inzichten', label: '💡 Inzichten', n: (inspiraties || []).length, kleur: 'border-amber-500 text-amber-600' },
             ].map(tab => (
               <button key={tab.id} onClick={() => switchTab(tab.id)}
                 className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap -mb-px ${
-                  actieveTab === tab.id ? 'border-nhl-blauw text-nhl-blauw' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  actieveTab === tab.id ? tab.kleur : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}>
                 {tab.label}
                 <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">{tab.n}</span>
@@ -541,6 +543,10 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
               })}
             </div>
           </div>
+        )}
+        {/* TAB: INZICHTEN */}
+        {actieveTab === 'inzichten' && (
+          <InzichtenTab inspiraties={inspiraties} setInspiraties={setInspiraties} />
         )}
       </div>
 
