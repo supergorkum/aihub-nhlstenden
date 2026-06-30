@@ -90,7 +90,7 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-              <span>Versie 1.6: In ontwikkeling</span>
+              <span>Versie 2.1: In ontwikkeling</span>
             </div>
             <Link to="/beheer" className="text-blue-400 hover:text-blue-200 transition-colors flex items-center gap-1.5">
               Beheer ↗

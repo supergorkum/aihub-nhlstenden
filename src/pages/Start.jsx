@@ -193,7 +193,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [], beri
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling, versie 1.8 · Juni 2026
+                In ontwikkeling, versie 2.1 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/nhl-logo-transparent.png" alt="NHL Stenden" className="h-16 w-16 object-contain" />

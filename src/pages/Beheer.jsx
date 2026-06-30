@@ -1029,8 +1029,25 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
           <div className="p-6 space-y-6">
             {[
               {
-                versie: 'v2.0', datum: 'Juni 2026',
+                versie: 'v2.1', datum: 'Juni 2026',
                 label: 'Huidige versie', labelKleur: 'bg-green-100 text-green-700',
+                items: [
+                  "Startpagina herzien: drie kern-knoppen (AI-Netwerk, Thema's, Kader), losse Dashboard- en Kader-pagina.",
+                  'Inzichten samengevoegd als tab binnen Initiatieven, met eigen kleuraccent.',
+                  'Dashboard compacter gemaakt, geen scroll-sprong meer bij wisselen van thema.',
+                  "Bronvermelding toegevoegd bij thema's, met expliciete doorverwijzing naar CTL en OO&I.",
+                  'Em-dashes site-breed vervangen door normale zinsconstructie.',
+                  'Weblinks toegevoegd aan initiatieven met een geverifieerde publieke bron.',
+                  'Betrokkenen-functie: naam en afdeling toevoegen per initiatief, blijvend opgeslagen.',
+                  'Nieuwe pagina Agentic AI toegevoegd onder Kennis, met eigen visualisatie.',
+                  "Documentatie en Video's verplaatst naar Beheer, achter de Beta-features knop.",
+                  'Bug in de weergave van vragen en ideeën in Beheer verholpen.',
+                ],
+              },
+
+              {
+                versie: 'v2.0', datum: 'Juni 2026',
+                label: null, labelKleur: '',
                 items: [
                   'Netwerk.jsx: extern klikgedrag hersteld. Groene knop blijft zichtbaar na klik op externe bollen.',
                   'NetwerkVisualisatie.jsx gesynchroniseerd met alle 6 sporen en dezelfde knoplogica.',
