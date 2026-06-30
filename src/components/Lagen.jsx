@@ -16,8 +16,7 @@ export default function Lagen() {
             </h2>
             <p className="text-gray-600 leading-relaxed mb-6">
               Wat we zien als een simpele chatbot is het topje van de ijsberg. 
-              Achter elke AI-toepassing gaat een gelaagd systeem schuil — 
-              van energievoorziening tot eindgebruiker.
+              Achter elke AI-toepassing gaat een gelaagd systeem schuil:               van energievoorziening tot eindgebruiker.
             </p>
             <p className="text-gray-600 leading-relaxed mb-6">
               De AI-HUB gebruikt dit vijflagenmodel om overzicht te brengen: 

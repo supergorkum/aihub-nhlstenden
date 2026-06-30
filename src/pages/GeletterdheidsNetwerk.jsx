@@ -115,7 +115,7 @@ export default function GeletterdheidsNetwerk({ bronnen, actieveDoelgroep, onDoe
         </div>
       </div>
 
-      {/* SVG + Tooltip wrapper — overflow visible zodat tooltip niet afsnijdt */}
+      {/* SVG + Tooltip wrapper: overflow visible zodat tooltip niet afsnijdt */}
       <div className="relative w-full">
         <svg viewBox={`0 0 ${W} ${H}`} width="100%" preserveAspectRatio="xMidYMid meet"
           className="select-none block" style={{ maxHeight: 520, overflow: 'visible' }}>
@@ -217,7 +217,7 @@ export default function GeletterdheidsNetwerk({ bronnen, actieveDoelgroep, onDoe
           <text x={CX} y={CY + 18} textAnchor="middle" fontSize="7.5" fill="rgba(255,255,255,0.65)" style={{ pointerEvents: 'none' }}>NHL Stenden</text>
         </svg>
 
-        {/* Tooltip als HTML div — beweegt over de SVG, blijft klikbaar */}
+        {/* Tooltip als HTML div: beweegt over de SVG, blijft klikbaar */}
         {hoverDg && dgData && (() => {
           // Positie relatief aan de SVG container
           const pctX = dgData.x / W

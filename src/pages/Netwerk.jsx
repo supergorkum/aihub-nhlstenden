@@ -353,7 +353,7 @@ export default function Netwerk() {
               <div className="flex items-center justify-between mt-2 pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-400">
                   {selected
-                    ? '📌 Vastgezet — klik de knop in het paneel om te navigeren'
+                    ? '📌 Vastgezet: klik de knop in het paneel om te navigeren'
                     : 'Hover voor preview. Klik om vast te zetten. Navigeer via de knoppen in het paneel.'
                   }
                 </div>
@@ -400,7 +400,7 @@ export default function Netwerk() {
                   <div className="flex items-center gap-1.5 mb-3 text-xs font-medium">
                     {selected
                       ? <span className="text-nhl-roze">📌 Vastgezet</span>
-                      : <span className="text-gray-400">👁 Preview — klik de bol om vast te zetten</span>
+                      : <span className="text-gray-400">👁 Preview: klik de bol om vast te zetten</span>
                     }
                   </div>
                   <DetailPanelInhoud nodeId={panelNode} />

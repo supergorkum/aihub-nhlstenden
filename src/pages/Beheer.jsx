@@ -356,7 +356,7 @@ function AntwoordVeld({ berichtId, onAntwoord }) {
   return (
     <div className="ml-6 mt-2">
       <div className="bg-nhl-blauw/5 border border-nhl-blauw/20 rounded-2xl rounded-tr-sm px-4 py-3 max-w-lg ml-auto">
-        <div className="text-xs font-semibold text-nhl-blauw mb-2">🧭 AI-HUB team — jouw reactie</div>
+        <div className="text-xs font-semibold text-nhl-blauw mb-2">🧭 AI-HUB team: jouw reactie</div>
         <textarea value={tekst} onChange={e => setTekst(e.target.value)} rows={3}
           placeholder="Typ hier je reactie..."
           className="w-full bg-white border border-nhl-blauw/20 rounded-xl px-3 py-2 text-sm text-nhl-blauw focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none mb-2" />
@@ -432,7 +432,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
       const data = await importJSON(file)
       setPreviewData(data)
       setPreviewBron('import')
-    } catch { alert('Import mislukt — controleer het bestand.') }
+    } catch { alert('Import mislukt: controleer het bestand.') }
   }
 
   const handleCloudHerstel = async () => {
@@ -480,7 +480,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'nieuws', label: '📰 Nieuws ophalen', n: null },
     { id: 'backup', label: '☁️ Backup en Restore', n: null },
     { id: 'rapport', label: '📄 Rapport', n: null },
-    { id: 'nvao', label: '🧪 NVAO & GenAI — Beta', n: null },
+    { id: 'nvao', label: '🧪 NVAO & GenAI: Beta', n: null },
   ]
 
   function TabBalk({ tabs }) {
@@ -774,7 +774,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                           <span className="text-base flex-shrink-0">{b.icon}</span>
                           <div>
                             <span className="text-xs font-semibold" style={{color: b.kleur}}>{b.naam}</span>
-                            <span className="text-xs text-gray-400"> — {b.omschrijving}</span>
+                            <span className="text-xs text-gray-400">: {b.omschrijving}</span>
                           </div>
                         </div>
                       ))}
@@ -811,15 +811,15 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
                   <div className="text-xs font-semibold text-nhl-blauw mb-3">Inhoud van het rapport</div>
                   <div className="space-y-1.5 text-xs text-gray-600">
-                    <div>✓ Inleiding — wat is het AI-Netwerk en het doel</div>
-                    <div>✓ Fundament — strategie, beleid en externe verbindingen</div>
+                    <div>✓ Inleiding: wat is het AI-Netwerk en het doel</div>
+                    <div>✓ Fundament: strategie, beleid en externe verbindingen</div>
                     <div>✓ Zes themas met kerndoelstellingen</div>
                     <div>✓ Initiatieven overzicht intern en extern</div>
-                    <div>✓ Pilots — lopende experimenten met resultaten</div>
-                    <div>✓ NVAO — invulling per accreditatiestandaard</div>
+                    <div>✓ Pilots: lopende experimenten met resultaten</div>
+                    <div>✓ NVAO: invulling per accreditatiestandaard</div>
                     <div>✓ Netwerk visualisatie</div>
                     <div>✓ Governance en overlegstructuur</div>
-                    <div>✓ Bijlage — volledig overzicht pilots, initiatieven en inzichten</div>
+                    <div>✓ Bijlage: volledig overzicht pilots, initiatieven en inzichten</div>
                   </div>
                 </div>
               </div>
@@ -830,7 +830,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                   <span className="text-2xl">🧪</span>
                   <div>
                     <h2 className="text-lg font-bold text-nhl-blauw">NVAO & GenAI</h2>
-                    <span className="inline-flex items-center gap-1 bg-pink-50 text-nhl-roze px-2.5 py-0.5 rounded-full text-xs font-medium">Beta — alleen zichtbaar voor beheerders</span>
+                    <span className="inline-flex items-center gap-1 bg-pink-50 text-nhl-roze px-2.5 py-0.5 rounded-full text-xs font-medium">Beta: alleen zichtbaar voor beheerders</span>
                   </div>
                 </div>
                 <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">

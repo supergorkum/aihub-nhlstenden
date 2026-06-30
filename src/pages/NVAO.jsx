@@ -10,10 +10,10 @@ const STANDAARDEN = [
     nvao: 'De NVAO constateert dat generatieve AI nauwelijks terugkomt bij standaard 1. Opleidingen passen hun leerdoelen en beroepsprofielen nog niet expliciet aan op de komst van GenAI, terwijl panels adviseren dit structureel te monitoren en door te vertalen.',
     nhlstenden: 'NHL Stenden werkt actief aan de integratie van AI-geletterdheid in leerdoelen. Via de minor AI in Practice en de minor Decision Making & Generative AI worden studenten opgeleid om AI kritisch te beoordelen en verantwoord in te zetten in hun toekomstige beroep. De NBA handreiking AI-geletterdheid en het AI-GO! raamwerk van Npuls vormen de inhoudelijke basis voor curriculumherziening.',
     acties: [
-      { tekst: 'Minor AI in Practice — studenten onderzoeken AI in de beroepspraktijk', link: 'https://www.nhlstenden.com/en/minors/ai-in-practice', extern: true },
-      { tekst: 'Minor Decision Making & Generative AI — ethiek, besluitvorming en AI', link: 'https://www.nhlstenden.com/en/minors/decision-making-and-generative-ai', extern: true },
+      { tekst: 'Minor AI in Practice: studenten onderzoeken AI in de beroepspraktijk', link: 'https://www.nhlstenden.com/en/minors/ai-in-practice', extern: true },
+      { tekst: 'Minor Decision Making & Generative AI: ethiek, besluitvorming en AI', link: 'https://www.nhlstenden.com/en/minors/decision-making-and-generative-ai', extern: true },
       { tekst: 'AI-GO! Raamwerk voor AI-geletterdheid in het onderwijs (Npuls)', link: 'https://npuls.nl/kennisbank/ai-go-een-raamwerk-voor-ai-geletterdheid-in-het-onderwijs', extern: true },
-      { tekst: 'Thema AI & Leren — overzicht leeractiviteiten NHL Stenden', link: '/themas', extern: false },
+      { tekst: 'Thema AI & Leren: overzicht leeractiviteiten NHL Stenden', link: '/themas', extern: false },
     ]
   },
   {
@@ -24,11 +24,11 @@ const STANDAARDEN = [
     nvao: 'De NVAO ziet dat opleidingen beleid ontwikkelen maar dit nog onvoldoende vertalen naar de praktijk. AI-geletterdheid van docenten, integratie in het curriculum en heldere communicatie naar studenten blijven aandachtspunten. Panels waarderen AI hubs en Teaching & Learning Centers die het voortouw nemen.',
     nhlstenden: 'NHL Stenden heeft een actieve infrastructuur voor AI in de leeromgeving. Het CTL (Centre for Teaching and Learning) biedt docenten ondersteuning via richtlijnen, webinars en materialen. Het I\'M A.I. initiatief brengt studenten, docenten en bedrijven samen rondom AI-toepassingen. Medewerkers en studenten worden ondersteund via ARDA AI-modules en LibGuides. NHL Stenden publiceert actief over GenAI en onderwijs via het intranet.',
     acties: [
-      { tekst: 'CTL — AI & Toetsing, richtlijnen en beoordelen (intranet)', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', extern: true },
-      { tekst: 'CTL — AI-webinars van Npuls voor docenten', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-webinars-van-Npuls.aspx', extern: true },
-      { tekst: 'I\'M A.I. — AI-initiatief NHL Stenden voor onderwijs en onderzoek', link: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-data-science/IMAI', extern: true },
-      { tekst: 'SURF Communities — Lesmaterialen AI-geletterdheid', link: 'https://communities.surf.nl/ai-in-education/artikel/lesmaterialen-over-ai-geletterdheid', extern: true },
-      { tekst: 'AI & Geletterdheid — overzicht NBA programma', link: '/geletterdheid', extern: false },
+      { tekst: 'CTL: AI & Toetsing, richtlijnen en beoordelen (intranet)', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', extern: true },
+      { tekst: 'CTL: AI-webinars van Npuls voor docenten', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-webinars-van-Npuls.aspx', extern: true },
+      { tekst: 'I\'M A.I.: AI-initiatief NHL Stenden voor onderwijs en onderzoek', link: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-data-science/IMAI', extern: true },
+      { tekst: 'SURF Communities: Lesmaterialen AI-geletterdheid', link: 'https://communities.surf.nl/ai-in-education/artikel/lesmaterialen-over-ai-geletterdheid', extern: true },
+      { tekst: 'AI & Geletterdheid: overzicht NBA programma', link: '/geletterdheid', extern: false },
     ]
   },
   {
@@ -39,11 +39,11 @@ const STANDAARDEN = [
     nvao: 'Toetsing krijgt de meeste aandacht in NVAO-rapporten: 72% van de beoordelingen benoemt GenAI bij standaard 3. Opleidingen richten zich op fraude, fraudedetectie en alternatieve toetsvormen. De NVAO roept op tot een meer integraal beleid dat verder gaat dan "policing" en constructive alignment centraal stelt.',
     nhlstenden: 'NHL Stenden heeft een expliciet en gedocumenteerd toetsbeleid voor GenAI. Het CTL heeft richtlijnen ontwikkeld voor examinatoren en examencommissies, inclusief een stappenplan bij vermoedens van fraude. NHL Stenden kiest bewust voor géén AI-detector omdat betrouwbaarheid onvoldoende is aangetoond. In plaats daarvan wordt ingezet op sterk toetsontwerp, monidings, mening en heldere toetsinstructies. Via de NHL Stenden visie op DBE (Design Based Education) worden studenten beoordeeld op proces en prestatie, wat inherent robuuster is voor GenAI-risico\'s.',
     acties: [
-      { tekst: 'CTL — NHL Stenden AI & Toetsing richtlijnen en beoordelen', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', extern: true },
-      { tekst: 'Npuls — Visie op toetsing en examinering in het tijdperk van AI', link: 'https://npuls.nl/kennisbank/visie-op-toetsing-examinering-en-ai-handreikingen', extern: true },
-      { tekst: 'NVAO Startverkenning GenAI — thematische analyse kwaliteitszorg', link: 'https://www.nvao.net', extern: true },
-      { tekst: 'AI Act & Compliance — NHL Stenden governance overzicht', link: '/initiatieven?tab=aiact', extern: false },
-      { tekst: 'Pilots — AI-feedback op schrijfopdrachten en scripties', link: '/pilots', extern: false },
+      { tekst: 'CTL: NHL Stenden AI & Toetsing richtlijnen en beoordelen', link: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', extern: true },
+      { tekst: 'Npuls: Visie op toetsing en examinering in het tijdperk van AI', link: 'https://npuls.nl/kennisbank/visie-op-toetsing-examinering-en-ai-handreikingen', extern: true },
+      { tekst: 'NVAO Startverkenning GenAI: thematische analyse kwaliteitszorg', link: 'https://www.nvao.net', extern: true },
+      { tekst: 'AI Act & Compliance: NHL Stenden governance overzicht', link: '/initiatieven?tab=aiact', extern: false },
+      { tekst: 'Pilots: AI-feedback op schrijfopdrachten en scripties', link: '/pilots', extern: false },
     ]
   },
   {
@@ -54,10 +54,10 @@ const STANDAARDEN = [
     nvao: 'De NVAO constateert dat standaard 4 vrijwel niet aan bod komt in relatie tot GenAI. Er is nauwelijks aandacht voor de invloed van GenAI op eindwerken en de beoordeling ervan. Panels besteden hier expliciet geen aandacht aan, terwijl juist hier risico\'s schuilen die moeilijk zichtbaar zijn.',
     nhlstenden: 'NHL Stenden werkt via Design Based Education aan leerresultaten die zichtbaar worden in authentieke beroepsprestaties. Door projectmatig werken, criteriumgerichte interviews en portfolio-beoordelingen wordt het gerealiseerde leerresultaat beoordeeld op een manier die GenAI-risico\'s verkleint. Het FrisiusLab maakt concrete leerresultaten in de zorg meetbaar. De NVAO Startverkenning vormt mede de basis voor de doorontwikkeling van ons evaluatiebeleid.',
     acties: [
-      { tekst: 'NHL Stenden FrisiusLab — samenwerking zorg, onderwijs en onderzoek', link: 'https://www.nhlstenden.com/nieuws-en-artikelen/met-het-frisiuslab-zetten-nhl-stenden-en-frisius-mc-vol-in-op-innovatie', extern: true },
-      { tekst: 'AI Fryslân Event 2026 — regionale samenwerking en leerresultaten', link: 'https://www.nhlstenden.com/evenementen/ai-fryslan-event-2026', extern: true },
-      { tekst: 'Initiatieven — overzicht lopende NHL Stenden AI-activiteiten', link: '/initiatieven', extern: false },
-      { tekst: 'Pilots — meetbare pilots met leerresultaten', link: '/pilots', extern: false },
+      { tekst: 'NHL Stenden FrisiusLab: samenwerking zorg, onderwijs en onderzoek', link: 'https://www.nhlstenden.com/nieuws-en-artikelen/met-het-frisiuslab-zetten-nhl-stenden-en-frisius-mc-vol-in-op-innovatie', extern: true },
+      { tekst: 'AI Fryslân Event 2026: regionale samenwerking en leerresultaten', link: 'https://www.nhlstenden.com/evenementen/ai-fryslan-event-2026', extern: true },
+      { tekst: 'Initiatieven: overzicht lopende NHL Stenden AI-activiteiten', link: '/initiatieven', extern: false },
+      { tekst: 'Pilots: meetbare pilots met leerresultaten', link: '/pilots', extern: false },
     ]
   },
 ]
@@ -134,7 +134,7 @@ export default function NVAO() {
         </div>
 
         {/* Vier standaarden */}
-        <h2 className="font-bold text-nhl-blauw text-xl mb-5">Vier standaarden — NHL Stenden in beeld</h2>
+        <h2 className="font-bold text-nhl-blauw text-xl mb-5">Vier standaarden: NHL Stenden in beeld</h2>
         <div className="space-y-6 mb-12">
           {STANDAARDEN.map(s => (
             <div key={s.nr} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -215,7 +215,7 @@ export default function NVAO() {
             <div className="flex-1">
               <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Naslag</div>
               <div className="font-bold text-nhl-blauw text-base mb-1">NVAO Startverkenning Generatieve Artificiële Intelligentie</div>
-              <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg — januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
+              <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg: januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
               <div className="flex flex-wrap gap-3">
                 <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
@@ -244,7 +244,7 @@ export default function NVAO() {
             <div className="flex-1">
               <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Naslag</div>
               <div className="font-bold text-nhl-blauw text-base mb-1">NVAO Startverkenning Generatieve Artificiële Intelligentie</div>
-              <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg — januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
+              <div className="text-gray-500 text-sm mb-3">Thematische analyse kwaliteitszorg: januari 2026. Analyse van 509 opleidingsbeoordelingen op de aanwezigheid van GenAI in visitatierapporten, uitgesplitst naar de vier NVAO-standaarden.</div>
               <div className="flex flex-wrap gap-3">
                 <a href="https://www.nvao.net/files/attachments/.14069/Initial_Exploration_of_Generative_Artificial_Intelligence.pdf"
                   target="_blank" rel="noopener noreferrer"
@@ -268,7 +268,7 @@ export default function NVAO() {
 
         {/* Bron */}
         <div className="text-center text-xs text-gray-400">
-          Gebaseerd op: NVAO Nederland — Startverkenning Generatieve Artificiële Intelligentie, Thematische analyse kwaliteitszorg, januari 2026. &nbsp;
+          Gebaseerd op: NVAO Nederland: Startverkenning Generatieve Artificiële Intelligentie, Thematische analyse kwaliteitszorg, januari 2026. &nbsp;
           <a href="https://www.nvao.net" target="_blank" rel="noopener noreferrer" className="text-nhl-roze hover:underline">www.nvao.net</a>
         </div>
       </div>

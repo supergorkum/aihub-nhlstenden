@@ -67,37 +67,37 @@ const INIT_ROADMAP = [
     pendingAfgerond: false, pendingReopen: false,
   },
   {
-    id: 6, titel: 'AMCE AI-Proeftuin — academiebreed pilotprogramma',
+    id: 6, titel: 'AMCE AI-Proeftuin: academiebreed pilotprogramma',
     omschrijving: 'De Academie Media, Commerce & Entrepreneurship start een pilotprogramma als proeftuin voor NHL Stenden. Vier werkpakketten worden parallel uitgevoerd: data- en workflow-AI, RAG-agents voor kennisdeling, visuele prototyping en evaluatie van agentic workflows. De pilot loopt van september 2026 tot 1 januari 2027 en levert een advies op over opschaling, governance en kostenmodel voor de hele hogeschool.',
-    status: 'in-ontwikkeling', prioriteit: 'hoog', verantwoordelijke: 'AMCE — Patrick Bemelmans, Alette Hospers, Frits van Essen',
-    aiActKoppeling: 'aa1', datum: 'Q3 2026 — Q1 2027', toegevoegdDoor: 'AMCE NHL Stenden',
+    status: 'in-ontwikkeling', prioriteit: 'hoog', verantwoordelijke: 'AMCE: Patrick Bemelmans, Alette Hospers, Frits van Essen',
+    aiActKoppeling: 'aa1', datum: 'Q3 2026: Q1 2027', toegevoegdDoor: 'AMCE NHL Stenden',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 7, titel: 'WP1: Data- en workflow-AI in marketingonderwijs',
     omschrijving: 'Studenten en docenten verkennen hoe AI databronnen zoals GA4, SEO-data, CRM en API’s op een gecontroleerde manier kan verbinden via Gemini CLI en MCP-servers. Focus op data-informed werken, kritisch beoordelen van datakwaliteit en bias, en het ontwerpen van veilige AI-workflows voor analyse, rapportage en advies.',
-    status: 'te-starten', prioriteit: 'gemiddeld', verantwoordelijke: 'AMCE — Patrick Bemelmans',
+    status: 'te-starten', prioriteit: 'gemiddeld', verantwoordelijke: 'AMCE: Patrick Bemelmans',
     aiActKoppeling: 'aa1', datum: 'Q3 2026', toegevoegdDoor: 'AMCE NHL Stenden',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 8, titel: 'WP2: RAG-agents voor onderwijs en kennisdeling',
     omschrijving: 'Ontwikkelen van RAG-gestuurde AI-agents gevoed met gevalideerde academiedocumenten: OER, rubrics, beroepsprofielen, projectdocumentatie. De agent ondersteunt docenten bij curriculumontwikkeling, studenten bij oriëntatie en uitleg, en nieuwe docenten bij het vinden van academie-informatie. Menselijk toezicht is altijd verplicht: de agent ondersteunt maar neemt geen formele beslissingen over.',
-    status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'AMCE — Alette Hospers',
+    status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'AMCE: Alette Hospers',
     aiActKoppeling: 'aa2', datum: 'Q3 2026', toegevoegdDoor: 'AMCE NHL Stenden',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
     id: 9, titel: 'WP3: Visuele AI-prototyping in Ad-ontwikkeling',
     omschrijving: 'Verkennen hoe beeldgeneratie-AI kan bijdragen aan sneller ontwerpen en presenteren van ideeën binnen Associate degree-opleidingen. Studenten leren van idee naar prototype te komen voor campagneconcepten, social formats, merkidentiteit en retail-visualisaties. Kritisch beoordelen van AI-beeld op kwaliteit, inclusie, stereotypering en auteursrecht is expliciet onderdeel van het didactisch format.',
-    status: 'te-starten', prioriteit: 'gemiddeld', verantwoordelijke: 'AMCE — Frits van Essen',
+    status: 'te-starten', prioriteit: 'gemiddeld', verantwoordelijke: 'AMCE: Frits van Essen',
     aiActKoppeling: 'aa4', datum: 'Q3 2026', toegevoegdDoor: 'AMCE NHL Stenden',
     pendingAfgerond: false, pendingReopen: false,
   },
   {
-    id: 10, titel: 'WP4: Evaluatie agentic workflows — Claude vs Copilot',
+    id: 10, titel: 'WP4: Evaluatie agentic workflows: Claude vs Copilot',
     omschrijving: 'Vergelijkend onderzoek naar agentic AI-workflows: welke taken passen bij Microsoft Copilot (Microsoft 365-integratie, dagelijkse productiviteit) en welke bij Claude (complexer redeneren, documentanalyse, taakopdeling, iteratief samenwerken)? De evaluatie levert een helder advies op voor verantwoorde inzet van agentic AI in onderwijsontwikkeling en praktijkgerichte leeromgevingen.',
-    status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'AMCE — Patrick Bemelmans',
+    status: 'te-starten', prioriteit: 'hoog', verantwoordelijke: 'AMCE: Patrick Bemelmans',
     aiActKoppeling: 'aa5', datum: 'Q4 2026', toegevoegdDoor: 'AMCE NHL Stenden',
     pendingAfgerond: false, pendingReopen: false,
   },
@@ -205,7 +205,7 @@ function LoginScherm({ onLogin }) {
             </p>
             <div className="mt-5 pt-4" style={{ borderTop:"1px solid #f1f5f9" }}>
               <p className="text-xs text-center leading-relaxed" style={{ color:"#cbd5e1" }}>
-                🚧 <em>Werkend prototype</em> — ontwikkeld ter inspiratie en visualisatie van wat digitaal mogelijk is. Gebruik de inzichten als vertrekpunt, niet als definitieve conclusie.
+                🚧 <em>Werkend prototype</em>: ontwikkeld ter inspiratie en visualisatie van wat digitaal mogelijk is. Gebruik de inzichten als vertrekpunt, niet als definitieve conclusie.
               </p>
             </div>
           </div>

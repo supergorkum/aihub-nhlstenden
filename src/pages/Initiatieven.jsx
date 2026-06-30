@@ -187,7 +187,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
       <GradientHeader
         label="Wat loopt er"
         title="Initiatieven en Roadmap"
-        subtitle="Overzicht van alle AI-initiatieven bij NHL Stenden — wat loopt er, wat moet er nog starten, en hoe verhouden we ons tot de AI Act."
+        subtitle="Overzicht van alle AI-initiatieven bij NHL Stenden: wat loopt er, wat moet er nog starten, en hoe verhouden we ons tot de AI Act."
       >
         <div className="mt-5 flex flex-wrap gap-3">
           <button
@@ -465,7 +465,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div>
                   <div className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">Europese regelgeving</div>
-                  <h2 className="text-2xl font-extrabold mb-4">De AI Act — wat betekent het voor NHL Stenden?</h2>
+                  <h2 className="text-2xl font-extrabold mb-4">De AI Act: wat betekent het voor NHL Stenden?</h2>
                   <p className="text-blue-100 leading-relaxed mb-4">De EU AI Act (Verordening 2024/1689) is de eerste uitgebreide wet ter wereld die AI-systemen reguleert.</p>
                   <div className="flex flex-wrap gap-3">
                     <a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX%3A32024R1689" target="_blank" rel="noopener noreferrer" className="bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors">📄 Lees de AI Act →</a>
@@ -476,7 +476,7 @@ export default function Initiatieven({ roadmap, setRoadmap }) {
                   {[
                     { fase: 'Feb 2025', wat: 'Verbod op onacceptabele AI (art. 5)', kleur: 'bg-red-500' },
                     { fase: 'Aug 2025', wat: 'AI-geletterdheid verplicht (art. 4)', kleur: 'bg-orange-400' },
-                    { fase: 'Aug 2026', wat: 'Verplichtingen hoog-risico AI (art. 9–26)', kleur: 'bg-yellow-400' },
+                    { fase: 'Aug 2026', wat: 'Verplichtingen hoog-risico AI (art. 9 tot 26)', kleur: 'bg-yellow-400' },
                     { fase: 'Aug 2027', wat: 'Alle overige bepalingen volledig van kracht', kleur: 'bg-green-400' },
                   ].map(f => (
                     <div key={f.fase} className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">

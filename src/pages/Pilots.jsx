@@ -331,7 +331,7 @@ export default function Pilots({ pilots, setPilots }) {
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-nhl-blauw resize-none" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Bijlage <span className="text-gray-400 font-normal">(optioneel — bijv. rapport, meting, foto)</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bijlage <span className="text-gray-400 font-normal">(optioneel: bijv. rapport, meting, foto)</span></label>
                 <div
                   onClick={() => document.getElementById('update-upload').click()}
                   onDragOver={e => e.preventDefault()}

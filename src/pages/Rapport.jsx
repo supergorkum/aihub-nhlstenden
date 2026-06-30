@@ -280,7 +280,7 @@ export default function Rapport({ pilots: pilotsProp, inspiraties: inspiratiesPr
                 <tr key={i.id}>
                   <td><strong>{i.naam}</strong><br/><span style={{color:'#9CA3AF',fontSize:'8pt'}}>{(i.omschrijving||'').slice(0,90)}{i.omschrijving && i.omschrijving.length > 90 ? '...' : ''}</span></td>
                   <td><span className="badge" style={{background: statusKleur(i.status)+'22', color: statusKleur(i.status)}}>{i.status}</span></td>
-                  <td style={{color:'#6B7280',fontSize:'9pt'}}>{i.impactInschatting||'—'}</td>
+                  <td style={{color:'#6B7280',fontSize:'9pt'}}>{i.impactInschatting||'n.v.t.'}</td>
                 </tr>
               ))}
             </tbody>
@@ -422,10 +422,10 @@ export default function Rapport({ pilots: pilotsProp, inspiraties: inspiratiesPr
           <div className="success-blok">
             <div style={{fontWeight:700,color:'#065F46',marginBottom:'8px'}}>🔄 Overlegstructuur</div>
             <div style={{fontSize:'9.5pt',color:'#374151',lineHeight:'1.7'}}>
-              <strong>Maandelijks:</strong> AI-Netwerk kernteam overleg — voortgang, nieuwe initiatieven, knelpunten en besluiten op operationeel niveau.<br/>
-              <strong>Kwartaal:</strong> Update stuurgroep — rapportage over voortgang, besluiten over richting en middelen, bijsturing waar nodig.<br/>
-              <strong>Jaarlijks:</strong> Evaluatie en herijking — doelstellingen, themas, governance en aansluiting op externe ontwikkelingen.<br/>
-              <strong>Continu:</strong> Platform-updates — het AI-Netwerk platform wordt dagelijks bijgehouden en geeft altijd de meest actuele stand van zaken.
+              <strong>Maandelijks:</strong> AI-Netwerk kernteam overleg: voortgang, nieuwe initiatieven, knelpunten en besluiten op operationeel niveau.<br/>
+              <strong>Kwartaal:</strong> Update stuurgroep: rapportage over voortgang, besluiten over richting en middelen, bijsturing waar nodig.<br/>
+              <strong>Jaarlijks:</strong> Evaluatie en herijking: doelstellingen, themas, governance en aansluiting op externe ontwikkelingen.<br/>
+              <strong>Continu:</strong> Platform-updates: het AI-Netwerk platform wordt dagelijks bijgehouden en geeft altijd de meest actuele stand van zaken.
             </div>
           </div>
         </div>
@@ -447,8 +447,8 @@ export default function Rapport({ pilots: pilotsProp, inspiraties: inspiratiesPr
                       <strong>{b.titel}</strong>
                       <br/><span style={{fontSize:'8pt',color:'#9CA3AF'}}>{(b.tekst||'').slice(0,100)}{b.tekst && b.tekst.length > 100 ? '...' : ''}</span>
                     </td>
-                    <td>{b.typelabel||b.type||'—'}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{b.datum||'—'}</td>
+                    <td>{b.typelabel||b.type||'n.v.t.'}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{b.datum||'n.v.t.'}</td>
                   </tr>
                 ))}
               </tbody>

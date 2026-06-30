@@ -110,7 +110,7 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
     // Als er al iets geselecteerd is: panel-mouseenter doet niets extra
   }
 
-  // Rendert het detailpaneel — zelfde logica als pages/Netwerk.jsx
+  // Rendert het detailpaneel: zelfde logica als pages/Netwerk.jsx
   function PanelInhoud({ nodeId }) {
     const node = NODES.find(n => n.id === nodeId)
     if (!node) return null
@@ -269,7 +269,7 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
             const isLight = ['#DBEAFE','#D1FAE5','#EDE9FE','#CCFBF1','#FCE7F3','#FEF3C7','#ECFEFF'].includes(node.kleur)
             const fillKleur = isSelected ? (isLight ? '#E91E8C' : node.kleur) : node.kleur
             const tekstKleur = isSelected ? 'white' : (node.tekstKleur || 'white')
-            // Externe bollen zijn klein (r=2.8) — grotere hover-scale zodat ze leesbaar worden
+            // Externe bollen zijn klein (r=2.8): grotere hover-scale zodat ze leesbaar worden
             const baseScale = node.type === 'extern' ? 1.6 : 1.2
             const scale = isHov && !isSelected ? baseScale : isSelected ? (node.type === 'extern' ? 1.4 : 1.1) : 1
 
@@ -344,7 +344,7 @@ export default function NetwerkVisualisatie({ fullscreen = false }) {
           <div className="flex items-center gap-1.5 mb-3 text-xs font-medium">
             {selected
               ? <span className="text-nhl-roze">📌 Vastgezet</span>
-              : <span className={fullscreen ? 'text-white/50' : 'text-gray-400'}>👁 Preview — klik de bol om vast te zetten</span>
+              : <span className={fullscreen ? 'text-white/50' : 'text-gray-400'}>👁 Preview: klik de bol om vast te zetten</span>
             }
           </div>
           <PanelInhoud nodeId={panelNode} />

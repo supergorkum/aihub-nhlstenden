@@ -127,7 +127,7 @@ export default function Geletterdheid() {
       <GradientHeader
         label="AI & Geletterdheid"
         title="Begrijpen, kunnen en durven"
-        subtitle="AI-geletterdheid is het vermogen om AI te begrijpen, kritisch te beoordelen en er eigenaarschap bij te ervaren. Niet iedereen hoeft een developer te zijn — maar iedereen moet kunnen meepraten."
+        subtitle="AI-geletterdheid is het vermogen om AI te begrijpen, kritisch te beoordelen en er eigenaarschap bij te ervaren. Niet iedereen hoeft een developer te zijn: maar iedereen moet kunnen meepraten."
       >
         <div className="mt-5 flex flex-wrap items-center gap-4">
           <button

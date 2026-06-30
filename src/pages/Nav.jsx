@@ -97,7 +97,7 @@ function MeldKnop({ className, children, onClick }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    // Stuur een unieke resetKey mee — Meld.jsx detecteert dit via location.state
+    // Stuur een unieke resetKey mee: Meld.jsx detecteert dit via location.state
     navigate('/meld', { replace: false, state: { resetKey: Date.now() } })
     if (onClick) onClick()
   }

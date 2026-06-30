@@ -15,7 +15,7 @@ export default function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-sm px-3 py-1.5 rounded-full mb-6 border border-white/20">
               <span className="w-2 h-2 bg-nhl-oranje rounded-full pulse-soft" />
-              In ontwikkeling — versie 1.6 | Juni 2026
+              In ontwikkeling: versie 1.6 | Juni 2026
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
@@ -31,8 +31,7 @@ export default function Hero() {
             </p>
 
             <p className="text-blue-200 mb-10 max-w-lg">
-              Of je nu docent, student, medewerker of bestuurder bent —
-              hier vind je overzicht, verbinding en richting.
+              Of je nu docent, student, medewerker of bestuurder bent:               hier vind je overzicht, verbinding en richting.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -62,7 +61,7 @@ export default function Hero() {
               {
                 icon: '🔗',
                 titel: 'Verbinding',
-                tekst: 'Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling. Samen slimmer.',
+                tekst: 'Een levend netwerk van mensen, teams en initiatieven: binnen en buiten de instelling. Samen slimmer.',
               },
               {
                 icon: '🧭',

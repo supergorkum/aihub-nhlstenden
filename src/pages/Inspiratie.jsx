@@ -13,7 +13,7 @@ const INSPIRATIE_TYPES = [
 ]
 
 const INIT_INSPIRATIES = [
-  { id: 1, type: 'ontwikkeling', icon: '🌐', typelabel: 'Interessante ontwikkeling', rol: 'Medewerker dienst', naam: 'Anoniem', spoor: 2, sporeDef: { titel: 'AI & Organisatie', icon: '⚙️' }, laag: null, titel: 'AI in studentbegeleiding — vroeg-signalering', tekst: 'Hoe andere hogescholen AI inzetten voor vroeg-signalering van studenten met uitvalrisico. Lijkt relevant voor onze aanpak rond studiesucces.', url: '', datum: '15 juni 2026', trefwoorden: ['Studiesucces', 'Begeleiding', 'Data'] },
+  { id: 1, type: 'ontwikkeling', icon: '🌐', typelabel: 'Interessante ontwikkeling', rol: 'Medewerker dienst', naam: 'Anoniem', spoor: 2, sporeDef: { titel: 'AI & Organisatie', icon: '⚙️' }, laag: null, titel: 'AI in studentbegeleiding: vroeg-signalering', tekst: 'Hoe andere hogescholen AI inzetten voor vroeg-signalering van studenten met uitvalrisico. Lijkt relevant voor onze aanpak rond studiesucces.', url: '', datum: '15 juni 2026', trefwoorden: ['Studiesucces', 'Begeleiding', 'Data'] },
   { id: 2, type: 'initiatief', icon: '🚀', typelabel: 'Initiatief of project', rol: 'Docent', naam: 'Anoniem', spoor: 1, sporeDef: { titel: 'AI & Onderwijs', icon: '🎓' }, laag: 5, titel: 'AI-integratie in de PABO-opleiding', tekst: 'Wij zijn bezig met het integreren van AI-geletterdheid in het curriculum van de PABO. Graag in contact met anderen die hier ook mee bezig zijn.', url: '', datum: '12 juni 2026', trefwoorden: ['PABO', 'Curriculum', 'Geletterdheid'] },
   { id: 3, type: 'artikel', icon: '📰', typelabel: 'Artikel of publicatie', rol: 'Onderzoeker', naam: 'Anoniem', spoor: 3, sporeDef: { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' }, laag: null, titel: 'Rapport: AI Act implementatie in het onderwijs', tekst: 'Het Rathenau Instituut publiceerde een rapport over de implicaties van de AI Act voor onderwijsinstellingen. Aanrader voor iedereen die met governance bezig is.', url: '', datum: '8 juni 2026', trefwoorden: ['AI Act', 'Governance', 'Compliance'] },
 ]
@@ -360,7 +360,7 @@ export default function Inspiratie({ inspiraties, setInspiraties }) {
 
                     {/* Rubricering */}
                     <div className="bg-gray-50 rounded-xl p-4 space-y-3 border border-gray-100">
-                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Rubricering — help ons het goed te plaatsen</div>
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Rubricering: help ons het goed te plaatsen</div>
                       <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">Gerelateerd thema</label>
                         <select value={form.spoor} onChange={e => upd('spoor', e.target.value)}

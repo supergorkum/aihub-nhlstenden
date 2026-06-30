@@ -20,7 +20,7 @@ export default function GradientHeader({ label, title, subtitle, children }) {
         {children}
       </div>
 
-      {/* Golf-overgang — hoog en drievoudig voor zachte overgang */}
+      {/* Golf-overgang: hoog en drievoudig voor zachte overgang */}
       <div className="absolute bottom-0 left-0 right-0" style={{ height: '80px' }}>
         <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none"
           style={{ width: '100%', height: '100%', display: 'block' }}>

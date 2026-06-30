@@ -4,8 +4,6 @@ import { initiatieven, sporen } from '../data'
 import { THEMAS } from '../data/themas'
 import NetwerkVisualisatie from '../components/NetwerkVisualisatie'
 
-const actieven = initiatieven.filter(i => i.status === 'actief').slice(0, 4)
-
 // Inline initiatieven aanmeld modal
 function InitiatiefModal({ onClose, onVerstuurd }) {
   const [form, setForm] = useState({
@@ -135,9 +133,9 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
     {
       icon: '🔗',
       titel: 'AI-Netwerk',
-      tekst: 'Wie doet wat, wie sluit aan? Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.',
-      to: null,
-      onClick: () => setNetwerkFullscreen(true),
+      tekst: 'Wie doet wat, wie sluit aan? Een levend netwerk van mensen, teams en initiatieven binnen en buiten de instelling.',
+      to: '/over',
+      onClick: null,
     },
     {
       icon: '🎯',
@@ -149,7 +147,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
     {
       icon: '⚖️',
       titel: 'Kader',
-      tekst: 'Governance, beleid, roadmap, AI Act en sandbox — het speelveld en de spelregels voor verantwoord AI-gebruik.',
+      tekst: 'Governance, beleid, roadmap, AI Act en sandbox: het speelveld en de spelregels voor verantwoord AI-gebruik.',
       to: '/kader',
       onClick: null,
     },
@@ -195,7 +193,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.8 · Juni 2026
+                In ontwikkeling, versie 1.8 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/nhl-logo-transparent.png" alt="NHL Stenden" className="h-16 w-16 object-contain" />
@@ -208,7 +206,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 De plek waar NHL Stenden alles rond AI samenbrengt: wat we doen, wie we zijn en hoe we het <strong className="text-white">verantwoord aanpakken</strong>.
               </p>
               <p className="text-blue-200 mb-8 max-w-lg">
-                Of je nu docent, student, medewerker of bestuurder bent — hier vind je in drie stappen waar je moet zijn.
+                Of je nu docent, student, medewerker of bestuurder bent, hier vind je in drie stappen waar je moet zijn.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link to="/themas" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
@@ -282,7 +280,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
               <span className="text-sm">📅</span>
               <span className="text-xs text-nhl-blauw font-semibold uppercase tracking-wide flex-shrink-0">Volgend evenement</span>
               <span className="text-gray-300">·</span>
-              <span className="text-sm font-medium text-nhl-blauw">{d.getDate()} {MAANDEN[d.getMonth()]} — {ev.naam}</span>
+              <span className="text-sm font-medium text-nhl-blauw">{d.getDate()} {MAANDEN[d.getMonth()]}: {ev.naam}</span>
               {ev.startTijd && <span className="text-xs text-gray-500 hidden sm:inline">🕐 {ev.startTijd}</span>}
               {ev.locatie && <span className="text-xs text-gray-500 hidden md:inline">📍 {ev.locatie.split(',')[0]}</span>}
               <span className="ml-auto text-xs text-nhl-roze font-medium flex-shrink-0">Bekijken →</span>
@@ -303,7 +301,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           <div className="max-w-3xl mx-auto bg-blue-50 border border-blue-100 rounded-xl px-5 py-3.5 mb-10 flex items-start gap-3">
             <span className="text-lg flex-shrink-0">🔗</span>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Het AI-Netwerk verbindt de koerslijnen en biedt overzicht. Voor de inhoudelijke uitwerking per domein — onderwijs, onderzoek, bedrijfsvoering — blijven de bestaande kanalen leidend, zoals de intranetpagina's van OO&I.
+              Het AI-Netwerk verbindt de koerslijnen en biedt overzicht. Voor de inhoudelijke uitwerking per domein (onderwijs, onderzoek, bedrijfsvoering) blijven de bestaande kanalen leidend, zoals de intranetpagina's van OO&I.
             </p>
           </div>
 
@@ -323,61 +321,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
 
           <div className="text-center">
             <Link to="/themas" className="btn-ghost text-nhl-blauw font-medium">Bekijk alle thema's in detail →</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Actueel */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <div className="section-label mb-1">Wat loopt er</div>
-              <h2 className="text-2xl font-bold text-nhl-blauw">Actuele initiatieven</h2>
-            </div>
-            <Link to="/initiatieven" className="btn-ghost text-nhl-blauw font-medium">Alle initiatieven →</Link>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {actieven.map(init => (
-              <div key={init.id} className="card card-hover p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
-                    {init.type === 'extern' ? 'Extern' : 'Intern'}
-                  </span>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Actief</span>
-                </div>
-                <div className="font-semibold text-nhl-blauw text-sm mb-2 leading-snug">{init.naam}</div>
-                <p className="text-gray-500 text-xs leading-relaxed line-clamp-3">{init.omschrijving}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA strip */}
-      <section className="py-12 nhl-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid sm:grid-cols-3 gap-6 text-center">
-            {[
-              { icon: '🚀', titel: 'Initiatief aanmelden', tekst: 'Werk jij aan iets rond AI?', label: 'Aanmelden', onClick: () => setInitiatiefModalOpen(true), to: null },
-              { icon: '📁', titel: 'Documentatie', tekst: 'Presentaties, rapporten en materiaal.', label: 'Bekijken', to: '/documentatie', onClick: null },
-              { icon: '💡', titel: 'Inzichten', tekst: 'Artikelen, ontwikkelingen en initiatieven uit het netwerk.', label: 'Ontdekken', to: '/inspiratie', onClick: null },
-            ].map(item => (
-              <div key={item.titel} className="bg-white/10 border border-white/20 rounded-2xl p-6">
-                <div className="text-3xl mb-2">{item.icon}</div>
-                <div className="text-white font-bold mb-1">{item.titel}</div>
-                <div className="text-blue-200 text-sm mb-4">{item.tekst}</div>
-                {item.onClick ? (
-                  <button onClick={item.onClick} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-                    {item.label} →
-                  </button>
-                ) : (
-                  <Link to={item.to} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-                    {item.label} →
-                  </Link>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -447,6 +390,34 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
         </section>
       )}
+      {/* CTA strip */}
+      <section className="py-12 nhl-gradient">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-3 gap-6 text-center">
+            {[
+              { icon: '🚀', titel: 'Initiatief aanmelden', tekst: 'Werk jij aan iets rond AI?', label: 'Aanmelden', onClick: () => setInitiatiefModalOpen(true), to: null },
+              { icon: '📁', titel: 'Documentatie', tekst: 'Presentaties, rapporten en materiaal.', label: 'Bekijken', to: '/documentatie', onClick: null },
+              { icon: '💡', titel: 'Inzichten', tekst: 'Artikelen, ontwikkelingen en initiatieven uit het netwerk.', label: 'Ontdekken', to: '/inspiratie', onClick: null },
+            ].map(item => (
+              <div key={item.titel} className="bg-white/10 border border-white/20 rounded-2xl p-6">
+                <div className="text-3xl mb-2">{item.icon}</div>
+                <div className="text-white font-bold mb-1">{item.titel}</div>
+                <div className="text-blue-200 text-sm mb-4">{item.tekst}</div>
+                {item.onClick ? (
+                  <button onClick={item.onClick} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                    {item.label} →
+                  </button>
+                ) : (
+                  <Link to={item.to} className="inline-block bg-white text-nhl-blauw hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                    {item.label} →
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }

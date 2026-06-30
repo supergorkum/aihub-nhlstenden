@@ -173,7 +173,7 @@ export default function Evenementen({ evenementen, setEvenementen }) {
                       </div>
                       <div className="flex-1 p-4">
                         <div className="font-bold text-nhl-blauw text-sm leading-snug mb-1">{ev.naam}</div>
-                        <div className="text-xs text-gray-500 mb-1">🕐 {ev.startTijd} – {ev.eindTijd}</div>
+                        <div className="text-xs text-gray-500 mb-1">🕐 {ev.startTijd}: {ev.eindTijd}</div>
                         <div className="text-xs text-gray-500 mb-3">📍 {ev.locatie}</div>
                         <p className="text-xs text-gray-600 leading-relaxed mb-3 line-clamp-2">{ev.omschrijving}</p>
                         <div className="flex flex-wrap gap-1 mb-3">

@@ -4,7 +4,7 @@
 export const INIT_VIDEOS = [
   {
     id: 1, status: 'goedgekeurd',
-    titel: 'AI in het Hoger Onderwijs — Kansen en Uitdagingen',
+    titel: 'AI in het Hoger Onderwijs: Kansen en Uitdagingen',
     videoId: 'hJP5GqnTrNo',
     omschrijving: 'Een verkenning van hoe AI het hoger onderwijs transformeert en welke keuzes instellingen nu moeten maken.',
     trefwoorden: ['AI', 'Hoger Onderwijs', 'Didactiek'],
@@ -50,7 +50,7 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: 'https://www.surf.nl/online-onderwijs',
-    bronLabel: 'SURF — AVG en AI-tools in het onderwijs',
+    bronLabel: 'SURF: AVG en AI-tools in het onderwijs',
     updates: [
       { id: 1, datum: '15 juni 2026', tekst: 'Eerste tests met drie docenten afgerond. Studenten reageren positief op de snelheid van feedback. Aandachtspunt: de feedback is soms te generiek.', auteur: 'Projectteam' },
     ],
@@ -73,7 +73,7 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: 'https://pec.surf.nl/vernieuwde-surf-modelverwerkersovereenkomst-beschikbaar/',
-    bronLabel: 'SURF — Model Verwerkersovereenkomst 4.0 (november 2024)',
+    bronLabel: 'SURF: Model Verwerkersovereenkomst 4.0 (november 2024)',
     updates: [],
   },
   {
@@ -94,12 +94,12 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-10',
     bronUrl: 'https://www.nhlstenden.com/nieuws-en-artikelen/met-het-frisiuslab-zetten-nhl-stenden-en-frisius-mc-vol-in-op-innovatie',
-    bronLabel: 'NHL Stenden — FrisiusLab: zorg, onderwijs en onderzoek samen',
+    bronLabel: 'NHL Stenden: FrisiusLab: zorg, onderwijs en onderzoek samen',
     updates: [],
   },
   {
     id: 4,
-    naam: 'AMCE AI-Proeftuin — Overkoepelende pilot',
+    naam: 'AMCE AI-Proeftuin: Overkoepelende pilot',
     academie: 'Academie Media, Commerce & Entrepreneurship',
     onderdeel: 'intern',
     platform: 'AI Sandbox, EduGenAI, Mistral AI, Claude',
@@ -107,7 +107,7 @@ export const INIT_PILOTS = [
     doel: 'De Academie Media, Commerce & Entrepreneurship wil als proeftuin voor NHL Stenden ervaring opdoen met verantwoorde AI-oplossingen. Studenten worden opgeleid voor domeinen waarin AI grote impact heeft: communicatie, contentcreatie, marketing, commerce en ondernemerschap. Zonder gedeelde AI-voorzieningen ontstaat versnippering: medewerkers en studenten gebruiken eigen accounts, losse tools en uiteenlopende werkwijzen. De pilot biedt een veilige, gedeelde experimenteeromgeving voor vier werkpakketten: data- en workflow-AI (Gemini CLI + MCP), RAG-gestuurde AI-agents, visuele prototyping en evaluatie van agentic workflows met Claude naast Microsoft Copilot.',
     bereiken: 'Veilige experimenteerruimte voor onderwijs en onderzoek. AI-geletterdheid docenten, medewerkers en studenten structureel versterkt. Concrete prototypes direct bruikbaar in curricula en Ad-ontwikkeling. Inzicht in kosten, licentiemodellen en opschaalbaarheid. Minder afhankelijkheid van losse persoonlijke AI-accounts. Advies over governance en kostenmodel voor de hele hogeschool na evaluatie.',
     spoor: 1, laag: 5,
-    surf: 'EduGenAI — verkenning als onderwijsplatform',
+    surf: 'EduGenAI: verkenning als onderwijsplatform',
     trefwoorden: ['AMCE', 'Proeftuin', 'AI Sandbox', 'EduGenAI', 'Mistral', 'Claude', 'Agentic'],
     ambities: ['geletterdheid', 'studiesucces', 'professionalisering'],
     impactInschatting: 'hoog',
@@ -136,7 +136,7 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: '',
-    bronLabel: 'AMCE AI-pilot WP1 — Data & Workflow',
+    bronLabel: 'AMCE AI-pilot WP1: Data & Workflow',
     updates: [],
   },
   {
@@ -157,7 +157,7 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: '',
-    bronLabel: 'AMCE AI-pilot WP2 — RAG-agents',
+    bronLabel: 'AMCE AI-pilot WP2: RAG-agents',
     updates: [],
   },
   {
@@ -178,12 +178,12 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: '',
-    bronLabel: 'AMCE AI-pilot WP3 — Visuele prototyping',
+    bronLabel: 'AMCE AI-pilot WP3: Visuele prototyping',
     updates: [],
   },
   {
     id: 8,
-    naam: 'WP4: Evaluatie agentic workflows — Claude vs Copilot',
+    naam: 'WP4: Evaluatie agentic workflows: Claude vs Copilot',
     academie: 'Academie Media, Commerce & Entrepreneurship',
     onderdeel: 'intern',
     platform: 'Claude (Anthropic), Microsoft Copilot',
@@ -199,7 +199,7 @@ export const INIT_PILOTS = [
     contactEmail: '',
     startDatum: '2026-09',
     bronUrl: '',
-    bronLabel: 'AMCE AI-pilot WP4 — Agentic workflows',
+    bronLabel: 'AMCE AI-pilot WP4: Agentic workflows',
     updates: [],
   },
 ]
@@ -256,23 +256,23 @@ export const INIT_LINKJES = [
   { id: 4, titel: 'Autoriteit Persoonsgegevens - AI', url: 'https://www.autoriteitpersoonsgegevens.nl', omschrijving: 'AP co-beheert de Nederlandse Regulatory Sandbox. Informatie over DPIA, AVG en AI-toepassingen met persoonsgegevens.', categorie: 'extern', spoor: 3, laag: 4, trefwoorden: ['Privacy', 'AVG', 'DPIA'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
   { id: 5, titel: 'Npuls Expeditie AI', url: 'https://npuls.nl', omschrijving: 'Nationaal programma van mbo, hbo, wo en SURF voor AI in het onderwijs. Bundelt initiatieven rond AI in toetsing, curriculum en docentprofessionalisering.', categorie: 'extern', spoor: 1, laag: 5, trefwoorden: ['Nationaal', 'Onderwijs', 'Samenwerking'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
   { id: 6, titel: 'Programma Bach - Universiteit van het Noorden', url: 'https://www.uvan.nl', omschrijving: 'Nationaal onderwijsversterkingsprogramma voor digitale autonomie en soevereiniteit. Geinitieerd vanuit Noord-Nederland, nationaal opschaalbaar.', categorie: 'extern', spoor: 6, laag: 3, trefwoorden: ['Soevereiniteit', 'Bach', 'Onderwijs'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 7, titel: "I'M A.I. — AI-initiatief NHL Stenden", url: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-data-science/IMAI', omschrijving: 'Het NHL Stenden initiatief dat AI-technologie en toepassingen samenbrengt via vier communities: Research, Learning, Business en Experience Center.', categorie: 'onderzoek', spoor: 6, laag: 3, intern: false, trefwoorden: ['Onderzoek', 'AI', 'Lectoraat', 'Innovatie'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 7, titel: "I'M A.I.: AI-initiatief NHL Stenden", url: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-data-science/IMAI', omschrijving: 'Het NHL Stenden initiatief dat AI-technologie en toepassingen samenbrengt via vier communities: Research, Learning, Business en Experience Center.', categorie: 'onderzoek', spoor: 6, laag: 3, intern: false, trefwoorden: ['Onderzoek', 'AI', 'Lectoraat', 'Innovatie'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
   { id: 8, titel: 'Lectoraat Computer Vision & AI', url: 'https://www.nhlstenden.com/onderzoek/lectoraten/computer-vision-artificial-intelligence', omschrijving: 'Het lectoraat CV&AI loopt voorop in toegepast AI-onderzoek bij NHL Stenden. Meer dan twee decennia ervaring in het integreren van AI in organisaties.', categorie: 'onderzoek', spoor: 6, laag: 3, intern: false, trefwoorden: ['Lectoraat', 'Computer Vision', 'Onderzoek'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
   { id: 9, titel: 'Minor AI in Practice', url: 'https://www.nhlstenden.com/en/minors/ai-in-practice', omschrijving: 'Minor voor studenten die AI willen onderzoeken en toepassen in echte beroepspraktijk. Twee tracks: AI for Everyone en AI for Image Data.', categorie: 'onderwijs', spoor: 1, laag: 5, intern: false, trefwoorden: ['Minor', 'Studenten', 'Curriculum', 'AI'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
   { id: 10, titel: 'Minor Decision Making & Generative AI', url: 'https://www.nhlstenden.com/en/minors/decision-making-and-generative-ai', omschrijving: 'Minor over AI-ondersteunde besluitvorming, kritisch denken en data-analyse. Inclusief module over generatieve AI en ethische implicaties.', categorie: 'onderwijs', spoor: 1, laag: 5, intern: false, trefwoorden: ['Minor', 'Generatieve AI', 'Ethiek', 'Besluitvorming'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 11, titel: 'CTL — AI & Toetsing, richtlijnen en beoordelen', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', omschrijving: 'Intranetpagina van het Centre for Teaching and Learning met NHL Stenden richtlijnen voor AI en toetsing, adviezen voor examencommissies en stappenplan bij fraude.', categorie: 'beleid', spoor: 3, laag: 4, intern: true, trefwoorden: ['Toetsing', 'Beleid', 'ExCies', 'GenAI'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 12, titel: 'CTL — AI in je studie', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-in-je-studie.aspx', omschrijving: 'Intranetpagina van het CTL met informatie voor studenten over verantwoord AI-gebruik in de studie bij NHL Stenden.', categorie: 'beleid', spoor: 1, laag: 5, intern: true, trefwoorden: ['Studenten', 'AI', 'CTL', 'Beleid'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 14, titel: 'SURF Communities — Lesmaterialen AI-geletterdheid', url: 'https://communities.surf.nl/ai-in-education/artikel/lesmaterialen-over-ai-geletterdheid', omschrijving: 'Overzicht van lesmaterialen voor AI-geletterdheid in het onderwijs: e-modules, toolkits en handleidingen voor docenten en studenten.', categorie: 'extern', spoor: 4, laag: 5, intern: false, trefwoorden: ['Geletterdheid', 'Lesmaterialen', 'Docenten', 'SURF'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 15, titel: 'SURF Communities — AI verantwoord gebruik in onderwijs', url: 'https://communities.surf.nl/vraagbaak-online-onderwijs/artikel/hoe-gebruik-je-ai-verantwoord-in-je-onderwijs-denk-vooraf-altijd', omschrijving: 'Praktisch artikel over verantwoord AI-gebruik in het onderwijs: risicos, AVG, AI Act en wat docenten en instellingen moeten weten.', categorie: 'extern', spoor: 3, laag: 4, intern: false, trefwoorden: ['Verantwoord gebruik', 'AVG', 'AI Act', 'Risico'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
-  { id: 13, titel: 'CTL — AI-webinars van Npuls', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-webinars-van-Npuls.aspx', omschrijving: 'Overzicht van Npuls AI-webinars beschikbaar via het CTL intranet. Actuele professionalisering voor docenten en medewerkers.', categorie: 'onderwijs', spoor: 4, laag: 5, intern: true, trefwoorden: ['Npuls', 'Webinar', 'Professionalisering', 'Docenten'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 11, titel: 'CTL: AI & Toetsing, richtlijnen en beoordelen', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', omschrijving: 'Intranetpagina van het Centre for Teaching and Learning met NHL Stenden richtlijnen voor AI en toetsing, adviezen voor examencommissies en stappenplan bij fraude.', categorie: 'beleid', spoor: 3, laag: 4, intern: true, trefwoorden: ['Toetsing', 'Beleid', 'ExCies', 'GenAI'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 12, titel: 'CTL: AI in je studie', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-in-je-studie.aspx', omschrijving: 'Intranetpagina van het CTL met informatie voor studenten over verantwoord AI-gebruik in de studie bij NHL Stenden.', categorie: 'beleid', spoor: 1, laag: 5, intern: true, trefwoorden: ['Studenten', 'AI', 'CTL', 'Beleid'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 14, titel: 'SURF Communities: Lesmaterialen AI-geletterdheid', url: 'https://communities.surf.nl/ai-in-education/artikel/lesmaterialen-over-ai-geletterdheid', omschrijving: 'Overzicht van lesmaterialen voor AI-geletterdheid in het onderwijs: e-modules, toolkits en handleidingen voor docenten en studenten.', categorie: 'extern', spoor: 4, laag: 5, intern: false, trefwoorden: ['Geletterdheid', 'Lesmaterialen', 'Docenten', 'SURF'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 15, titel: 'SURF Communities: AI verantwoord gebruik in onderwijs', url: 'https://communities.surf.nl/vraagbaak-online-onderwijs/artikel/hoe-gebruik-je-ai-verantwoord-in-je-onderwijs-denk-vooraf-altijd', omschrijving: 'Praktisch artikel over verantwoord AI-gebruik in het onderwijs: risicos, AVG, AI Act en wat docenten en instellingen moeten weten.', categorie: 'extern', spoor: 3, laag: 4, intern: false, trefwoorden: ['Verantwoord gebruik', 'AVG', 'AI Act', 'Risico'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
+  { id: 13, titel: 'CTL: AI-webinars van Npuls', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-webinars-van-Npuls.aspx', omschrijving: 'Overzicht van Npuls AI-webinars beschikbaar via het CTL intranet. Actuele professionalisering voor docenten en medewerkers.', categorie: 'onderwijs', spoor: 4, laag: 5, intern: true, trefwoorden: ['Npuls', 'Webinar', 'Professionalisering', 'Docenten'], toegevoegdDoor: 'Kernteam AI-Netwerk', datum: 'Juni 2026' },
 ]
 
 export const INIT_INSPIRATIES = [
-  { id: 1001, type: 'initiatief', icon: '🎯', typelabel: 'Visie & aanpak', rol: 'Academie', naam: 'AMCE NHL Stenden', spoor: 4, sporeDef: { titel: 'AI & Geletterdheid', icon: '📖' }, laag: null, titel: 'Human Value AI — de professional als regisseur', tekst: 'De meerwaarde van studenten in AI-tijdperk ligt niet in concurreren met AI, maar in het kunnen sturen, beoordelen, contextualiseren en verantwoord toepassen ervan. De Academie Media, Commerce & Entrepreneurship hanteert het concept Human Value AI: de professional van de toekomst gebruikt AI om betere vragen te stellen, sneller scenario\'s te ontwikkelen, data kritischer te interpreteren en waarde te creerëren voor mens, organisatie en samenleving. Docenten, studenten en medewerkers hebben daarvoor toegang nodig tot veilige, actuele en krachtige AI-voorzieningen. Zonder gedeelde voorzieningen blijven instellingen afhankelijk van losse experimenten en individuele accounts. De AMCE AI-proeftuin vertaalt deze visie naar concrete onderwijspraktijk via vier werkpakketten: data-AI, RAG-agents, visuele prototyping en evaluatie van agentic workflows.', url: '', datum: 'Juni 2026', trefwoorden: ['Human Value AI', 'Professionalisering', 'Regie', 'Proeftuin', 'AMCE'] },
+  { id: 1001, type: 'initiatief', icon: '🎯', typelabel: 'Visie & aanpak', rol: 'Academie', naam: 'AMCE NHL Stenden', spoor: 4, sporeDef: { titel: 'AI & Geletterdheid', icon: '📖' }, laag: null, titel: 'Human Value AI: de professional als regisseur', tekst: 'De meerwaarde van studenten in AI-tijdperk ligt niet in concurreren met AI, maar in het kunnen sturen, beoordelen, contextualiseren en verantwoord toepassen ervan. De Academie Media, Commerce & Entrepreneurship hanteert het concept Human Value AI: de professional van de toekomst gebruikt AI om betere vragen te stellen, sneller scenario\'s te ontwikkelen, data kritischer te interpreteren en waarde te creerëren voor mens, organisatie en samenleving. Docenten, studenten en medewerkers hebben daarvoor toegang nodig tot veilige, actuele en krachtige AI-voorzieningen. Zonder gedeelde voorzieningen blijven instellingen afhankelijk van losse experimenten en individuele accounts. De AMCE AI-proeftuin vertaalt deze visie naar concrete onderwijspraktijk via vier werkpakketten: data-AI, RAG-agents, visuele prototyping en evaluatie van agentic workflows.', url: '', datum: 'Juni 2026', trefwoorden: ['Human Value AI', 'Professionalisering', 'Regie', 'Proeftuin', 'AMCE'] },
   { id: 2, type: 'initiatief', icon: '🚀', typelabel: 'Initiatief of project', rol: 'Docent', naam: 'Anoniem', spoor: 1, sporeDef: { titel: 'AI & Leren', icon: '🎓' }, laag: 5, titel: 'AI-integratie in de PABO-opleiding', tekst: 'Wij zijn bezig met het integreren van AI-geletterdheid in het curriculum van de PABO.', url: '', datum: '12 juni 2026', trefwoorden: ['PABO', 'Curriculum', 'Geletterdheid'], stemmen: { omhoog: 8, omlaag: 1 } },
-  { id: 4, type: 'artikel', icon: '📰', typelabel: 'Artikel of publicatie', rol: 'Medewerker dienst', naam: 'CTL NHL Stenden', intern: true, spoor: 3, sporeDef: { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' }, laag: 4, titel: 'NHL Stenden kiest geen AI-detector voor toetsing', bronLabel: 'CTL NHL Stenden — AI & Toetsing, richtlijnen en beoordelen', tekst: 'NHL Stenden heeft bewust gekozen geen AI-detector aan te schaffen. Detectoren zijn niet betrouwbaar en effectieve detectie wordt steeds lastiger. Het beleid focust op sterk toetsontwerp en heldere toetsinstructie.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', datum: '25 juni 2026', trefwoorden: ['Toetsing', 'Beleid', 'GenAI', 'CTL'], stemmen: { omhoog: 0, omlaag: 0 } },
-  { id: 5, type: 'ontwikkeling', icon: '🌐', typelabel: 'Interessante ontwikkeling', rol: 'Medewerker dienst', naam: 'CTL NHL Stenden', intern: true, spoor: 1, sporeDef: { titel: 'AI & Leren', icon: '🎓' }, laag: 5, titel: 'UvA lanceert eigen AI-chat voor veilig experimenteren', bronLabel: 'CTL NHL Stenden — UvA lanceert eigen AI-chat', tekst: 'De Universiteit van Amsterdam lanceerde een eigen AI-chatomgeving voor veilig experimenteren. Relevant als referentie voor NHL Stenden GPT-NL inzet.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/UvA-lanceert-eigen-AI-chat--veilig-exp-.aspx', datum: '25 juni 2026', trefwoorden: ['AI-chat', 'Veiligheid', 'Soevereiniteit', 'UvA'], stemmen: { omhoog: 0, omlaag: 0 } },
-  { id: 6, type: 'artikel', icon: '📰', typelabel: 'Artikel of publicatie', rol: 'Docent', naam: 'Patrick van Aalst', intern: true, spoor: 1, sporeDef: { titel: 'AI & Leren', icon: '🎓' }, laag: 5, titel: 'AI & the stability of learning tasks', bronLabel: 'CTL NHL Stenden — AI & the stability of learning tasks', tekst: 'CTL-artikel over de impact van AI op de stabiliteit van leeractiviteiten. Vraagt docenten kritisch te kijken welke toetsvormen nog valide zijn in een GenAI-tijdperk.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-&-the-stability-of-learning-tasks.aspx', datum: '25 juni 2026', trefwoorden: ['Didactiek', 'Toetsing', 'Leeractiviteiten', 'GenAI'], stemmen: { omhoog: 0, omlaag: 0 } },
+  { id: 4, type: 'artikel', icon: '📰', typelabel: 'Artikel of publicatie', rol: 'Medewerker dienst', naam: 'CTL NHL Stenden', intern: true, spoor: 3, sporeDef: { titel: 'AI & Verantwoordelijkheid', icon: '⚖️' }, laag: 4, titel: 'NHL Stenden kiest geen AI-detector voor toetsing', bronLabel: 'CTL NHL Stenden: AI & Toetsing, richtlijnen en beoordelen', tekst: 'NHL Stenden heeft bewust gekozen geen AI-detector aan te schaffen. Detectoren zijn niet betrouwbaar en effectieve detectie wordt steeds lastiger. Het beleid focust op sterk toetsontwerp en heldere toetsinstructie.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI---toetsing,-richtlijnen-en-beoordeling.aspx', datum: '25 juni 2026', trefwoorden: ['Toetsing', 'Beleid', 'GenAI', 'CTL'], stemmen: { omhoog: 0, omlaag: 0 } },
+  { id: 5, type: 'ontwikkeling', icon: '🌐', typelabel: 'Interessante ontwikkeling', rol: 'Medewerker dienst', naam: 'CTL NHL Stenden', intern: true, spoor: 1, sporeDef: { titel: 'AI & Leren', icon: '🎓' }, laag: 5, titel: 'UvA lanceert eigen AI-chat voor veilig experimenteren', bronLabel: 'CTL NHL Stenden: UvA lanceert eigen AI-chat', tekst: 'De Universiteit van Amsterdam lanceerde een eigen AI-chatomgeving voor veilig experimenteren. Relevant als referentie voor NHL Stenden GPT-NL inzet.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/UvA-lanceert-eigen-AI-chat--veilig-exp-.aspx', datum: '25 juni 2026', trefwoorden: ['AI-chat', 'Veiligheid', 'Soevereiniteit', 'UvA'], stemmen: { omhoog: 0, omlaag: 0 } },
+  { id: 6, type: 'artikel', icon: '📰', typelabel: 'Artikel of publicatie', rol: 'Docent', naam: 'Patrick van Aalst', intern: true, spoor: 1, sporeDef: { titel: 'AI & Leren', icon: '🎓' }, laag: 5, titel: 'AI & the stability of learning tasks', bronLabel: 'CTL NHL Stenden: AI & the stability of learning tasks', tekst: 'CTL-artikel over de impact van AI op de stabiliteit van leeractiviteiten. Vraagt docenten kritisch te kijken welke toetsvormen nog valide zijn in een GenAI-tijdperk.', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-&-the-stability-of-learning-tasks.aspx', datum: '25 juni 2026', trefwoorden: ['Didactiek', 'Toetsing', 'Leeractiviteiten', 'GenAI'], stemmen: { omhoog: 0, omlaag: 0 } },
 ]
 
 // NHL Stenden organisatiestructuur (uit organogram)

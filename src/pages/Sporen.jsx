@@ -14,7 +14,7 @@ export default function Sporen() {
         <PageHeader
           label="Vier ingangen"
           title="De vier sporen"
-          subtitle="Iedereen heeft een eigen ingang tot de AI-HUB. Kies het spoor dat het beste bij jouw vraagstuk past — of verken ze allemaal. Ze zijn met elkaar verweven."
+          subtitle="Iedereen heeft een eigen ingang tot de AI-HUB. Kies het spoor dat het beste bij jouw vraagstuk past: of verken ze allemaal. Ze zijn met elkaar verweven."
         />
 
         <div className="grid lg:grid-cols-3 gap-8">

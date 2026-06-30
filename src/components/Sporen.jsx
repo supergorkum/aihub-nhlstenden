@@ -12,7 +12,7 @@ export default function Sporen() {
           <h2 className="text-3xl font-bold text-nhl-blauw mt-2 mb-4">De vier sporen</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Iedereen heeft een eigen ingang tot de AI-HUB. Kies het spoor dat het beste bij jouw 
-            vraagstuk past — of verken ze allemaal. Ze zijn met elkaar verweven.
+            vraagstuk past: of verken ze allemaal. Ze zijn met elkaar verweven.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function Sporen() {
               <div className="font-bold text-nhl-blauw mb-1">AI-Geletterdheid is de basis onder alles</div>
               <p className="text-gray-600 text-sm leading-relaxed">
                 Geen enkel spoor werkt zonder mensen die begrijpen wat AI is en wat het van hen vraagt. 
-                Geletterdheid is geen eenmalige training maar een doorlopend fundament — voor bestuurders, 
+                Geletterdheid is geen eenmalige training maar een doorlopend fundament: voor bestuurders, 
                 docenten, studenten en medewerkers. Aansluiting bij{' '}
                 <a href="https://npuls.nl/onderwerpen/digitale-geletterdheid" target="_blank" rel="noopener noreferrer" className="text-nhl-teal underline">
                   NPULS Digitale Geletterdheid

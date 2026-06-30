@@ -17,7 +17,7 @@ export default function Fundament() {
   return (
     <div className="min-h-screen pt-16 bg-white">
 
-      {/* Hero — pb verhoogd zodat tekst niet achter de golf verdwijnt */}
+      {/* Hero: pb verhoogd zodat tekst niet achter de golf verdwijnt */}
       <div className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 w-72 h-72 border border-white rounded-full" />
@@ -32,7 +32,7 @@ export default function Fundament() {
               Wat we ervaren als een simpele chattoepassing is slechts het topje van de ijsberg.
             </p>
             <p className="text-blue-200 leading-relaxed mb-4">
-              Achter elke AI-toepassing gaan vijf lagen schuil — van energievoorziening tot eindgebruiker.
+              Achter elke AI-toepassing gaan vijf lagen schuil: van energievoorziening tot eindgebruiker.
               Elke laag heeft een eigen primaire eigenaar, eigen vraagstukken en eigen verantwoordelijkheden.
               Het vijflagenmodel is het ordeningsprincipe achter het AI-Netwerk.
             </p>
@@ -165,7 +165,7 @@ export default function Fundament() {
                               <a href="https://www.surf.nl/en/themes/artificial-intelligence/projects-and-collaborations/ai-hub" target="_blank" rel="noopener noreferrer"
                                 className="block text-xs text-teal-700 hover:underline font-medium">SURF AI-Hub (overzicht projecten) ↗</a>
                               <a href="https://gptnl.nl" target="_blank" rel="noopener noreferrer"
-                                className="block text-xs text-teal-700 hover:underline font-medium">GPT-NL — soeverein Nederlands taalmodel ↗</a>
+                                className="block text-xs text-teal-700 hover:underline font-medium">GPT-NL: soeverein Nederlands taalmodel ↗</a>
                             </div>
                           </div>
                         )}
@@ -232,7 +232,7 @@ export default function Fundament() {
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="card p-8 border-t-4 border-nhl-blauw">
               <div className="text-3xl mb-4">🏗️</div>
-              <h3 className="text-xl font-bold text-nhl-blauw mb-2">Dienstverlening — het fundament</h3>
+              <h3 className="text-xl font-bold text-nhl-blauw mb-2">Dienstverlening: het fundament</h3>
               <div className="text-sm text-gray-400 mb-4 font-medium">Lagen 1 t/m 4 · Eigenaren: FM, DLWO, OO&I, Prog. Digitale Transitie</div>
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
                 De dienstverlening levert de randvoorwaarden waaronder de organisatie veilig, soeverein
@@ -249,7 +249,7 @@ export default function Fundament() {
             </div>
             <div className="card p-8 border-t-4 border-nhl-roze">
               <div className="text-3xl mb-4">🎓</div>
-              <h3 className="text-xl font-bold text-nhl-blauw mb-2">Het onderwijs — het speelveld</h3>
+              <h3 className="text-xl font-bold text-nhl-blauw mb-2">Het onderwijs: het speelveld</h3>
               <div className="text-sm text-gray-400 mb-4 font-medium">Laag 5 · Eigenaar: Alle Academies & Diensten</div>
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
                 De Academies zijn verantwoordelijk voor innovatie en onderwijsvernieuwing binnen de kaders

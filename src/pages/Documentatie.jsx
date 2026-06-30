@@ -282,9 +282,9 @@ export default function Documentatie({ docs, setDocs }) {
                     <input id="doc-upload" type="file" className="hidden" accept=".pdf,.doc,.docx,.pptx,.png,.jpg,.jpeg" onChange={e => handleBestand(e.target.files[0], 1)} />
                   </div>
 
-                  {/* Tweede bestand — optioneel */}
+                  {/* Tweede bestand: optioneel */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Bestand 2 <span className="text-gray-400 font-normal">(optioneel — bijv. bijlage)</span></label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Bestand 2 <span className="text-gray-400 font-normal">(optioneel: bijv. bijlage)</span></label>
                     <div onClick={() => document.getElementById('doc-upload-2').click()}
                       onDragOver={e => e.preventDefault()}
                       onDrop={e => { e.preventDefault(); handleBestand(e.dataTransfer.files[0], 2) }}

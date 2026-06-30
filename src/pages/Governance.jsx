@@ -95,7 +95,7 @@ export default function Governance() {
   return (
     <div className="min-h-screen pt-16 bg-white">
       <GradientHeader
-        label="AI-Governance — In ontwerp"
+        label="AI-Governance: In ontwerp"
         title="Hoe we AI organiseren"
         subtitle="Het governance-ontwerp voor de AI-Koers van NHL Stenden. Dit model is in ontwikkeling en vormt de basis voor bestuurlijk gesprek en brede consultatie."
       />
@@ -104,7 +104,7 @@ export default function Governance() {
         <div className="rounded-xl p-4 flex items-start gap-3 mb-12" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
           <span className="text-xl flex-shrink-0">🚧</span>
           <div>
-            <p className="text-sm font-semibold" style={{ color: '#92400E' }}>In ontwerp — nog niet vastgesteld</p>
+            <p className="text-sm font-semibold" style={{ color: '#92400E' }}>In ontwerp: nog niet vastgesteld</p>
             <p className="text-sm" style={{ color: '#78350F' }}>Dit governance-model is een concept dat ter consultatie en bestuurlijke bespreking voorligt. De structuur, rollen en werkwijzen worden de komende periode verder uitgewerkt en vastgesteld door de Stuurgroep Transitieprogramma.</p>
           </div>
         </div>
@@ -275,9 +275,9 @@ export default function Governance() {
           <h3 className="font-bold text-lg mb-4">Volgende stappen in de governance-ontwikkeling</h3>
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { periode: '2026 — Funderen', punten: ['Governancestructuur vaststellen', 'AI Act-classificatie alle toepassingen', 'Technische sandbox inrichten', 'Eerste compliance-capaciteit', 'Intake-procedure live'] },
-              { periode: '2027-28 — Uitbouwen', punten: ['Regulatory sandbox operationeel', 'Compliance per toepassing actief', 'Eerste jaarrapportage CvB en HMR', 'Kennisbank pilotresultaten actief'] },
-              { periode: '2029-30 — Verankeren', punten: ['Gevalideerd governance-framework', 'Jaarlijkse herijking AI-Koers', 'Algoritmeregister volledig', 'Regionale kennisrol zichtbaar'] },
+              { periode: '2026: Funderen', punten: ['Governancestructuur vaststellen', 'AI Act-classificatie alle toepassingen', 'Technische sandbox inrichten', 'Eerste compliance-capaciteit', 'Intake-procedure live'] },
+              { periode: '2027-28: Uitbouwen', punten: ['Regulatory sandbox operationeel', 'Compliance per toepassing actief', 'Eerste jaarrapportage CvB en HMR', 'Kennisbank pilotresultaten actief'] },
+              { periode: '2029-30: Verankeren', punten: ['Gevalideerd governance-framework', 'Jaarlijkse herijking AI-Koers', 'Algoritmeregister volledig', 'Regionale kennisrol zichtbaar'] },
             ].map(s => (
               <div key={s.periode}>
                 <p className="font-bold text-sm mb-3" style={{ color: '#bfdbfe' }}>{s.periode}</p>

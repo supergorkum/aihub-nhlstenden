@@ -36,7 +36,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Navigatie — alfabetisch */}
+          {/* Navigatie: alfabetisch */}
           <div>
             <div className="font-semibold mb-4 text-xs uppercase tracking-wider text-blue-300">Navigatie</div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
@@ -90,7 +90,7 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-              <span>Versie 1.6 — In ontwikkeling</span>
+              <span>Versie 1.6: In ontwikkeling</span>
             </div>
             <Link to="/beheer" className="text-blue-400 hover:text-blue-200 transition-colors flex items-center gap-1.5">
               Beheer ↗

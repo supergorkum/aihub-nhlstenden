@@ -74,7 +74,7 @@ export default function Beleid({ docs }) {
       <GradientHeader
         label="Beleid & Governance"
         title="AI Compliance Beleid"
-        subtitle="Governance, kaders en richtlijnen voor verantwoord gebruik van AI bij NHL Stenden — versie 2.0, vastgesteld door het College van Bestuur op 16 december 2025."
+        subtitle="Governance, kaders en richtlijnen voor verantwoord gebruik van AI bij NHL Stenden: versie 2.0, vastgesteld door het College van Bestuur op 16 december 2025."
       >
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
@@ -99,7 +99,7 @@ export default function Beleid({ docs }) {
           <div className="grid sm:grid-cols-3 gap-4 text-sm">
             <div>
               <div className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Versie</div>
-              <div className="font-bold text-nhl-blauw">2.0 — Definitief</div>
+              <div className="font-bold text-nhl-blauw">2.0: Definitief</div>
             </div>
             <div>
               <div className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Vastgesteld</div>

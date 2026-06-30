@@ -258,7 +258,7 @@ export default function ImpactDashboard({ pilots = [], initiatieven = [], evenem
             </p>
           </div>
 
-          {/* Thema tabs — alle zes */}
+          {/* Thema tabs: alle zes */}
           <div className="flex gap-2 mb-8 flex-wrap">
             {THEMA_CONFIG.map((t, i) => {
               const s = sporen.find(sp => sp.id === t.spoorId)

@@ -42,7 +42,7 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
     : opDatumNieuwNaarOud[0]
 
   // Drie frames: altijd de drie nieuwste op id (timestamp), exclusief de actieve
-  // Score speelt geen rol — dat is alleen voor de top 5
+  // Score speelt geen rol: dat is alleen voor de top 5
   const frameVideos = [...goedgekeurd]
     .sort((a, b) => b.id - a.id)
     .filter(v => v.id !== actief?.id)
@@ -249,7 +249,7 @@ export default function Video({ videos, setVideos, actiefVideoId, setActiefVideo
               </div>
             )}
 
-            {/* Videobibliotheek — altijd zichtbaar */}
+            {/* Videobibliotheek: altijd zichtbaar */}
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div className="font-bold text-nhl-blauw">📚 Videobibliotheek</div>

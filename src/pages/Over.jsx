@@ -101,7 +101,7 @@ export default function Over() {
             Het AI-Netwerk brengt alle AI-initiatieven, pilots, thema's, kennis en mensen bij NHL Stenden samen op één plek. Het is geen structuur die van bovenaf wordt opgelegd, maar een netwerk dat groeit vanuit vertrouwen, eigenaarschap en gedeelde ambitie.
           </p>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Het kernteam is de motor die dat proces op gang houdt. Licht en wendbaar, verbindend in plaats van controlerend, transparant over wat loopt — ook als iets nog niet af is.
+            Het kernteam is de motor die dat proces op gang houdt. Licht en wendbaar, verbindend in plaats van controlerend, transparant over wat loopt: ook als iets nog niet af is.
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export default function Over() {
             <span className="text-2xl">🏗️</span>
             <div>
               <div className="text-nhl-blauw font-bold text-base">Techniek & Infrastructuur</div>
-              <div className="text-gray-500 text-xs">Fundament van het AI-Netwerk — solution partners voor veilige AI-integratie</div>
+              <div className="text-gray-500 text-xs">Fundament van het AI-Netwerk: solution partners voor veilige AI-integratie</div>
             </div>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed mb-5">
