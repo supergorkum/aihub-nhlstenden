@@ -17,9 +17,7 @@ const navGroepen = [
   { label: 'Kennis', items: [
     { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
     { label: 'Bronnen', to: '/linkjes', icon: '🔗' },
-    { label: 'Documentatie', to: '/documentatie', icon: '📁' },
     { label: 'Agentic AI', to: '/agentic-ai', icon: '🧩' },
-    { label: "Video's", to: '/video', icon: '🎬' },
   ]},
   { label: 'Beleid', items: [
     { label: 'AI Act & Compliance', to: '/initiatieven?tab=aiact', icon: '⚖️' },

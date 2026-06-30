@@ -480,9 +480,6 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'nieuws', label: '📰 Nieuws ophalen', n: null },
     { id: 'backup', label: '☁️ Backup en Restore', n: null },
     { id: 'rapport', label: '📄 Rapport', n: null },
-    { id: 'nvao', label: '🧪 NVAO & GenAI: Beta', n: null },
-    { id: 'documentatie-beta', label: '📁 Documentatie: Beta', n: null },
-    { id: 'video-beta', label: '🎬 Video\'s: Beta', n: null },
   ]
 
   function TabBalk({ tabs }) {
@@ -570,6 +567,10 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
               className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-white border-gray-200 text-gray-500 hover:border-nhl-blauw hover:text-nhl-blauw transition-colors font-medium">
               📋 Changelog
             </button>
+            <button onClick={() => setActieveTab('beta')}
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border bg-pink-50 border-pink-200 text-nhl-roze hover:bg-pink-100 transition-colors font-semibold">
+              🧪 Beta-features
+            </button>
             <button onClick={() => setToegang(false)} className="btn-ghost text-xs border border-gray-200">Uitloggen</button>
           </div>
         </div>
@@ -603,20 +604,15 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                     <div className="p-5">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          {b.categorieDef && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">{b.categorieDef.icon} {b.categorieDef.label}</span>}
+                          {b.categorieLabel && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">{b.categorieIcon} {b.categorieLabel}</span>}
+                          {b.themaLabel && <span className="text-xs bg-blue-50 text-nhl-blauw px-2.5 py-1 rounded-full font-medium">{b.themaLabel}</span>}
                           <span className="text-xs text-gray-400">{b.rol}{b.naam ? ` · ${b.naam}` : ''} · {b.datum}</span>
                         </div>
                         <button onClick={() => setBerichten(prev => prev.filter(x => x.id !== b.id))} className="text-red-400 hover:text-red-600 text-xs flex-shrink-0">Verwijder</button>
                       </div>
                       <div className="bg-blue-50 border border-blue-200 rounded-2xl rounded-tl-sm px-4 py-3 mb-3 max-w-lg">
-                        {b.titel && <div className="font-semibold text-gray-800 text-sm mb-1">{b.titel}</div>}
-                        <p className="text-gray-600 text-sm leading-relaxed">{b.tekst}</p>
-                        {b.trefwoorden?.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {b.trefwoorden.map(tw => <span key={tw} className="text-xs bg-white text-nhl-blauw px-2 py-0.5 rounded border border-blue-200">{tw}</span>)}
-                          </div>
-                        )}
-                        {b.url && <a href={b.url} target="_blank" rel="noopener noreferrer" className="text-nhl-roze text-xs underline mt-2 block">🔗 {b.url}</a>}
+                        <p className="text-gray-600 text-sm leading-relaxed">{b.vraag}</p>
+                        {b.email && <div className="text-xs text-gray-400 mt-2">✉️ {b.email}</div>}
                       </div>
                       {b.antwoord ? (
                         <div className="ml-6">
@@ -826,8 +822,36 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 </div>
               </div>
             )}
+            {actieveTab === 'beta' && (
+              <div>
+                <div className="bg-pink-50 border border-pink-200 rounded-2xl p-6 mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">🧪</span>
+                    <h2 className="text-lg font-bold text-nhl-blauw">Beta-features</h2>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Dit zijn functies en pagina's die (nog) niet vrijgegeven zijn op de hoofdsite, om de kern van het AI-Netwerk (initiatieven verbinden) overzichtelijk te houden. Ze zijn niet verwijderd, alleen hier opzij gezet totdat er anders over wordt besloten.
+                  </p>
+                </div>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  {[
+                    { id: 'nvao', icon: '🧪', titel: 'NVAO & GenAI', omschrijving: 'Invulling per accreditatiestandaard.' },
+                    { id: 'documentatie-beta', icon: '📁', titel: 'Documentatie', omschrijving: 'Presentaties, rapporten en materiaal.' },
+                    { id: 'video-beta', icon: '🎬', titel: "Video's", omschrijving: 'De videobibliotheek van het netwerk.' },
+                  ].map(item => (
+                    <button key={item.id} onClick={() => setActieveTab(item.id)}
+                      className="text-left bg-white rounded-2xl border border-gray-200 p-5 hover:border-nhl-roze transition-colors">
+                      <div className="text-2xl mb-2">{item.icon}</div>
+                      <div className="font-bold text-nhl-blauw mb-1">{item.titel}</div>
+                      <div className="text-xs text-gray-400">{item.omschrijving}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {actieveTab === 'nvao' && (
               <div className="space-y-4">
+                <button onClick={() => setActieveTab('beta')} className="text-xs text-gray-400 hover:text-nhl-blauw transition-colors">← Terug naar Beta-overzicht</button>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">🧪</span>
                   <div>
@@ -850,6 +874,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             )}
             {actieveTab === 'documentatie-beta' && (
               <div className="space-y-4">
+                <button onClick={() => setActieveTab('beta')} className="text-xs text-gray-400 hover:text-nhl-blauw transition-colors">← Terug naar Beta-overzicht</button>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">📁</span>
                   <div>
@@ -872,6 +897,7 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
             )}
             {actieveTab === 'video-beta' && (
               <div className="space-y-4">
+                <button onClick={() => setActieveTab('beta')} className="text-xs text-gray-400 hover:text-nhl-blauw transition-colors">← Terug naar Beta-overzicht</button>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">🎬</span>
                   <div>

@@ -147,18 +147,12 @@ export default function Documentatie({ docs, setDocs }) {
     }
   }
 
-  const downloadDoc = (doc) => { setAuthDoc(doc) }
+  const downloadDoc = (doc) => { voerDownloadUit(doc) }
 
   const kanVersturen = bestand && uploadForm.titel && uploadForm.categorie
 
   return (
     <>
-    {authDoc && (
-      <DocAuthWall doc={authDoc}
-        onSuccess={function() { voerDownloadUit(authDoc); setAuthDoc(null) }}
-        onCancel={function() { setAuthDoc(null) }}
-      />
-    )}
     <div className="min-h-screen pt-16 bg-white">
       <GradientHeader
         label="Kennis & materiaal"
