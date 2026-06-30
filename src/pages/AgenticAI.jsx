@@ -8,6 +8,7 @@ const LAGEN = [
     sleutelwoord: 'Voorspellen',
     kleur: '#1E3A8A',
     licht: '#EFF6FF',
+    samenvatting: 'Leert patronen herkennen uit grote hoeveelheden voorbeelddata.',
     uitleg:
       'Dit is het fundament van alle AI. Een computersysteem wordt niet geprogrammeerd met vaste regels, maar leert door voorbeelden te analyseren. Net zoals een kind leert dat een hond een hond is door er honderden te zien, leert dit systeem patronen te herkennen door grote hoeveelheden data te verwerken.',
     technieken: [
@@ -26,6 +27,7 @@ const LAGEN = [
     sleutelwoord: 'Begrijpen',
     kleur: '#0F766E',
     licht: '#F0FDFA',
+    samenvatting: 'Gebruikt gelaagde neurale netwerken om complexere patronen te herkennen, zoals beeld, spraak en taal.',
     uitleg:
       'Deep Learning is een geavanceerde vorm van Machine Learning die werkt met kunstmatige neurale netwerken, losjes geïnspireerd op de werking van menselijke hersenen. Hoe meer lagen het netwerk heeft, hoe complexere patronen het kan herkennen. Dit is de technologie achter gezichtsherkenning, realtime vertaling en het herkennen van afwijkingen op medische scans.',
     technieken: [
@@ -44,6 +46,7 @@ const LAGEN = [
     sleutelwoord: 'Creëren',
     kleur: '#7C3AED',
     licht: '#F5F3FF',
+    samenvatting: 'Produceert zelf nieuwe inhoud, zoals tekst, beeld of code, op basis van een vraag of instructie.',
     uitleg:
       'Hier produceert AI voor het eerst zelf nieuwe inhoud: teksten, afbeeldingen, muziek, video of programmeercode. Generatieve AI werkt door te voorspellen wat, gegeven een vraag of instructie, de meest logische en passende voortzetting is. ChatGPT, Midjourney en GitHub Copilot zijn bekende voorbeelden.',
     technieken: [
@@ -62,6 +65,7 @@ const LAGEN = [
     sleutelwoord: 'Automatiseren',
     kleur: '#E91E8C',
     licht: '#FDF2F8',
+    samenvatting: 'Handelt zelfstandig: plant taken, voert ze uit en stuurt zo nodig complete processen aan.',
     uitleg:
       'De meest ingrijpende stap. Een AI Agent wacht niet op een vraag, maar streeft zelfstandig een doel na: het plant taken, voert stappen uit, evalueert het resultaat en past zijn aanpak aan. Bij Agentic AI werken meerdere gespecialiseerde agents samen als een team, elk met een eigen rol, om complete processen te automatiseren.',
     technieken: [
@@ -234,7 +238,40 @@ export default function AgenticAI() {
           </div>
         )}
 
-        {/* Randvoorwaarden */}
+        {/* De rol van data */}
+        <div className="mb-16">
+          <div className="section-label mb-2">Onder de motorkap</div>
+          <h2 className="text-2xl font-bold text-nhl-blauw mb-3">Generatieve AI is eenvoudig om te gebruiken, maar niet eenvoudig van aard</h2>
+          <p className="text-gray-600 leading-relaxed mb-6">
+            Een vraag typen en meteen een antwoord krijgen, voelt simpel. Maar achter die ene prompt gaat een gelaagd systeem schuil, zoals dit framework laat zien: van patroonherkenning, via neurale netwerken, naar het genereren van nieuwe inhoud. Die schijnbare eenvoud aan de oppervlakte is precies waarom het risico op overschatting groot is, mensen zien het resultaat, niet de complexiteit eronder.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="card p-6">
+              <div className="text-2xl mb-2">⚙️</div>
+              <div className="font-bold text-nhl-blauw mb-2">Waarom GenAI complexer is dan het voelt</div>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Een taalmodel genereert geen antwoord uit kennis zoals een mens dat heeft, maar voorspelt het meest waarschijnlijke vervolg op basis van patronen in trainingsdata. Het heeft geen besef van waarheid, alleen van waarschijnlijkheid. Dat verklaart waarom het zelfverzekerd onjuiste informatie kan presenteren (hallucineren), en waarom de kwaliteit van het antwoord sterk afhangt van hoe de vraag gesteld wordt en welke context wordt meegegeven.
+              </p>
+            </div>
+            <div className="card p-6">
+              <div className="text-2xl mb-2">📊</div>
+              <div className="font-bold text-nhl-blauw mb-2">Data is de bepalende factor voor de waarde</div>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                De waarde die een organisatie uit AI haalt, wordt minder bepaald door welk model je gebruikt, en meer door de kwaliteit, structuur en toegankelijkheid van de data die je eraan toevoegt. Een AI-assistent die jouw eigen, actuele en goed georganiseerde documenten kan raadplegen (zoals bij RAG, zie laag 3) levert relevante, betrouwbare antwoorden. Dezelfde assistent zonder die data, of met verouderde en versnipperde data, levert algemene en vaak minder bruikbare antwoorden.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-5">
+            <div className="font-bold text-amber-800 mb-2">Wat dit betekent voor NHL Stenden</div>
+            <p className="text-sm text-amber-900 leading-relaxed">
+              Investeren in AI-tooling alleen is niet voldoende. De grootste winst zit in informatiehuishouding: data op orde, vindbaar, actueel en met duidelijk eigenaarschap. Dat is geen technisch detail, maar een randvoorwaarde voor de waarde die AI kan toevoegen, en raakt rechtstreeks aan de thema's AI & Verantwoordelijkheid en digitale soevereiniteit die elders op deze site worden toegelicht.
+            </p>
+          </div>
+        </div>
+
+
         <div className="mb-16">
           <div className="section-label mb-2">Rondom de lagen</div>
           <h2 className="text-2xl font-bold text-nhl-blauw mb-3">De randvoorwaarden</h2>
@@ -288,7 +325,7 @@ export default function AgenticAI() {
                       <span className="w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: l.kleur }}>{l.nr}</span>
                     </td>
                     <td className="px-4 py-3 font-medium text-nhl-blauw">{l.naam}</td>
-                    <td className="px-4 py-3 text-gray-500">{l.uitleg.slice(0, 70)}...</td>
+                    <td className="px-4 py-3 text-gray-500">{l.samenvatting}</td>
                     <td className="px-4 py-3 font-medium" style={{ color: l.kleur }}>{l.sleutelwoord}</td>
                   </tr>
                 ))}
