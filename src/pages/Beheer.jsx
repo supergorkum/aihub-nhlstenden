@@ -481,6 +481,8 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
     { id: 'backup', label: '☁️ Backup en Restore', n: null },
     { id: 'rapport', label: '📄 Rapport', n: null },
     { id: 'nvao', label: '🧪 NVAO & GenAI: Beta', n: null },
+    { id: 'documentatie-beta', label: '📁 Documentatie: Beta', n: null },
+    { id: 'video-beta', label: '🎬 Video\'s: Beta', n: null },
   ]
 
   function TabBalk({ tabs }) {
@@ -843,6 +845,50 @@ export default function Beheer({ berichten, setBerichten, videos, setVideos, act
                 </div>
                 <p className="text-xs text-gray-400 text-center">
                   Deze pagina is verborgen voor gewone gebruikers en alleen toegankelijk via de beheeromgeving.
+                </p>
+              </div>
+            )}
+            {actieveTab === 'documentatie-beta' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">📁</span>
+                  <div>
+                    <h2 className="text-lg font-bold text-nhl-blauw">Documentatie</h2>
+                    <span className="inline-flex items-center gap-1 bg-pink-50 text-nhl-roze px-2.5 py-0.5 rounded-full text-xs font-medium">Beta: alleen zichtbaar voor beheerders</span>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+                  <iframe
+                    src="/documentatie"
+                    title="Documentatie"
+                    className="w-full"
+                    style={{ height:"70vh", border:"none" }}
+                  />
+                </div>
+                <p className="text-xs text-gray-400 text-center">
+                  Deze pagina staat niet meer in het hoofdmenu, om de kern van de site (initiatieven verbinden) scherp te houden. De pagina en haar inhoud blijven bestaan en zijn hier te beheren.
+                </p>
+              </div>
+            )}
+            {actieveTab === 'video-beta' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🎬</span>
+                  <div>
+                    <h2 className="text-lg font-bold text-nhl-blauw">Video's</h2>
+                    <span className="inline-flex items-center gap-1 bg-pink-50 text-nhl-roze px-2.5 py-0.5 rounded-full text-xs font-medium">Beta: alleen zichtbaar voor beheerders</span>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+                  <iframe
+                    src="/video"
+                    title="Video's"
+                    className="w-full"
+                    style={{ height:"70vh", border:"none" }}
+                  />
+                </div>
+                <p className="text-xs text-gray-400 text-center">
+                  Deze pagina staat niet meer in het hoofdmenu, om de kern van de site (initiatieven verbinden) scherp te houden. De pagina en haar inhoud blijven bestaan en zijn hier te beheren.
                 </p>
               </div>
             )}

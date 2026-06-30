@@ -288,7 +288,7 @@ function AppInner() {
       <ScrollToTop />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Start videos={videos} pilots={pilots} evenementen={evenementen} />} />
+          <Route path="/" element={<Start videos={videos} pilots={pilots} evenementen={evenementen} berichten={berichten} />} />
           <Route path="/themas" element={<Themas />} />
           <Route path="/fundament" element={<Fundament />} />
           <Route path="/netwerk" element={<Netwerk />} />

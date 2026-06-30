@@ -123,7 +123,7 @@ function InitiatiefModal({ onClose, onVerstuurd }) {
   )
 }
 
-export default function Start({ videos = [], pilots = [], evenementen = [] }) {
+export default function Start({ videos = [], pilots = [], evenementen = [], berichten = [] }) {
   const [initiatiefModalOpen, setInitiatiefModalOpen] = useState(false)
   const [netwerkFullscreen, setNetwerkFullscreen] = useState(false)
 
@@ -326,28 +326,23 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
       </section>
 
       {/* Laatste nieuws */}
-      {(videos.some(v => v.status === 'goedgekeurd') || pilots.length > 0 || evenementen.length > 0) && (
+      {(berichten.length > 0 || pilots.length > 0 || evenementen.length > 0) && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="section-label mb-2">Vers van de pers</div>
             <h2 className="text-2xl font-bold text-nhl-blauw mb-8">Het laatste uit het AI-Netwerk</h2>
             <div className="grid sm:grid-cols-3 gap-6">
               {(() => {
-                const v = [...videos.filter(x => x.status === 'goedgekeurd')].sort((a, b) => b.id - a.id)[0]
-                if (!v) return null
+                const b = [...berichten].sort((x, y) => y.id - x.id)[0]
+                if (!b) return null
                 return (
-                  <Link to="/video" className="card card-hover overflow-hidden group">
-                    <div className="relative">
-                      <img src={`https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg`} alt={v.titel} className="w-full aspect-video object-cover" onError={e => { e.target.style.background='#e5e7eb' }} />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center"><span className="text-nhl-blauw ml-0.5">▶</span></div>
-                      </div>
-                      <div className="absolute top-2 left-2 bg-nhl-roze text-white text-xs px-2 py-0.5 rounded-full font-medium">🎬 Laatste video</div>
+                  <Link to="/meld" className="card card-hover p-5 flex flex-col">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs bg-nhl-roze/10 text-nhl-roze px-2 py-0.5 rounded-full font-medium">{b.categorieIcon || '💬'} {b.categorieLabel || 'Vraag of idee'}</span>
+                      {b.themaLabel && <span className="text-xs bg-blue-50 text-nhl-blauw px-2 py-0.5 rounded-full font-medium">{b.themaLabel}</span>}
                     </div>
-                    <div className="p-4">
-                      <div className="font-semibold text-nhl-blauw text-sm leading-snug mb-1">{v.titel}</div>
-                      <div className="text-xs text-gray-400">{v.datum} · 👍 {v.omhoog}</div>
-                    </div>
+                    <div className="font-semibold text-nhl-blauw text-sm leading-snug mb-2 line-clamp-3">"{b.vraag}"</div>
+                    <div className="text-xs text-gray-400 mt-auto">{b.naam || 'Anoniem'} · {b.datum}</div>
                   </Link>
                 )
               })()}
