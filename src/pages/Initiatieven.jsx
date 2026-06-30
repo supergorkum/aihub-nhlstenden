@@ -105,7 +105,9 @@ export default function Initiatieven({ roadmap, setRoadmap, inspiraties, setInsp
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const updInit = (k, v) => setInitForm(f => ({ ...f, [k]: v }))
 
-  const alleInitiatieven = [...extraInitiatieven, ...initiatieven]
+  // Alleen initiatieven met een geverifieerde, publieke bron tonen in het overzicht.
+  // Een kaart zonder doorklikmogelijkheid heeft voor de bezoeker geen toegevoegde waarde.
+  const alleInitiatieven = [...extraInitiatieven, ...initiatieven].filter(i => i.link)
   const gefilterd = alleInitiatieven.filter(i => {
     if (filterSpoor && i.spoor !== filterSpoor) return false
     if (filterType && i.type !== filterType) return false

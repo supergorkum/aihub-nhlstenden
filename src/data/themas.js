@@ -74,6 +74,7 @@ export const THEMAS = [
     bronnen: [
       { label: 'CTL: AI in het onderwijs (professionalisering)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI.aspx' },
       { label: 'CTL: docentontwikkeling en MyAcademy', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning' },
+      { label: 'Npuls: AI-GO, raamwerk voor AI-geletterdheid in het onderwijs', url: 'https://npuls.nl/kennisbank/ai-go-een-raamwerk-voor-ai-geletterdheid-in-het-onderwijs' },
     ],
     slug: 'geletterdheid',
   },
