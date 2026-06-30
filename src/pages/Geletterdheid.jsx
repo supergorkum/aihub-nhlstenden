@@ -67,6 +67,7 @@ const INIT_BRONNEN = [
   { id: 3, doelgroep: 'management', type: 'rapport', titel: 'AI Act voor onderwijsinstellingen', url: 'https://rathenau.nl', omschrijving: 'Rapport van het Rathenau Instituut over de implicaties van de AI Act voor het hoger onderwijs.', stemmen: 2, toegevoegdDoor: 'Kernteam AI-Netwerk', datum: '5 juni 2026' },
   { id: 4, doelgroep: 'medewerkers', type: 'cursus', titel: 'AI-basistraining voor medewerkers', url: '#', omschrijving: 'Interne introductiecursus AI voor alle NHL Stenden medewerkers. Wat is AI, hoe werkt het en hoe gebruik je het veilig?', stemmen: 1, toegevoegdDoor: 'HR & OO&I', datum: '1 juni 2026' },
   { id: 5, doelgroep: 'onderwijs', type: 'kader', titel: 'NHL Stenden AI-competentieframework', url: '#', omschrijving: 'Overzicht van de AI-competenties die we verwachten van onze studenten bij afstuderen, per opleidingsniveau.', stemmen: 2, toegevoegdDoor: 'OO&I', datum: '15 mei 2026' },
+  { id: 6, doelgroep: 'docenten', type: 'kader', titel: 'AI-GO: raamwerk voor AI-geletterdheid in het onderwijs', url: 'https://npuls.nl/kennisbank/ai-go-een-raamwerk-voor-ai-geletterdheid-in-het-onderwijs', omschrijving: 'Evidence-informed raamwerk van Npuls dat onderwijsprofessionals in mbo, hbo en wo helpt AI-geletterdheid te begrijpen en te bevorderen bij zichzelf en hun studenten.', stemmen: 0, toegevoegdDoor: 'Npuls', datum: '30 juni 2026' },
 ]
 
 const TYPE_KLEUR = {
