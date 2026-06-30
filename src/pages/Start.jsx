@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { initiatieven, sporen } from '../data'
-import ImpactDashboard from '../components/ImpactDashboard'
+import { THEMAS } from '../data/themas'
 import NetwerkVisualisatie from '../components/NetwerkVisualisatie'
 
 const actieven = initiatieven.filter(i => i.status === 'actief').slice(0, 4)
@@ -13,7 +13,6 @@ function InitiatiefModal({ onClose, onVerstuurd }) {
     status: 'in-ontwikkeling', contactNaam: '', ambities: [], impactInschatting: ''
   })
   const [verstuurd, setVerstuurd] = useState(false)
-  const [extraInitiatieven, setExtraInitiatieven] = useState([])
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -81,7 +80,6 @@ function InitiatiefModal({ onClose, onVerstuurd }) {
             </div>
           </div>
 
-          {/* Ambitiekoppeling */}
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
             <div className="font-semibold text-nhl-blauw text-sm mb-2">Koppel aan een bestuurlijke ambitie</div>
             <div className="flex flex-wrap gap-2 mb-3">
@@ -128,30 +126,31 @@ function InitiatiefModal({ onClose, onVerstuurd }) {
 }
 
 export default function Start({ videos = [], pilots = [], evenementen = [] }) {
-  const alleInitiatieven = initiatieven
   const [initiatiefModalOpen, setInitiatiefModalOpen] = useState(false)
   const [netwerkFullscreen, setNetwerkFullscreen] = useState(false)
 
-  const functies = [
-    {
-      icon: '👁️',
-      titel: 'Zichtbaarheid',
-      tekst: 'Wat is er al? Wie doet wat? Het AI-Netwerk maakt het AI-landschap van NHL Stenden inzichtelijk voor iedereen.',
-      to: '/initiatieven',
-      onClick: null,
-    },
+  // De drie kern-knoppen: AI-Netwerk, Thema's, Kader.
+  // Dit zijn de enige drie ingangen die de bezoeker direct vanaf Start ziet.
+  const kernKnoppen = [
     {
       icon: '🔗',
-      titel: 'Verbinding',
-      tekst: 'Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.',
+      titel: 'AI-Netwerk',
+      tekst: 'Wie doet wat, wie sluit aan? Een levend netwerk van mensen, teams en initiatieven — binnen en buiten de instelling.',
       to: null,
       onClick: () => setNetwerkFullscreen(true),
     },
     {
-      icon: '🧭',
-      titel: 'Richting',
-      tekst: 'Het AI Kompas als gedeeld kompas voor verantwoord AI-gebruik, gebaseerd op onze eigen waarden.',
-      to: '/over',
+      icon: '🎯',
+      titel: "Thema's",
+      tekst: 'De kern van de AI-koers: zes koerslijnen met doelstellingen, opdracht en tijdlijn. Het hart van waar het AI-Netwerk om draait.',
+      to: '/themas',
+      onClick: null,
+    },
+    {
+      icon: '⚖️',
+      titel: 'Kader',
+      tekst: 'Governance, beleid, roadmap, AI Act en sandbox — het speelveld en de spelregels voor verantwoord AI-gebruik.',
+      to: '/kader',
       onClick: null,
     },
   ]
@@ -159,7 +158,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
   return (
     <div className="min-h-screen pt-16">
 
-      {/* Initiatieven modal */}
       {initiatiefModalOpen && (
         <InitiatiefModal
           onClose={() => setInitiatiefModalOpen(false)}
@@ -167,7 +165,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         />
       )}
 
-      {/* Netwerk fullscreen overlay */}
       {netwerkFullscreen && (
         <div className="fixed inset-0 z-50 bg-nhl-blauw flex flex-col">
           <div className="flex items-center justify-between px-6 py-4 border-b border-white/20">
@@ -186,7 +183,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         </div>
       )}
 
-      {/* Hero */}
+      {/* Hero met de drie kern-knoppen */}
       <section className="nhl-gradient-deep relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 w-80 h-80 border border-white rounded-full" />
@@ -198,7 +195,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-blue-100 text-xs px-3 py-1.5 rounded-full mb-6 border border-white/20">
                 <span className="w-2 h-2 bg-nhl-roze rounded-full pulse-soft" />
-                In ontwikkeling — versie 1.7 · Juni 2026
+                In ontwikkeling — versie 1.8 · Juni 2026
               </div>
               <div className="flex items-center gap-4 mb-4">
                 <img src="/nhl-logo-transparent.png" alt="NHL Stenden" className="h-16 w-16 object-contain" />
@@ -211,7 +208,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 De plek waar NHL Stenden alles rond AI samenbrengt: wat we doen, wie we zijn en hoe we het <strong className="text-white">verantwoord aanpakken</strong>.
               </p>
               <p className="text-blue-200 mb-8 max-w-lg">
-                Of je nu docent, student, medewerker of bestuurder bent — hier vind je overzicht, verbinding en richting.
+                Of je nu docent, student, medewerker of bestuurder bent — hier vind je in drie stappen waar je moet zijn.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link to="/themas" className="bg-white text-nhl-blauw hover:bg-blue-50 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
@@ -220,7 +217,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
                 <Link to="/netwerk" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
                   Bekijk het netwerk
                 </Link>
-                {/* Meld initiatief opent nu de modal */}
                 <button
                   onClick={() => setInitiatiefModalOpen(true)}
                   className="bg-nhl-roze hover:bg-nhl-roze-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors">
@@ -229,7 +225,7 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
               </div>
             </div>
             <div className="grid gap-3">
-              {functies.map(f => {
+              {kernKnoppen.map(f => {
                 const inner = (
                   <>
                     <div className="text-2xl flex-shrink-0">{f.icon}</div>
@@ -295,21 +291,38 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
         )
       })()}
 
-      {/* Snelle navigatie */}
+      {/* Thema-uitwerking: de kern van de AI-koers, met het verbinder-principe */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <div className="section-label mb-2">Jouw ingang</div>
-            <h2 className="text-2xl font-bold text-nhl-blauw">Waar wil je beginnen?</h2>
+          <div className="text-center mb-6">
+            <div className="section-label mb-2">De kern van de AI-koers</div>
+            <h2 className="text-2xl font-bold text-nhl-blauw">Zes koerslijnen, één richting</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sporen.map(s => (
-              <Link key={s.id} to={`/themas?spoor=${s.id}`} className="card card-hover p-5 group">
-                <div className="text-2xl mb-3">{s.icon}</div>
-                <div className="font-bold text-nhl-blauw mb-1 group-hover:text-nhl-roze transition-colors">{s.titel}</div>
-                <div className="text-gray-500 text-sm leading-relaxed">{s.kort}</div>
+
+          {/* Verbinder-principe: AI-Netwerk verbindt, het neemt inhoud niet over */}
+          <div className="max-w-3xl mx-auto bg-blue-50 border border-blue-100 rounded-xl px-5 py-3.5 mb-10 flex items-start gap-3">
+            <span className="text-lg flex-shrink-0">🔗</span>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Het AI-Netwerk verbindt de koerslijnen en biedt overzicht. Voor de inhoudelijke uitwerking per domein — onderwijs, onderzoek, bedrijfsvoering — blijven de bestaande kanalen leidend, zoals de intranetpagina's van OO&I.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {THEMAS.map(t => (
+              <Link key={t.id} to="/themas" className="card card-hover p-5 group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center text-lg flex-shrink-0" style={{ backgroundColor: t.kleur + '20' }}>
+                    {t.emoji}
+                  </div>
+                  <div className="font-bold text-nhl-blauw group-hover:text-nhl-roze transition-colors text-sm leading-snug">{t.label}</div>
+                </div>
+                <p className="text-gray-500 text-xs leading-relaxed italic">"{t.kernambitie}"</p>
               </Link>
             ))}
+          </div>
+
+          <div className="text-center">
+            <Link to="/themas" className="btn-ghost text-nhl-blauw font-medium">Bekijk alle thema's in detail →</Link>
           </div>
         </div>
       </section>
@@ -340,9 +353,6 @@ export default function Start({ videos = [], pilots = [], evenementen = [] }) {
           </div>
         </div>
       </section>
-
-      {/* Impact dashboard */}
-      <ImpactDashboard pilots={pilots} initiatieven={alleInitiatieven} evenementen={evenementen} />
 
       {/* CTA strip */}
       <section className="py-12 nhl-gradient">

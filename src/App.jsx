@@ -22,6 +22,8 @@ import Beleid from './pages/Beleid'
 import NVAO from './pages/NVAO'
 import Rapport from './pages/Rapport'
 import Governance from './pages/Governance'
+import Kader from './pages/Kader'
+import Dashboard from './pages/Dashboard'
 import WatLeverHetOp from './pages/WatLeverHetOp'
 import {
   INIT_VIDEOS, INIT_PILOTS, INIT_DOCS,
@@ -302,6 +304,8 @@ function AppInner() {
           <Route path="/geletterdheid" element={<Geletterdheid />} />
           <Route path="/beleid" element={<Beleid />} />
           <Route path="/governance" element={<Governance />} />
+          <Route path="/kader" element={<Kader />} />
+          <Route path="/dashboard" element={<Dashboard pilots={pilots} evenementen={evenementen} />} />
           <Route path="/wat-levert-het-op" element={<WatLeverHetOp />} />
           <Route path="/nvao" element={<NVAO />} />
           <Route path="/rapport" element={<Rapport pilots={pilots} inspiraties={inspiraties} />} />

@@ -12,6 +12,7 @@ const navGroepen = [
     { label: 'Evenementen', to: '/evenementen', icon: '📅' },
     { label: 'Initiatieven', to: '/initiatieven', icon: '🚀' },
     { label: 'Pilots', to: '/pilots', icon: '🧪' },
+    { label: 'Dashboard', to: '/dashboard', icon: '📊' },
   ]},
   { label: 'Kennis', items: [
     { label: 'AI & Geletterdheid', to: '/geletterdheid', icon: '📖' },
