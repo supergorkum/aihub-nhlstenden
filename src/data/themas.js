@@ -54,7 +54,8 @@ export const THEMAS = [
     watValtHieronder:
       'AI-governance en beleid, EU AI Act compliance en risicoklassificatie, ethisch waardenkompas, digitale soevereiniteit, privacytoetsen en verwerkersovereenkomsten, en de AI Regulatory Sandbox voor hoog-risico toepassingen.',
     bronnen: [
-      { label: 'CTL: AI in het onderwijs (verantwoord gebruik)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI.aspx' },
+      { label: 'CTL: AI in het onderwijs (verantwoord gebruik, medewerkers)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI.aspx' },
+      { label: 'CTL: AI in je studie (verantwoord gebruik, studenten)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI-in-je-studie.aspx' },
     ],
     slug: 'verantwoordelijkheid',
   },
@@ -72,6 +73,7 @@ export const THEMAS = [
       'Digitale geletterdheid in het curriculum, professionalisering van medewerkers via onder andere ARDA en het CTL, bewustwording over AI-risico\'s, mediawijsheid en kritisch denkvermogen rond algoritmische systemen.',
     bronnen: [
       { label: 'CTL: AI in het onderwijs (professionalisering)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI.aspx' },
+      { label: 'CTL: docentontwikkeling en MyAcademy', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning' },
     ],
     slug: 'geletterdheid',
   },
@@ -102,7 +104,10 @@ export const THEMAS = [
       'AI biedt onderzoekers ongekende mogelijkheden: sneller analyseren, slimmer verbanden leggen en onderzoek opschalen. Maar AI stelt onderzoek bij NHL Stenden ook voor nieuwe vragen. Hoe borgen we onderzoeksintegriteit als AI data analyseert of tekst genereert? Hoe gaan we om met kennisveiligheid en digitale soevereiniteit in een wereld waar onderzoeksdata steeds vaker op buitenlandse cloudinfrastructuur staat? Programma Bach, het nationale onderwijsversterkingsprogramma voor digitale autonomie en soevereiniteit, maakt duidelijk dat de transitie naar soevereine infrastructuur ook het onderzoeksdomein raakt. Dit thema gaat over beide kanten: AI als instrument dat onderzoek versterkt én als uitdaging die vraagt om nieuwe normen, kaders en onderzoeksethiek.',
     watValtHieronder:
       'Lectoratenonderzoek met en naar AI-toepassingen, praktijkgericht promotieonderzoek, onderzoeksintegriteit in het tijdperk van generatieve AI, kennisveiligheid en soevereiniteit rond onderzoeksdata, aansluiting bij Programma Bach en Npuls, valorisatie van onderzoeksresultaten naar onderwijs en werkveld, en de ontwikkeling van normen voor verantwoord AI-gebruik in onderzoek.',
-    bronnen: [],
+    bronnen: [
+      { label: 'CTL: AI in het onderwijs (onderzoek lectoraat Computer Vision & Data Science)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning/SitePages/AI.aspx' },
+      { label: 'Center for Teaching and Learning (CTL)', url: 'https://newuniversity.sharepoint.com/sites/center-for-teaching-and-learning' },
+    ],
     slug: 'onderzoek',
   },
 ];
