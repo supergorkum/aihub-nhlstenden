@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { initiatieven, sporen } from '../data'
 import InzichtenTab from '../components/InzichtenTab'
+import BetrokkenenWidget, { haalBetrokkenenOp } from '../components/BetrokkenenWidget'
 
 const statusConfig = {
   actief:            { label: 'Actief',          kleur: 'bg-green-100 text-green-700' },
@@ -105,9 +106,13 @@ export default function Initiatieven({ roadmap, setRoadmap, inspiraties, setInsp
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const updInit = (k, v) => setInitForm(f => ({ ...f, [k]: v }))
 
-  // Alleen initiatieven met een geverifieerde, publieke bron tonen in het overzicht.
-  // Een kaart zonder doorklikmogelijkheid heeft voor de bezoeker geen toegevoegde waarde.
-  const alleInitiatieven = [...extraInitiatieven, ...initiatieven].filter(i => i.link)
+  // Betrokkenen per initiatief: éénmalig ophalen bij laden van de pagina
+  const [betrokkenenMap, setBetrokkenenMap] = useState({})
+  useEffect(() => {
+    haalBetrokkenenOp().then(setBetrokkenenMap)
+  }, [])
+
+  const alleInitiatieven = [...extraInitiatieven, ...initiatieven]
   const gefilterd = alleInitiatieven.filter(i => {
     if (filterSpoor && i.spoor !== filterSpoor) return false
     if (filterType && i.type !== filterType) return false
@@ -259,46 +264,85 @@ export default function Initiatieven({ roadmap, setRoadmap, inspiraties, setInsp
               </div>
             </div>
             <div className="text-sm text-gray-400 mb-4">{gefilterd.length} initiatief{gefilterd.length !== 1 ? 'en' : ''} gevonden</div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {gefilterd.map(init => {
-                const spoor = sporen.find(s => s.id === init.spoor)
-                const sc = statusConfig[init.status]
-                return (
-                  <div key={init.id} className="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col card-hover">
-                    <div className="flex items-start justify-between gap-2 mb-3 flex-wrap">
-                      <div className="flex gap-1.5 flex-wrap">
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${sc?.kleur}`}>{sc?.label}</span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'surf' ? 'bg-purple-100 text-purple-700' : init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
-                          {init.type === 'surf' ? '🌐 SURF' : init.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
-                        </span>
-                        {init.nieuw && <span className="inline-flex items-center gap-1 text-xs bg-nhl-roze text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🆕 Nieuw</span>}
+
+            {/* UITGELICHT: initiatieven met een geverifieerde publieke bron, volledige kaart */}
+            {gefilterd.filter(i => i.link).length > 0 && (
+              <div className="mb-10">
+                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Uitgelicht, met externe bron</div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {gefilterd.filter(i => i.link).map(init => {
+                    const spoor = sporen.find(s => s.id === init.spoor)
+                    const sc = statusConfig[init.status]
+                    return (
+                      <div key={init.id} className="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col card-hover">
+                        <div className="flex items-start justify-between gap-2 mb-3 flex-wrap">
+                          <div className="flex gap-1.5 flex-wrap">
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${sc?.kleur}`}>{sc?.label}</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'surf' ? 'bg-purple-100 text-purple-700' : init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
+                              {init.type === 'surf' ? '🌐 SURF' : init.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
+                            </span>
+                            {init.nieuw && <span className="inline-flex items-center gap-1 text-xs bg-nhl-roze text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🆕 Nieuw</span>}
+                          </div>
+                        </div>
+                        <div className="font-bold text-nhl-blauw mb-2 leading-snug">{init.naam}</div>
+                        <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-3">{init.omschrijving}</p>
+                        {(init.ambities || []).length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {init.ambities.map(a => (
+                              <span key={a} className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full">
+                                {a === 'studiesucces' ? '🎓' : a === 'uitval' ? '📉' : '🔄'} {a}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-gray-100">
+                          {spoor && <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: spoor.kleur }}>{spoor.icon} {spoor.titel}</span>}
+                          {init.tags?.map(t => <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>)}
+                        </div>
+                        {init.link && (
+                          <a href={init.link} target="_blank" rel="noopener noreferrer"
+                            className="text-xs font-medium text-nhl-blauw hover:text-nhl-roze transition-colors mt-3 inline-flex items-center gap-1">
+                            Meer informatie <span aria-hidden="true">↗</span>
+                          </a>
+                        )}
+                        <BetrokkenenWidget initId={init.id} betrokkenenMap={betrokkenenMap} setBetrokkenenMap={setBetrokkenenMap} />
                       </div>
-                    </div>
-                    <div className="font-bold text-nhl-blauw mb-2 leading-snug">{init.naam}</div>
-                    <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-3">{init.omschrijving}</p>
-                    {(init.ambities || []).length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {init.ambities.map(a => (
-                          <span key={a} className="text-xs bg-nhl-blauw/10 text-nhl-blauw px-2 py-0.5 rounded-full">
-                            {a === 'studiesucces' ? '🎓' : a === 'uitval' ? '📉' : '🔄'} {a}
-                          </span>
-                        ))}
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* OVERIG: interne initiatieven zonder publieke bron, compacter */}
+            {gefilterd.filter(i => !i.link).length > 0 && (
+              <div>
+                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Overige initiatieven</div>
+                <div className="space-y-2">
+                  {gefilterd.filter(i => !i.link).map(init => {
+                    const spoor = sporen.find(s => s.id === init.spoor)
+                    const sc = statusConfig[init.status]
+                    return (
+                      <div key={init.id} className="bg-white rounded-xl border border-gray-100 p-4">
+                        <div className="flex items-start justify-between gap-3 flex-wrap">
+                          <div className="flex-1 min-w-[200px]">
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
+                              <span className="font-semibold text-nhl-blauw text-sm">{init.naam}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${sc?.kleur}`}>{sc?.label}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${init.type === 'surf' ? 'bg-purple-100 text-purple-700' : init.type === 'extern' ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-nhl-blauw'}`}>
+                                {init.type === 'surf' ? '🌐 SURF' : init.type === 'extern' ? '🤝 Extern' : '🏫 Intern'}
+                              </span>
+                              {spoor && <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: spoor.kleur }}>{spoor.icon} {spoor.titel}</span>}
+                            </div>
+                            <p className="text-gray-500 text-xs leading-relaxed">{init.omschrijving}</p>
+                            <BetrokkenenWidget initId={init.id} betrokkenenMap={betrokkenenMap} setBetrokkenenMap={setBetrokkenenMap} compact />
+                          </div>
+                        </div>
                       </div>
-                    )}
-                    <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-gray-100">
-                      {spoor && <span className="text-xs px-2 py-0.5 rounded-full text-white font-medium" style={{ backgroundColor: spoor.kleur }}>{spoor.icon} {spoor.titel}</span>}
-                      {init.tags?.map(t => <span key={t} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{t}</span>)}
-                    </div>
-                    {init.link && (
-                      <a href={init.link} target="_blank" rel="noopener noreferrer"
-                        className="text-xs font-medium text-nhl-blauw hover:text-nhl-roze transition-colors mt-3 inline-flex items-center gap-1">
-                        Meer informatie <span aria-hidden="true">↗</span>
-                      </a>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
