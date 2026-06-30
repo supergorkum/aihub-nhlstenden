@@ -108,6 +108,24 @@ export default function Themas() {
                 <p className="text-gray-600 text-sm leading-relaxed">{thema.watValtHieronder}</p>
               </div>
 
+              {/* Bronnen: het AI-Netwerk verbindt en geeft overzicht, het neemt nooit
+                  de inhoudelijke rol over van de vakeigenaar. Daarom alleen een korte
+                  doorverwijzing naar de originele bron, geen samenvatting. */}
+              {thema.bronnen?.length > 0 && (
+                <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
+                  <p className="text-xs font-bold text-nhl-blauw uppercase tracking-widest mb-2">Bron bij dit thema</p>
+                  <p className="text-xs text-gray-500 mb-3">Het AI-Netwerk verbindt en geeft overzicht. Voor de volledige, actuele richtlijnen ga je naar de bron.</p>
+                  <div className="space-y-1.5">
+                    {thema.bronnen.map(b => (
+                      <a key={b.url} href={b.url} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-xs font-medium text-nhl-blauw hover:text-nhl-roze transition-colors">
+                        🔗 {b.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Acties */}
               <div className="flex gap-3">
                 <button
